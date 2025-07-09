@@ -1,37 +1,53 @@
 import { useNavigate } from "react-router";
+import Button from "../Button";
 
 const experienceDataForm = [
   {
     labelValue: "Role",
     labelFor: "role",
     inputType: "text",
-    dispatchType: "setExperienceRole",
+    dispatchKey: "role",
   },
   {
     labelValue: "Company",
     labelFor: "company",
     inputType: "text",
-    dispatchType: "setExperienceCompany",
+    dispatchKey: "company",
   },
   {
     labelValue: "Description",
     labelFor: "description",
-    inputType: "text",
-    dispatchType: "setExperienceDescription",
+    inputType: "textarea",
+    dispatchKey: "description",
   },
   {
     labelValue: "Start Date",
     labelFor: "startDate",
     inputType: "date",
-    dispatchType: "setExperienceDateStart",
+    dispatchKey: "startDate",
   },
   {
     labelValue: "Finish Date",
     labelFor: "finishDate",
     inputType: "date",
-    dispatchType: "setExperienceDateFinish",
+    dispatchKey: "finishDate",
   },
 ];
+
+function ArrowRightIcon(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 -960 960 960"
+      width="24px"
+      fill="#1f1f1f"
+      {...props}
+    >
+      <path d="M683.15-460H200v-40h483.15L451.46-731.69 480-760l280 280-280 280-28.54-28.31L683.15-460Z" />
+    </svg>
+  );
+}
 
 export default function StepExperience({ dispatch, experience }) {
   const navigate = useNavigate();
@@ -47,7 +63,7 @@ export default function StepExperience({ dispatch, experience }) {
       {experience.map((el, index) => (
         <div key={index} className="mb-6">
           {experienceDataForm.map(
-            ({ labelValue, labelFor, inputType, dispatchType }) => (
+            ({ labelValue, labelFor, inputType, dispatchKey }) => (
               <label
                 htmlFor={`${labelFor}-${index}`}
                 className="mt-4 flex flex-col gap-1 text-sm/6 font-medium tracking-tight text-black"
@@ -60,8 +76,12 @@ export default function StepExperience({ dispatch, experience }) {
                   className="h-10 rounded-lg bg-white px-3 text-sm/6 font-normal text-gray-950 outline -outline-offset-1 outline-gray-950/15 focus:outline-gray-950"
                   onChange={(e) =>
                     dispatch({
-                      type: dispatchType,
-                      payload: { value: e.target.value, id: el.id },
+                      type: "setStepExperience",
+                      payload: {
+                        value: e.target.value,
+                        id: el.id,
+                        key: dispatchKey,
+                      },
                     })
                   }
                 />
@@ -71,9 +91,22 @@ export default function StepExperience({ dispatch, experience }) {
         </div>
       ))}
 
-      <button className="" onClick={handleNext}>
+      <Button
+        type="secondary"
+        onClick={() =>
+          dispatch({
+            type: "setNewRole",
+            payload: {},
+          })
+        }
+      >
+        Add new role
+      </Button>
+
+      <Button type="primary" onClick={handleNext}>
         Next
-      </button>
+        <ArrowRightIcon className="size-4 fill-white stroke-current" />
+      </Button>
     </>
   );
 }

@@ -1,35 +1,36 @@
 import { useNavigate } from "react-router";
+import Button from "../Button";
 
 const personalDataForm = [
   {
     labelValue: "Name",
     labelFor: "name",
     inputType: "text",
-    dispatchType: "setName",
+    dispatchKey: "name",
   },
   {
     labelValue: "Role",
     labelFor: "role",
     inputType: "text",
-    dispatchType: "setRole",
+    dispatchKey: "role",
   },
   {
     labelValue: "Email",
     labelFor: "email",
     inputType: "email",
-    dispatchType: "setEmail",
+    dispatchKey: "email",
   },
   {
     labelValue: "Number",
     labelFor: "number",
     inputType: "text",
-    dispatchType: "setNumber",
+    dispatchKey: "number",
   },
   {
     labelValue: "City",
     labelFor: "city",
     inputType: "text",
-    dispatchType: "setCity",
+    dispatchKey: "city",
   },
 ];
 
@@ -44,7 +45,7 @@ export default function StepPersonal({ dispatch }) {
         Insert your data contact here
       </h3>
       {personalDataForm.map(
-        ({ labelValue, labelFor, inputType, dispatchType }, idx) => (
+        ({ labelValue, labelFor, inputType, dispatchKey }, idx) => (
           <label
             htmlFor={labelFor}
             className="mt-4 flex flex-col gap-1 text-sm/6 font-medium tracking-tight text-black"
@@ -56,16 +57,19 @@ export default function StepPersonal({ dispatch }) {
               id={labelFor}
               className="h-10 rounded-lg bg-white px-3 text-sm/6 font-normal text-gray-950 outline -outline-offset-1 outline-gray-950/15 focus:outline-gray-950"
               onChange={(e) =>
-                dispatch({ type: dispatchType, payload: e.target.value })
+                dispatch({
+                  type: "setStepPersonal",
+                  payload: { value: e.target.value, key: dispatchKey },
+                })
               }
             />
           </label>
         ),
       )}
 
-      <button className="" onClick={handleNext}>
+      <Button type="primary" onClick={handleNext}>
         Next
-      </button>
+      </Button>
     </>
   );
 }

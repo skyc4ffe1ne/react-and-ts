@@ -2,8 +2,9 @@ import { useReducer } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router";
 import AppLayout from "./ui/AppLayout";
-import StepPersonal from "./ui/StepPersonal";
-import StepExperience from "./ui/StepExperience";
+import StepPersonal from "./ui/step/StepPersonal";
+import StepExperience from "./ui/step/StepExperience";
+import StepEducation from "./ui/step/StepEducation";
 
 const initialState = {
   experience: [
@@ -16,45 +17,74 @@ const initialState = {
       id: Date.now(),
     },
   ],
+
+  education: [
+    {
+      school: "",
+      degree: "",
+      description: "",
+      startDate: "",
+      finishDate: "",
+      location: "",
+      id: Date.now(),
+    },
+  ],
 };
 
 function reducer(state, action) {
-  const { value, ...other } = action.payload;
+  const { value, id, key } = action.payload;
   switch (action.type) {
-    case "setName":
+    case "setStepPersonal":
       return {
         ...state,
-        name: value,
+        [key]: value,
       };
-
-    case "setRole":
+    case "setStepExperience":
       return {
         ...state,
-        role: value,
-      };
-
-    case "setEmail":
-      return {
-        ...state,
-        email: value,
-      };
-    case "setNumber":
-      return {
-        ...state,
-        number: value,
-      };
-    case "setCity":
-      return {
-        ...state,
-        city: value,
-      };
-
-    case "setExperienceRole":
-      return {
-        ...state,
-        experience: state.experience.map((el, idx) =>
-          el.id === other.id ? { ...el, role: value } : el,
+        experience: state.experience.map((el) =>
+          el.id === id ? { ...el, [key]: value } : el,
         ),
+      };
+
+    case "setStepEducation":
+      return {
+        ...state,
+        experience: state.education.map((el) =>
+          el.id === id ? { ...el, [key]: value } : el,
+        ),
+      };
+
+    case "setNewRole":
+      return {
+        ...state,
+        experience: [
+          ...state.experience,
+          {
+            role: "",
+            company: "",
+            description: "",
+            startDate: "",
+            finishDate: "",
+            id: Date.now(),
+          },
+        ],
+      };
+
+    case "setNewEducation":
+      return {
+        ...state,
+        education: [
+          ...state.education,
+          {
+            role: "",
+            company: "",
+            description: "",
+            startDate: "",
+            finishDate: "",
+            id: Date.now(),
+          },
+        ],
       };
 
     default:
@@ -78,6 +108,13 @@ export default function App() {
                 dispatch={dispatch}
                 experience={state.experience}
               />
+            }
+          />
+
+          <Route
+            path="/step-2"
+            element={
+              <StepEducation dispatch={dispatch} education={state.education} />
             }
           />
         </Route>
