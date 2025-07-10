@@ -1,18 +1,18 @@
 import { useNavigate } from "react-router";
 import Button from "../Button";
 
-const educationDataForm = [
+const projectDataForm = [
   {
-    labelValue: "School",
-    labelFor: "school",
+    labelValue: "Name Project",
+    labelFor: "project",
     inputType: "text",
-    dispatchKey: "school",
+    dispatchKey: "project",
   },
   {
-    labelValue: "Degree",
-    labelFor: "degree",
+    labelValue: "Link",
+    labelFor: "link",
     inputType: "text",
-    dispatchKey: "degree",
+    dispatchKey: "link",
   },
   {
     labelValue: "Description",
@@ -50,20 +50,20 @@ function ArrowRightIcon(props) {
   );
 }
 
-export default function StepEducation({ dispatch, education }) {
+export default function StepEducation({ dispatch, project }) {
   const navigate = useNavigate();
   function handleNext() {
-    navigate("/step-3");
+    navigate("/step-4");
   }
   return (
     <>
       <h3 className="text-2xl font-medium tracking-tight text-blue-800">
-        Insert your data education here
+        Insert your data project here
       </h3>
 
-      {education.map((el, index) => (
+      {project.map((el, index) => (
         <div key={index} className="mb-6">
-          {educationDataForm.map(
+          {projectDataForm.map(
             ({ labelValue, labelFor, inputType, dispatchKey }) => (
               <label
                 htmlFor={`${labelFor}-${index}`}
@@ -77,12 +77,11 @@ export default function StepEducation({ dispatch, education }) {
                   className="h-10 rounded-lg bg-white px-3 text-sm/6 font-normal text-gray-950 outline -outline-offset-1 outline-gray-950/15 focus:outline-gray-950"
                   onChange={(e) =>
                     dispatch({
-                      type: "setStepBody",
+                      type: "setStepProject",
                       payload: {
                         value: e.target.value,
                         id: el.id,
                         key: dispatchKey,
-                        keyArr: "education"
                       },
                     })
                   }
@@ -97,7 +96,7 @@ export default function StepEducation({ dispatch, education }) {
         type="secondary"
         onClick={() =>
           dispatch({
-            type: "setNewEducation",
+            type: "setNewProject",
             payload: {},
           })
         }

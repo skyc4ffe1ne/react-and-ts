@@ -45,45 +45,25 @@ function LocationIcon(props) {
 export default function PreviewCurriculumPersonal({ state }) {
   return (
     <>
-      {state.name ? (
-        <h3 className="pt-8 text-center text-6xl tracking-tighter">
-          {" "}
-          {state.name}{" "}
-        </h3>
-      ) : (
-        ""
-      )}
-      {state.role ? (
-        <h3 className="text-center text-3xl tracking-tight"> {state.role} </h3>
-      ) : (
-        ""
-      )}
+
+      <h3 className="pt-8 text-center text-6xl tracking-tighter">
+        {state.name ? state.name : "Marco Rossi"}
+      </h3>
+      <h3 className="text-center text-3xl tracking-tight"> {state.role ? state.role : "Web Developer"} </h3>
 
       <div className="mt-2 mb-4 flex items-center justify-center gap-4">
         <div className="flex gap-1">
           <MailIcon className="size-6 fill-gray-400 stroke-current" />
-          {state.email ? (
-            <h3 className="text-base text-black"> {state.email} </h3>
-          ) : (
-            ""
-          )}
+          <h3 className="text-base text-black"> {state.email ? state.email : "marcorossi@gmail.com"} </h3>
         </div>
 
         <div className="flex gap-1">
           <PhoneIcon className="size-6 fill-gray-400 stroke-current" />
-          {state.number ? (
-            <h3 className="text-base text-black"> {state.number} </h3>
-          ) : (
-            ""
-          )}
+          <h3 className="text-base text-black"> {state.number ? state.number : "+39 331 12 34 567"} </h3>
         </div>
         <div className="gap1 flex">
           <LocationIcon className="size-6 fill-gray-400 stroke-current" />
-          {state.city ? (
-            <h3 className="text-base text-black"> {state.city} </h3>
-          ) : (
-            ""
-          )}
+          <h3 className="text-base text-black"> {state.city ? state.city : "Somewhere,SM"} </h3>
         </div>
       </div>
     </>

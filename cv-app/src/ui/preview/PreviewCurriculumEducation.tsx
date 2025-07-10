@@ -7,25 +7,22 @@ export default function PreviewCurriculumEducation({ state }) {
       <hr />
       {state.education.map(
         (
-          { school, degree, description, startDate, finishDate, location },
+          { school, degree, description, startDate, finishDate },
           idx,
         ) => (
           <div key={idx} className="px-2">
-            <h4 className="text-xl">
-              {degree ? degree : ""}
-              {startDate ? (
-                <span className="text-base"> {startDate} </span>
-              ) : (
-                ""
-              )}
-              <span className="text-base">{finishDate ? finishDate : ""}</span>
-            </h4>
-            {school ? <h5>{school} </h5> : ""}
-            {location ? <h5>{location} </h5> : ""}
+            <div className="flex justify-between items-center">
+              <h4 className="text-xl">
+                {school ? school : "University of Pennsylvania"}
+              </h4>
+              <p className="text-sm"> <span>{startDate ? startDate + "-" : "2024/02/12 - "}</span> <span> {finishDate ? finishDate : "2024/02/12"} </span> </p>
+            </div>
+            <h5> {degree ? degree : "BS in Computer Science"} </h5>
             <ul>
               <li className="ml-8 list-disc">
-                {description ? description : ""}
+                {description ? description : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, ipsum?"}
               </li>
+
             </ul>
           </div>
         ),
