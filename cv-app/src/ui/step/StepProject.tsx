@@ -6,7 +6,7 @@ const projectDataForm = [
     labelValue: "Name Project",
     labelFor: "project",
     inputType: "text",
-    dispatchKey: "project",
+    dispatchKey: "nameProject",
   },
   {
     labelValue: "Link",
@@ -77,11 +77,12 @@ export default function StepEducation({ dispatch, project }) {
                   className="h-10 rounded-lg bg-white px-3 text-sm/6 font-normal text-gray-950 outline -outline-offset-1 outline-gray-950/15 focus:outline-gray-950"
                   onChange={(e) =>
                     dispatch({
-                      type: "setStepProject",
+                      type: "setStepBody",
                       payload: {
                         value: e.target.value,
                         id: el.id,
                         key: dispatchKey,
+                        keyArr: "project"
                       },
                     })
                   }

@@ -76,45 +76,6 @@ function reducer(state, action) {
           el.id === id ? { ...el, [key]: value } : el,
         ),
       };
-    case "setStepExperience":
-      return {
-        ...state,
-        experience: state.experience.map((el) =>
-          el.id === id ? { ...el, [key]: value } : el,
-        ),
-      };
-
-    case "setStepEducation":
-      return {
-        ...state,
-        education: state.education.map((el) =>
-          el.id === id ? { ...el, [key]: value } : el,
-        ),
-      };
-    case "setStepProject":
-      return {
-        ...state,
-        project: state.project.map((el) =>
-          el.id === id ? { ...el, [key]: value } : el,
-        ),
-      };
-
-    case "setStepLanguage":
-      return {
-        ...state,
-        language: state.language.map((el) =>
-          el.id === id ? { ...el, [key]: value } : el,
-        ),
-      };
-
-    case "setStepSkill":
-      return {
-        ...state,
-        skills: state.skills.map((el) =>
-          el.id === id ? { ...el, [key]: value } : el,
-        ),
-      };
-
     case "setNewRole":
       return {
         ...state,

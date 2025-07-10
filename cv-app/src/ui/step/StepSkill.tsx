@@ -52,11 +52,12 @@ export default function StepSkill({ dispatch, skills }) {
                   className="h-10 rounded-lg bg-white px-3 text-sm/6 font-normal text-gray-950 outline -outline-offset-1 outline-gray-950/15 focus:outline-gray-950"
                   onChange={(e) =>
                     dispatch({
-                      type: "setStepSkill",
+                      type: "setStepBody",
                       payload: {
                         value: e.target.value,
                         id: el.id,
                         key: dispatchKey,
+                        keyArr: "skills"
                       },
                     })
                   }

@@ -1,19 +1,13 @@
 import { useNavigate } from "react-router";
 import Button from "../Button";
 
-const languageDataForm = [
+const skillDataForm = [
   {
-    labelValue: "Language",
-    labelFor: "lang",
+    labelValue: "Skill",
+    labelFor: "skill",
     inputType: "text",
-    dispatchKey: "lang",
-  },
-  {
-    labelValue: "Grade",
-    labelFor: "grade",
-    inputType: "text",
-    dispatchKey: "grade",
-  },
+    dispatchKey: "skill",
+  }
 ];
 
 function ArrowRightIcon(props) {
@@ -31,20 +25,20 @@ function ArrowRightIcon(props) {
   );
 }
 
-export default function StepLanguage({ dispatch, language }) {
+export default function StepSkill({ dispatch, skills }) {
   const navigate = useNavigate();
   function handleNext() {
-    navigate("/step-5");
+    navigate("/step-4");
   }
   return (
     <>
       <h3 className="text-2xl font-medium tracking-tight text-blue-800">
-        Insert your Language data here
+        {title}
       </h3>
 
-      {language.map((el, index) => (
+      {{ data }.map((el, index) => (
         <div key={index} className="mb-6">
-          {languageDataForm.map(
+          {{ dataForm }.map(
             ({ labelValue, labelFor, inputType, dispatchKey }) => (
               <label
                 htmlFor={`${labelFor}-${index}`}
@@ -63,7 +57,7 @@ export default function StepLanguage({ dispatch, language }) {
                         value: e.target.value,
                         id: el.id,
                         key: dispatchKey,
-                        keyArr: "language"
+                        keyArr: { keyData }
                       },
                     })
                   }
@@ -78,7 +72,7 @@ export default function StepLanguage({ dispatch, language }) {
         type="secondary"
         onClick={() =>
           dispatch({
-            type: "setNewLanguage",
+            type: "{setNewData}",
             payload: {},
           })
         }
@@ -93,3 +87,4 @@ export default function StepLanguage({ dispatch, language }) {
     </>
   );
 }
+
