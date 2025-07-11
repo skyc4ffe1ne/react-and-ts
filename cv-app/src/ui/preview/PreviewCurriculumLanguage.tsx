@@ -1,4 +1,5 @@
-export default function PreviewCurriculumLanguage({ state }) {
+import type { State } from "../../lib/types"
+export default function PreviewCurriculumLanguage({ state }: { state: State }) {
   return (
     <div className="px-2">
       <h3 className="text-xl font-semibold tracking-wide uppercase first-letter:text-2xl">

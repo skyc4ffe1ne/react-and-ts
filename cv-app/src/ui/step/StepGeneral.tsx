@@ -1,16 +1,8 @@
 import { useNavigate } from "react-router";
 import Button from "../Button";
+import type { StepGeneralProps } from "../../lib/types";
 
-const skillDataForm = [
-  {
-    labelValue: "Skill",
-    labelFor: "skill",
-    inputType: "text",
-    dispatchKey: "skill",
-  }
-];
-
-function ArrowRightIcon(props) {
+function ArrowRightIcon(props: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -25,10 +17,10 @@ function ArrowRightIcon(props) {
   );
 }
 
-export default function StepSkill({ dispatch, skills }) {
+export default function StepGeneral({ dispatch, data, keyData, dataForm, newData, title, stepPagination }: StepGeneralProps) {
   const navigate = useNavigate();
   function handleNext() {
-    navigate("/step-4");
+    navigate(`/step-${stepPagination}`);
   }
   return (
     <>
@@ -36,9 +28,9 @@ export default function StepSkill({ dispatch, skills }) {
         {title}
       </h3>
 
-      {{ data }.map((el, index) => (
+      {data.map((el, index) => (
         <div key={index} className="mb-6">
-          {{ dataForm }.map(
+          {dataForm.map(
             ({ labelValue, labelFor, inputType, dispatchKey }) => (
               <label
                 htmlFor={`${labelFor}-${index}`}
@@ -57,7 +49,7 @@ export default function StepSkill({ dispatch, skills }) {
                         value: e.target.value,
                         id: el.id,
                         key: dispatchKey,
-                        keyArr: { keyData }
+                        keyArr: keyData
                       },
                     })
                   }
@@ -72,7 +64,7 @@ export default function StepSkill({ dispatch, skills }) {
         type="secondary"
         onClick={() =>
           dispatch({
-            type: "{setNewData}",
+            type: newData,
             payload: {},
           })
         }

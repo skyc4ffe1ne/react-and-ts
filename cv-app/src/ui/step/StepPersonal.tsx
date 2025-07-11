@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import Button from "../Button";
-
+import type { StepPersonalType } from "../../lib/types"
 const personalDataForm = [
   {
     labelValue: "Name",
@@ -34,7 +34,9 @@ const personalDataForm = [
   },
 ];
 
-export default function StepPersonal({ dispatch }) {
+
+
+export default function StepPersonal({ dispatch }: StepPersonalType) {
   const navigate = useNavigate();
   function handleNext() {
     navigate("/step-1");

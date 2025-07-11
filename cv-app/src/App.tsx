@@ -3,14 +3,14 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router";
 import AppLayout from "./ui/AppLayout";
 import StepPersonal from "./ui/step/StepPersonal";
-import StepExperience from "./ui/step/StepExperience";
-import StepEducation from "./ui/step/StepEducation";
-import StepProject from "./ui/step/StepProject";
-import StepLanguage from "./ui/step/StepLanguage";
-import StepSkill from "./ui/step/StepSkill";
+import StepGeneral from "./ui/step/StepGeneral";
+import type { Action } from "./lib/types"
+import type { State } from "./lib/types"
+import type { AllStepType } from "./lib/types.ts"
 
 
-const initialState = {
+
+const initialState: State = {
   experience: [
     {
       role: "",
@@ -58,24 +58,34 @@ const initialState = {
       id: Date.now(),
     },
   ],
-
+  // Step Personal
+  name: "",
+  role: "",
+  email: "",
+  number: "",
+  city: ""
 };
 
-function reducer(state, action) {
-  const { value, id, key, keyArr } = action.payload;
+
+
+function reducer(state: State, action: Action) {
   switch (action.type) {
-    case "setStepPersonal":
+    case "setStepPersonal": {
+      const { value, key } = action.payload;
       return {
         ...state,
         [key]: value,
       };
-    case "setStepBody":
+    }
+    case "setStepBody": {
+      const { value, id, key, keyArr } = action.payload;
       return {
         ...state,
         [keyArr]: state[keyArr].map((el) =>
           el.id === id ? { ...el, [key]: value } : el,
         ),
       };
+    }
     case "setNewRole":
       return {
         ...state,
@@ -98,8 +108,8 @@ function reducer(state, action) {
         education: [
           ...state.education,
           {
-            role: "",
-            company: "",
+            school: "",
+            degree: "",
             description: "",
             startDate: "",
             finishDate: "",
@@ -155,50 +165,168 @@ function reducer(state, action) {
   }
 }
 
+const experienceDataForm = [
+  {
+    labelValue: "Role",
+    labelFor: "role",
+    inputType: "text",
+    dispatchKey: "role",
+  },
+  {
+    labelValue: "Company",
+    labelFor: "company",
+    inputType: "text",
+    dispatchKey: "company",
+  },
+  {
+    labelValue: "Description",
+    labelFor: "description",
+    inputType: "textarea",
+    dispatchKey: "description",
+  },
+  {
+    labelValue: "Start Date",
+    labelFor: "startDate",
+    inputType: "date",
+    dispatchKey: "startDate",
+  },
+  {
+    labelValue: "Finish Date",
+    labelFor: "finishDate",
+    inputType: "date",
+    dispatchKey: "finishDate",
+  },
+];
+
+const educationDataForm = [
+  {
+    labelValue: "School",
+    labelFor: "school",
+    inputType: "text",
+    dispatchKey: "school",
+  },
+  {
+    labelValue: "Degree",
+    labelFor: "degree",
+    inputType: "text",
+    dispatchKey: "degree",
+  },
+  {
+    labelValue: "Description",
+    labelFor: "description",
+    inputType: "textarea",
+    dispatchKey: "description",
+  },
+  {
+    labelValue: "Start Date",
+    labelFor: "startDate",
+    inputType: "date",
+    dispatchKey: "startDate",
+  },
+  {
+    labelValue: "Finish Date",
+    labelFor: "finishDate",
+    inputType: "date",
+    dispatchKey: "finishDate",
+  },
+
+];
+
+
+const languageDataForm = [
+  {
+    labelValue: "Language",
+    labelFor: "lang",
+    inputType: "text",
+    dispatchKey: "lang",
+  },
+  {
+    labelValue: "Grade",
+    labelFor: "grade",
+    inputType: "text",
+    dispatchKey: "grade",
+  },
+];
+
+const projectDataForm = [
+  {
+    labelValue: "Name Project",
+    labelFor: "project",
+    inputType: "text",
+    dispatchKey: "nameProject",
+  },
+  {
+    labelValue: "Link",
+    labelFor: "link",
+    inputType: "text",
+    dispatchKey: "link",
+  },
+  {
+    labelValue: "Description",
+    labelFor: "description",
+    inputType: "textarea",
+    dispatchKey: "description",
+  },
+  {
+    labelValue: "Start Date",
+    labelFor: "startDate",
+    inputType: "date",
+    dispatchKey: "startDate",
+  },
+  {
+    labelValue: "Finish Date",
+    labelFor: "finishDate",
+    inputType: "date",
+    dispatchKey: "finishDate",
+  },
+
+];
+
+const skillDataForm = [
+  {
+    labelValue: "Skill",
+    labelFor: "skill",
+    inputType: "text",
+    dispatchKey: "skill",
+  }
+];
+
+const allStep: AllStepType[] = [
+  { keyData: "experience", dataForm: experienceDataForm, newData: "setNewRole", title: "Insert your data experience here" },
+  { keyData: "education", dataForm: educationDataForm, newData: "setNewEducation", title: "Education" },
+  { keyData: "project", dataForm: projectDataForm, newData: "setNewProject", title: "Project" },
+  { keyData: "language", dataForm: languageDataForm, newData: "setNewLanguage", title: "Language" },
+  { keyData: "skills", dataForm: skillDataForm, newData: "setNewSkill", title: "Skills" },
+]
+
 export default function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state);
-
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AppLayout state={state} />}>
           <Route index element={<StepPersonal dispatch={dispatch} />} />
+          {allStep.map(({ keyData, dataForm, newData, title }, idx) => (
+            <Route
+              key={keyData}
+              path={`/step-${idx + 1}`}
+              element={
+                <StepGeneral
+                  dispatch={dispatch}
+                  data={state[keyData]}
+                  keyData={keyData}
+                  dataForm={dataForm}
+                  newData={newData}
+                  title={title}
+                  stepPagination={idx + 2 > allStep.length ? "finish" : (idx + 2).toString()}
+                />
+              }
+            />
+          ))}
           <Route
-            path="/step-1"
+            path="/step-finish"
             element={
-              <StepExperience
-                dispatch={dispatch}
-                experience={state.experience}
-              />
-            }
-          />
-
-          <Route
-            path="/step-2"
-            element={
-              <StepEducation dispatch={dispatch} education={state.education} />
-            }
-          />
-
-          <Route
-            path="/step-3"
-            element={
-              <StepProject dispatch={dispatch} project={state.project} />
-            }
-          />
-
-          <Route
-            path="/step-4"
-            element={
-              <StepLanguage dispatch={dispatch} language={state.language} />
-            }
-          />
-
-          <Route
-            path="/step-5"
-            element={
-              <StepSkill dispatch={dispatch} skills={state.skills} />
+              <p> Finish </p>
             }
           />
         </Route>

@@ -4,8 +4,10 @@ import PreviewCurriculumEducation from "./preview/PreviewCurriculumEducation";
 import PreviewCurriculumProject from "./preview/PreviewCurriculumProject";
 import PreviewCurriculumLanguage from "./preview/PreviewCurriculumLanguage";
 import PreviewCurriculumSkill from "./preview/PreviewCurriculumSkill";
+import type { State } from "../lib/types"
 
-export default function PreviewCurriculum({ state }) {
+
+export default function PreviewCurriculum({ state }: { state: State }) {
   return (
     <div className="h-auto w-96 min-w-2xl shadow-xl pb-20">
       <PreviewCurriculumPersonal state={state} />

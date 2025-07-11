@@ -1,4 +1,5 @@
-function MailIcon(props) {
+import type { State } from "../../lib/types"
+function MailIcon(props: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,7 +14,7 @@ function MailIcon(props) {
   );
 }
 
-function PhoneIcon(props) {
+function PhoneIcon(props: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +29,7 @@ function PhoneIcon(props) {
   );
 }
 
-function LocationIcon(props) {
+function LocationIcon(props: React.ComponentProps<"svg">) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +43,7 @@ function LocationIcon(props) {
     </svg>
   );
 }
-export default function PreviewCurriculumPersonal({ state }) {
+export default function PreviewCurriculumPersonal({ state }: { state: State }) {
   return (
     <>
 
