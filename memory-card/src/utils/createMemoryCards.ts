@@ -1,35 +1,33 @@
-export function createMemoryCards(size: number) {
+import type { CardType } from "../lib/types";
+
+export function createMemoryCards(size: number): CardType[] {
   // Arr of index [0,...,15]
   const randomIndex = Array.from({ length: size }, (_, idx) => idx);
-  // Arr of colors
-  const colors = [
-    "red",
-    "blue",
-    "cyan",
-    "gray",
-    "purple",
-    "pink",
-    "orange",
-    "yellow",
-  ];
+
+  const cardImgs = ["1", "2 ", "3 ", "4", "5", "6", "7", "8"];
+
   let temp = 0;
-  const cards = Array.from({ length: size }, (el, idx) => {
+  const cards = Array.from({ length: size }, (_, idx) => {
     // Same id for 2 el
     if (idx % 2 === 0) {
       temp += 1;
     }
-    return { id: temp, color: colors[temp - 1] };
+    return {
+      id: temp,
+      img: cardImgs[temp - 1],
+      matched: false,
+    };
   });
 
   return shuffleMemoryCards(cards, randomIndex);
 }
 
 function shuffleMemoryCards(
-  cards: { id: number; color: string }[],
+  cards: CardType[],
   randomIndex: number[],
-) {
+): CardType[] {
   // Create a new array for making card shuflled
-  const cardShuffled = Array.from({ length: cards.length });
+  const cardShuffled: CardType[] = Array.from({ length: cards.length });
 
   for (let i = 0; i < cards.length; i++) {
     // Get a random index but based on the Arr of index number[]
