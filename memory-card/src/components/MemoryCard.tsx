@@ -1,14 +1,12 @@
+import { useMemoryGame } from "../hooks/useMemoryGame";
 import Card from "./ui/Card";
 import { useEffect } from "react";
 
-export default function MemoryCard({
-  handleStatus,
-  cards,
-  flippedCards,
-  handleFlippedCards,
-}) {
+export default function MemoryCard({ handleStatus }) {
+  const { cards, flippedCards, handleFlippedCards } = useMemoryGame(16);
+
   useEffect(() => {
-    if (cards.length > 0 && cards.every((card) => card.matched)) {
+    if (cards.length > 0 && cards.every((card) => card.matched === true)) {
       handleStatus("finish");
     }
   }, [cards]);

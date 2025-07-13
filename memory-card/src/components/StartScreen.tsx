@@ -10,7 +10,7 @@ export default function StartScreen({ handleStatus }) {
 
       <button
         className="mt-10 px-4 py-2 font-medium rounded-md bg-black text-white text-xl cursor-pointer"
-        onClick={handleStatus("play")}
+        onClick={() => handleStatus("play")}
       >
         Let's Play
       </button>
