@@ -1,3 +1,4 @@
+import type { TextScreenProps } from "../lib/types";
 export default function TextScreen({
   timer,
   containerRef,
@@ -5,12 +6,14 @@ export default function TextScreen({
   text,
   currIdx,
   userTypng,
-}) {
+}: TextScreenProps) {
   return (
-    <>
-      <h2 className="text-4xl text-black"> {timer} </h2>
+    <div className="pt-16">
+      <h2 className="text-4xl text-center text-lime-500 font-semibold">
+        {timer}
+      </h2>
       <div
-        className="text-6xl/20 text-gray-500 outline-none"
+        className="text-6xl/20 text-gray-500 outline-none text-center text-balance"
         tabIndex={0}
         ref={containerRef}
         onKeyDown={(e) => {
@@ -27,6 +30,6 @@ export default function TextScreen({
           </span>
         ))}
       </div>
-    </>
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useReducer, useRef, useState } from "react";
+import type { State, Action } from "../lib/types.ts";
 
 const defaultText = [
   "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam, cupiditate!",
@@ -13,16 +14,20 @@ const defaultText = [
   "The wise man does not lay up his own funds, but answers the wants of those around him.",
 ];
 
-const initialState = {
+const initialState: State = {
   text: defaultText[Math.floor(Math.random() * defaultText.length)],
   status: "default",
   currIdx: -1,
   userTypng: [],
 };
 
-function reducer(state, action) {
-  console.log(state, action);
+function reducer(state: State, action: Action): State {
   switch (action.type) {
+    case "RESTART":
+      return {
+        ...initialState,
+        text: defaultText[Math.floor(Math.random() * defaultText.length)],
+      };
     case "TYPING":
       return {
         ...state,
@@ -47,10 +52,17 @@ function reducer(state, action) {
 }
 
 export function useTypingGame(time: number) {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
+  const [state, dispatch]: [State, React.Dispatch<Action>] = useReducer(
+    reducer,
+    initialState,
+  );
   const [timer, setTimer] = useState(time);
-  const intervalRef = useRef(null);
+  const intervalRef = useRef<number | null>(null);
+
+  // Set initial value of time
+  useEffect(() => {
+    setTimer((t) => (t = time));
+  }, [time]);
 
   useEffect(() => {
     if (state.status === "typing") {
@@ -63,11 +75,12 @@ export function useTypingGame(time: number) {
   useEffect(() => {
     if (timer <= 0) {
       clearInterval(intervalRef.current);
+      setTimer(time); // Get the previous time if the user don't set a new one.
       dispatch({ type: "FINISH" });
     }
   }, [timer]);
 
-  function handleKey(e) {
+  function handleKey(e: any) {
     const { key: pressedKey } = e;
     if (pressedKey === "Backspace") {
       dispatch({ type: "REMOVE" });
@@ -79,5 +92,5 @@ export function useTypingGame(time: number) {
     }
   }
 
-  return { state, handleKey, timer };
+  return { state, handleKey, timer, dispatch };
 }
