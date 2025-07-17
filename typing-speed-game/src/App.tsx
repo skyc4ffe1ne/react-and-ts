@@ -70,8 +70,8 @@ function App() {
           <FinishScrenn
             dispatch={dispatch}
             timer={chooseTime}
-            userTypng={state.userTypng}
-            text={state.text}
+            userTypngAll={state.userTypngAll}
+            precision={state.precision}
           />
         )}
       </div>

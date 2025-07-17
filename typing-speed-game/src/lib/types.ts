@@ -1,8 +1,13 @@
 export interface State {
+  firstLine: string;
+  secondLine: string;
+  thirdLine: string;
   text: string;
   status: "default" | "typing" | "finish";
   currIdx: number;
   userTypng: string[];
+  userTypngAll: string[];
+  precision: number;
 }
 
 export type Action =
@@ -13,9 +18,9 @@ export type Action =
 
 export interface FinishScreenProps {
   timer: number;
-  userTypng: string[];
-  text: string;
+  userTypngAll: string[];
   dispatch: React.Dispatch<Action>;
+  precision: number;
 }
 export interface StartScreenProps {
   chooseTime: number;

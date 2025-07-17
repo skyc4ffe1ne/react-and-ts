@@ -5,6 +5,7 @@ import { nextLine } from "../utils/nextLine.ts";
 
 const defaultText =
   "React (also known as React.js or ReactJS) is a free and open-source front-end JavaScript library[5][6] that aims to make building user interfaces based on components more seamless.[5] It is maintained by Meta (formerly Facebook) and a community of individual developers and companies.[7][8][9] React can be used to develop single-page, mobile, or server-rendered applications with frameworks like Next.js and Remix[a]. Because React is only concerned with the user interface and rendering components to the DOM, React applications often rely on libraries for routing and other client-side functionality.[11][12] A key advantage of React is that it only re-renders those parts of the page that have changed, avoiding unnecessary re-rendering of unchanged DOM elements.";
+
 const initialText = splitTextIntoLine(defaultText, 30);
 
 const initialState: State = {
@@ -23,7 +24,6 @@ function reducer(state: State, action: Action): State {
     case "RESTART":
       return initialState;
     case "TYPING":
-      console.log(state.userTypng);
       if (
         state.currIdx + 1 >
         state.firstLine.length + state.secondLine.length
@@ -56,11 +56,23 @@ function reducer(state: State, action: Action): State {
         ...state,
         currIdx: state.currIdx < 0 ? state.currIdx : state.currIdx - 1,
         userTypng: state.userTypng.toSpliced(state.currIdx, 1),
+        userTypngAll: state.userTypngAll.toSpliced(state.currIdx, 1),
       };
     case "FINISH":
+      const finalUserTypigin =
+        state.userTypngAll.length === 0
+          ? state.userTypng
+          : state.userTypngAll[0].split("");
+      const onlyUserTyped = defaultText.slice(0, finalUserTypigin.length);
+      let correctChar = 0;
+      for (let i = 0; i < finalUserTypigin.length; i++) {
+        finalUserTypigin[i] === onlyUserTyped[i] ? correctChar++ : correctChar;
+      }
+      const precision = (correctChar / finalUserTypigin.length) * 100;
       return {
         ...state,
         status: "finish",
+        precision: precision,
       };
     default:
       throw new Error("Action Unknow!");
