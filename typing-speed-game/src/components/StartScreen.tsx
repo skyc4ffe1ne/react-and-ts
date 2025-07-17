@@ -30,10 +30,7 @@ export default function StartScreen({
           </button>
         ))}
       </div>
-      <div className="mt-4 py-2 px-4 bg-lime-400 text-black text-xl rounded-xl font-medium">
-        <span className="pr-2">CapsLock</span>
-        <kbd className="font-sans">⇪</kbd>
-      </div>
+
       <h2
         className="text-6xl/20 text-gray-500 outline-none text-center text-balance pt-8"
         tabIndex={0}

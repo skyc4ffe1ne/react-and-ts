@@ -1,50 +1,78 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import type { State, Action } from "../lib/types.ts";
+import { splitTextIntoLine } from "../utils/textToLines.ts";
+import { nextLine } from "../utils/nextLine.ts";
 
-const defaultText = [
-  "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam, cupiditate!",
-  "The only true wisdom is in knowing you know nothing",
-  "Wisdom is not a product of schooling but of the lifelong attempt to acquire it.",
-  "Knowing yourself is the beginning of all wisdom.",
-  "Let him who would move the world first move himself.",
-  "The greatest wisdom is in being wise enough to know that you are not wise.",
-  "Everything has beauty, but not everyone sees it",
-  "We do not learn from experience we learn from reflecting on experience.",
-  "He who knows, does not speak. He who speaks, does not know.",
-  "The wise man does not lay up his own funds, but answers the wants of those around him.",
-];
+const defaultText =
+  "React (also known as React.js or ReactJS) is a free and open-source front-end JavaScript library[5][6] that aims to make building user interfaces based on components more seamless.[5] It is maintained by Meta (formerly Facebook) and a community of individual developers and companies.[7][8][9] React can be used to develop single-page, mobile, or server-rendered applications with frameworks like Next.js and Remix[a]. Because React is only concerned with the user interface and rendering components to the DOM, React applications often rely on libraries for routing and other client-side functionality.[11][12] A key advantage of React is that it only re-renders those parts of the page that have changed, avoiding unnecessary re-rendering of unchanged DOM elements.";
+
+const initialText = splitTextIntoLine(defaultText, 30);
 
 const initialState: State = {
-  text: defaultText[Math.floor(Math.random() * defaultText.length)],
+  firstLine: initialText.firstLine,
+  secondLine: initialText.secondLine,
+  thirdLine: initialText.thirdLine,
+  text: initialText.firstLine + initialText.secondLine + initialText.thirdLine,
   status: "default",
   currIdx: -1,
   userTypng: [],
+  userTypngAll: [],
 };
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "RESTART":
-      return {
-        ...initialState,
-        text: defaultText[Math.floor(Math.random() * defaultText.length)],
-      };
+      return initialState;
     case "TYPING":
-      return {
-        ...state,
-        userTypng: [...state.userTypng, action.payload],
-        currIdx: state.currIdx + 1,
-        status: "typing",
-      };
+      if (
+        state.currIdx + 1 >
+        state.firstLine.length + state.secondLine.length
+      ) {
+        const newThirdLine = nextLine(state.thirdLine, 30, defaultText);
+        return {
+          ...state,
+          firstLine: state.secondLine,
+          secondLine: state.thirdLine,
+          thirdLine: newThirdLine,
+          text: state.secondLine + state.thirdLine + newThirdLine,
+          userTypng: state.userTypng
+            .toSpliced(0, state.firstLine.length)
+            .concat(action.payload),
+          userTypngAll: [...state.userTypngAll, state.userTypng.join("")],
+          currIdx: state.currIdx + 1 - state.firstLine.length,
+          status: "typing",
+        };
+      } else {
+        return {
+          ...state,
+          userTypng: [...state.userTypng, action.payload],
+          currIdx: state.currIdx + 1,
+          status: "typing",
+        };
+      }
+
     case "REMOVE":
       return {
         ...state,
         currIdx: state.currIdx < 0 ? state.currIdx : state.currIdx - 1,
         userTypng: state.userTypng.toSpliced(state.currIdx, 1),
+        userTypngAll: state.userTypngAll.toSpliced(state.currIdx, 1),
       };
     case "FINISH":
+      const finalUserTypigin =
+        state.userTypngAll.length === 0
+          ? state.userTypng
+          : state.userTypngAll[0].split("");
+      const onlyUserTyped = defaultText.slice(0, finalUserTypigin.length);
+      let correctChar = 0;
+      for (let i = 0; i < finalUserTypigin.length; i++) {
+        finalUserTypigin[i] === onlyUserTyped[i] ? correctChar++ : correctChar;
+      }
+      const precision = (correctChar / finalUserTypigin.length) * 100;
       return {
         ...state,
         status: "finish",
+        precision: precision,
       };
     default:
       throw new Error("Action Unknow!");

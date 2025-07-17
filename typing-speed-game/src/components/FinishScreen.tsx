@@ -1,17 +1,11 @@
 import type { FinishScreenProps } from "../lib/types";
 
 export default function FinishScreen({
-  timer,
-  userTypng,
-  text,
   dispatch,
+  timer,
+  userTypngAll,
+  precision,
 }: FinishScreenProps) {
-  const onlyChar = text.split("");
-  let correctChar = 0;
-  for (let i = 0; i < userTypng.length; i++) {
-    userTypng[i] === onlyChar[i] ? correctChar++ : correctChar;
-  }
-  const precision = (correctChar / userTypng.length) * 100;
   const minuteOrSeconds = timer >= 60 ? timer : 60 / timer;
 
   return (
@@ -19,7 +13,7 @@ export default function FinishScreen({
       <p className="text-gray-600 text-2xl">
         WPM:
         <span className="text-lime-400 text-3xl pl-2">
-          {((userTypng.length / 5) * minuteOrSeconds).toFixed(2)}
+          {((userTypngAll.length / 5) * minuteOrSeconds).toFixed(2)}
         </span>
       </p>
       <p className="text-gray-600 text-2xl">
