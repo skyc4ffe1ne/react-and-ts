@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #fff;
+  --background-canvas: var(--color-amber-100);
+}
+
+.dark {
+  --background: #000;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-background-canvas: var(--background-canvas);
+}
