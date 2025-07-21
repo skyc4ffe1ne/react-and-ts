@@ -1,4 +1,5 @@
-import ButtonIcon from "./ui/ButtonIcon";
+import React from "react";
+import Button from "./ui/Button";
 import {
   IconErase,
   IconPen,
@@ -13,6 +14,7 @@ import {
   IconImage,
   IconShapes,
   IconLockOpen,
+  IconHamburger,
 } from "./ui/Icons";
 
 const allIcons = [
@@ -60,22 +62,40 @@ const allIcons = [
 export default function HeaderToolTip() {
   return (
     <header className="top-0 left-0 absolute bg-transparent flex justify-between items-center w-full p-4">
-      <div className="">LOGO</div>
+      <div className="">
+        <Button variant="icon_secondary">
+          <IconHamburger className="size-4" />
+        </Button>
+      </div>
 
       <div className="bg-background rounded-xl p-1 flex justify-center items-center gap-1">
-        {allIcons.map(({ icon }, idx) => (
-          <ButtonIcon
-            key={idx}
-            variant="primary"
-            other="first:border first:border-red-400 first:mr-2"
-          >
-            {icon}
-          </ButtonIcon>
-        ))}
+        {allIcons.map(({ icon }, idx) => {
+          if (idx === 0) {
+            return (
+              <React.Fragment key={idx}>
+                <Button variant="icon">{icon}</Button>
+                <div className="mr-1 ml-1 h-6 w-0.5 bg-background-divider" />
+              </React.Fragment>
+            );
+          } else if (idx === allIcons.length - 1) {
+            return (
+              <React.Fragment key={idx}>
+                <div className="mr-1 ml-1 h-6 w-0.5 bg-background-divider" />
+                <Button variant="icon">{icon}</Button>
+              </React.Fragment>
+            );
+          } else {
+            return (
+              <Button variant="icon" key={idx}>
+                {icon}
+              </Button>
+            );
+          }
+        })}
       </div>
 
       <div className="">
-        <button> SHARE </button>
+        <Button variant="accent"> Share </Button>
       </div>
     </header>
   );

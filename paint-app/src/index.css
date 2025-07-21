@@ -5,13 +5,43 @@
 :root {
   --background: #fff;
   --background-canvas: var(--color-amber-100);
+  --background-divider: var(--color-gray-100);
+
+  --primary: var(--color-white);
+  --primary-fg: var(--color-black);
+
+  --secondary: var(--color-gray-100);
+  --secondary-fg: var(--color-gray-400);
+
+  --accent: var(--color-blue-600);
+  --accent-fg: var(--color-white);
 }
 
 .dark {
   --background: #000;
+  --background-divider: var(--color-gray-900);
+
+  --primary: var(--color-white);
+  --primary-fg: var(--color-fg);
+
+  --secondary: var(--color-gray-100);
+  --secondary-fg: var(--color-gray-400);
+
+  --accent: var(--color-blue-600);
+  --accent-fg: var(--color-black);
 }
 
 @theme {
   --color-background: var(--background);
   --color-background-canvas: var(--background-canvas);
+  --color-background-divider: var(--background-divider);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-fg: var(--secondary-fg);
+
+  --color-primary: var(--primary);
+  --color-primary-fg: var(--primary-fg);
+
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
 }

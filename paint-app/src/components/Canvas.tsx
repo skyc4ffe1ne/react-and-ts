@@ -1,7 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Canvas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [isDrawing, setIsDrawing] = useState<boolean>(false);
+  // const [lastPos, setLastPos] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -9,18 +11,9 @@ export default function Canvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-    }
-  }, []);
-
-  return <canvas ref={canvasRef} className="bg-background-canvas"></canvas>;
-}
-
-/*
- *  const [isDrawing, setIsDrawing] = useState<boolean>(false);
-  // const [lastPos, setLastPos] = useState<{ x: number; y: number } | null>(null);
 
       function startDrawing(e: MouseEvent) {
+        console.log(e);
         setIsDrawing(true);
         //        setLastPos({ x, y });
         ctx.beginPath();
@@ -34,7 +27,7 @@ export default function Canvas() {
       function drawing(e: MouseEvent) {
         if (!isDrawing) return;
         ctx.lineWidth = 2;
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = "black";
         ctx.lineTo(e.clientX, e.clientY);
         ctx.stroke();
       }
@@ -50,4 +43,8 @@ export default function Canvas() {
         canvas.removeEventListener("mousemove", drawing);
         canvas.removeEventListener("mouseout", drawing);
       };
-  */
+    }
+  }, [isDrawing]);
+
+  return <canvas ref={canvasRef} className="bg-background-canvas"></canvas>;
+}
