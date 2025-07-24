@@ -1,21 +1,28 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function Canvas() {
+export default function Canvas({ canvasScale: scale }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
-  // const [lastPos, setLastPos] = useState<{ x: number; y: number } | null>(null);
+  const [lastPos, setLastPos] = useState<{ x: number; y: number } | null>(null);
+
+  // Initialize Canvas
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }, []);
 
   useEffect(() => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
       const ctx = canvas.getContext("2d");
 
+      ctx.fillStyle = "green";
+      ctx.fillRect(10, 10, 100, 100);
+
       function startDrawing(e: MouseEvent) {
-        console.log(e);
         setIsDrawing(true);
-        //        setLastPos({ x, y });
+        setLastPos({ x: e.clientX, y: e.clientY });
         ctx.beginPath();
         ctx.moveTo(e.clientX, e.clientY);
       }
@@ -44,7 +51,7 @@ export default function Canvas() {
         canvas.removeEventListener("mouseout", drawing);
       };
     }
-  }, [isDrawing]);
+  }, [isDrawing, scale]);
 
   return <canvas ref={canvasRef} className="bg-background-canvas"></canvas>;
 }
