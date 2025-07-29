@@ -11,7 +11,7 @@ export default function Board() {
 
   return (
     <div className={defaultStyle + style[sizeBoard]} ref={boardRef}>
-      {Array.from({ length: sizeBoard * 8 }, (_, idx) => (
+      {Array.from({ length: Math.pow(sizeBoard, 2) }, (_, idx) => (
         <div className="bg-background border border-gray-300" key={idx} />
       ))}
     </div>

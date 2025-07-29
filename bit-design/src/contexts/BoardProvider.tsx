@@ -1,30 +1,17 @@
 import { createContext, useState, use, useEffect, useRef } from "react";
+import type { BoardContextProps, colorBox, sizeBoard, statusBoard, } from "../lib/types";
 
-type sizeBoard = 8 | 16 | 32;
-type statusBoard = "draw" | "erase" | "paint";
-type colorBox = "black" | "lime" | "azure";
-
-interface BoardContextProps {
-  sizeBoard: sizeBoard;
-  setSizeBoard: (e) => void;
-  colorBox: colorBox;
-  setColorBox: (e) => void;
-  handleReset: () => void;
-  statusBoard: statusBoard;
-  setStatusBoard: (status: statusBoard) => void;
-  boardRef: null | HTMLDivElement;
-}
 
 export const BoardContext = createContext<BoardContextProps | undefined>(
   undefined,
 );
 
 export function BoardProvider({ children }: { children: React.ReactNode }) {
-  const [statusBoard, setStatusBoard] = useState<"draw" | "erase" | "paint">(
+  const [statusBoard, setStatusBoard] = useState<statusBoard>(
     "draw",
   );
-  const [sizeBoard, setSizeBoard] = useState<8 | 16 | 32>(8);
-  const [colorBox, setColorBox] = useState<string>("black");
+  const [sizeBoard, setSizeBoard] = useState<sizeBoard>(8);
+  const [colorBox, setColorBox] = useState<colorBox>("black");
 
   const boardRef = useRef<null | HTMLDivElement>(null);
 
@@ -36,38 +23,71 @@ export function BoardProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
+
+
+  // Reset the board, when user change size
+  useEffect(() => {
+    handleReset()
+  }, [sizeBoard])
+
   useEffect(() => {
     if (!boardRef?.current) return;
     const board = boardRef.current;
-    let flag = false;
-    function handleMouseDown(e) {
-      e.preventDefault();
-      flag = true;
-      statusBoard === "draw"
-        ? e.target.setAttribute("data-fill", colorBox)
-        : e.target.removeAttribute("data-fill", colorBox);
-    }
-    function handleMouseUpAndLeave() {
-      flag = false;
-    }
-    function handleMouseMove(e) {
-      if (!flag) return;
-      statusBoard === "draw"
-        ? e.target.setAttribute("data-fill", colorBox)
-        : e.target.removeAttribute("data-fill", colorBox);
+
+    if (statusBoard === "paint") {
+      let allBox = board.querySelectorAll("div");
+      function fillBoard() {
+        allBox.forEach((box) => {
+          box.setAttribute("data-fill", colorBox);
+        });
+      }
+
+      board.addEventListener("click", fillBoard)
+      return () => {
+        board.removeEventListener("click", fillBoard)
+      }
+
+    } else {
+      let flag = false;
+      function handleMouseDown(e: MouseEvent) {
+        const target = e.target as HTMLElement;
+        flag = true;
+        statusBoard === "draw"
+          ? target.setAttribute("data-fill", colorBox)
+          : target.removeAttribute("data-fill");
+      }
+      function handleMouseUpAndLeave() {
+        flag = false;
+      }
+      function handleMouseMove(e: MouseEvent) {
+        const target = e.target as HTMLElement;
+        if (!flag) return;
+        statusBoard === "draw"
+          ? target.setAttribute("data-fill", colorBox)
+          : target.removeAttribute("data-fill")
+      }
+
+      // Prevent the dragstart event when drawing/erasing
+      function handleDragStart(e: DragEvent) {
+        e.preventDefault()
+      }
+
+      board.addEventListener("mousedown", handleMouseDown);
+      board.addEventListener("mouseup", handleMouseUpAndLeave);
+      board.addEventListener("mouseleave", handleMouseUpAndLeave);
+      board.addEventListener("mousemove", handleMouseMove);
+      board.addEventListener("dragstart", handleDragStart);
+
+      return () => {
+        board.removeEventListener("mousedown", handleMouseDown);
+        board.removeEventListener("mouseup", handleMouseUpAndLeave);
+        board.removeEventListener("mouseleave", handleMouseUpAndLeave);
+        board.removeEventListener("mousemove", handleMouseMove);
+        board.removeEventListener("dragstart", handleDragStart);
+      };
+
     }
 
-    board.addEventListener("mousedown", handleMouseDown);
-    board.addEventListener("mouseup", handleMouseUpAndLeave);
-    board.addEventListener("mouseleave", handleMouseUpAndLeave);
-    board.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      board.removeEventListener("mousedown", handleMouseDown);
-      board.removeEventListener("mouseup", handleMouseUpAndLeave);
-      board.removeEventListener("mouseleave", handleMouseUpAndLeave);
-      board.removeEventListener("mousemove", handleMouseMove);
-    };
   }, [statusBoard, colorBox]);
 
   const value: BoardContextProps = {
