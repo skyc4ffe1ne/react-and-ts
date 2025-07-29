@@ -1,0 +1,3 @@
+- [ ] See if the component box is usless. in case remove it.
+- [ ] fix the lengthArr in the Board component for him size.
+- [ ] Resolve the bug drag and drop when i click on the board
