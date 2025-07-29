@@ -1,13 +1,18 @@
-import { createContext, useState, use } from "react";
+import { createContext, useState, use, useEffect, useRef } from "react";
+
+type sizeBoard = 8 | 16 | 32;
+type statusBoard = "draw" | "erase" | "paint";
+type colorBox = "black" | "lime" | "azure";
 
 interface BoardContextProps {
-  sizeBoard: 8 | 16 | 32;
-  setSizeBoard: () => void;
-  colorBox: string;
-  setColorBox: () => void;
+  sizeBoard: sizeBoard;
+  setSizeBoard: (e) => void;
+  colorBox: colorBox;
+  setColorBox: (e) => void;
   handleReset: () => void;
-  eraseBox: boolean;
-  setEraseBox: () => void;
+  statusBoard: statusBoard;
+  setStatusBoard: (status: statusBoard) => void;
+  boardRef: null | HTMLDivElement;
 }
 
 export const BoardContext = createContext<BoardContextProps | undefined>(
@@ -15,9 +20,13 @@ export const BoardContext = createContext<BoardContextProps | undefined>(
 );
 
 export function BoardProvider({ children }: { children: React.ReactNode }) {
-  const [sizeBoard, setSizeBoard] = useState<number>(8);
+  const [statusBoard, setStatusBoard] = useState<"draw" | "erase" | "paint">(
+    "draw",
+  );
+  const [sizeBoard, setSizeBoard] = useState<8 | 16 | 32>(8);
   const [colorBox, setColorBox] = useState<string>("black");
-  const [eraseBox, setEraseBox] = useState<boolean>(false);
+
+  const boardRef = useRef<null | HTMLDivElement>(null);
 
   function handleReset() {
     if (!boardRef?.current) return;
@@ -27,14 +36,49 @@ export function BoardProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
+  useEffect(() => {
+    if (!boardRef?.current) return;
+    const board = boardRef.current;
+    let flag = false;
+    function handleMouseDown(e) {
+      e.preventDefault();
+      flag = true;
+      statusBoard === "draw"
+        ? e.target.setAttribute("data-fill", colorBox)
+        : e.target.removeAttribute("data-fill", colorBox);
+    }
+    function handleMouseUpAndLeave() {
+      flag = false;
+    }
+    function handleMouseMove(e) {
+      if (!flag) return;
+      statusBoard === "draw"
+        ? e.target.setAttribute("data-fill", colorBox)
+        : e.target.removeAttribute("data-fill", colorBox);
+    }
+
+    board.addEventListener("mousedown", handleMouseDown);
+    board.addEventListener("mouseup", handleMouseUpAndLeave);
+    board.addEventListener("mouseleave", handleMouseUpAndLeave);
+    board.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      board.removeEventListener("mousedown", handleMouseDown);
+      board.removeEventListener("mouseup", handleMouseUpAndLeave);
+      board.removeEventListener("mouseleave", handleMouseUpAndLeave);
+      board.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [statusBoard, colorBox]);
+
   const value: BoardContextProps = {
     sizeBoard,
     setSizeBoard,
     colorBox,
     setColorBox,
     handleReset,
-    eraseBox,
-    setEraseBox,
+    setStatusBoard,
+    statusBoard,
+    boardRef,
   };
 
   return <BoardContext value={value}>{children}</BoardContext>;

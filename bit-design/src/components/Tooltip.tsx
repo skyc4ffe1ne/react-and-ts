@@ -1,7 +1,6 @@
 import Button from "./ui/Button";
 import { Pen, Eraser, Brush, Box, Trash } from "./ui/icons";
-import { BoardContext } from "../contexts/BoardProvider";
-import { use } from "react";
+import { useBoard } from "../contexts/BoardProvider";
 
 export default function Tooltip() {
   const {
@@ -10,19 +9,20 @@ export default function Tooltip() {
     colorBox,
     setColorBox,
     handleReset,
-    setEraser,
-  } = use(BoardContext);
+    setStatusBoard
+  } = useBoard();
 
   return (
     <div className="border-border flex items-center border p-2">
       <div className="flex gap-2">
-        <Button variant="ghost">
+        <Button variant="ghost" onClick={() => setStatusBoard("draw")}>
           <Pen className="stroke-secondary-foreground size-6 fill-transparent" />
         </Button>
-        <Button variant="ghost">
+        <Button variant="ghost" onClick={() => setStatusBoard("erase")}>
           <Eraser className="size-6 fill-transparent stroke-gray-400" />
         </Button>
-        <Button variant="ghost" onClick={() => setEraser(true)}>
+        <Button
+          variant="ghost">
           <Brush className="size-6 fill-transparent stroke-gray-400" />
         </Button>
         <select value={colorBox} onChange={(e) => setColorBox(e.target.value)}>
