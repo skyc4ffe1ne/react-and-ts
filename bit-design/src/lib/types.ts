@@ -12,3 +12,10 @@ export interface BoardContextProps {
   setStatusBoard: (status: statusBoard) => void;
   boardRef: null | React.Ref<HTMLDivElement>;
 }
+
+export type Theme = "light" | "dark";
+
+export interface ThemeContextProps {
+  theme: Theme;
+  setTheme: (t: Theme) => void;
+}

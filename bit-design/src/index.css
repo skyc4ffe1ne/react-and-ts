@@ -60,13 +60,16 @@
 }
 
 [data-fill="black"] {
-  background-color: var(--color-black);
+  background-color: var(--color-foreground);
+  border: none;
 }
 
 [data-fill="lime"] {
   background-color: var(--color-lime-400);
+  border: none;
 }
 
 [data-fill="azure"] {
   background-color: var(--color-blue-400);
+  border: none;
 }

@@ -1,0 +1,1 @@
+- [] Take the default theme of system user

@@ -35,7 +35,7 @@ export function BoardProvider({ children }: { children: React.ReactNode }) {
     const board = boardRef.current;
 
     if (statusBoard === "paint") {
-      let allBox = board.querySelectorAll("div");
+      let allBox = board.querySelectorAll(".box");
       function fillBoard() {
         allBox.forEach((box) => {
           box.setAttribute("data-fill", colorBox);
