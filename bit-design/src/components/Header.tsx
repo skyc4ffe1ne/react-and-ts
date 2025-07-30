@@ -18,15 +18,17 @@ const drawPrompts: string[] = [
   "umbrella",
   "rainbow",
   "castle",
-  "rocket"
+  "rocket",
 ];
 export default function Header() {
-  const chooseRandom = Math.floor(Math.random() * drawPrompts.length)
+  const chooseRandom = Math.floor(Math.random() * drawPrompts.length);
   return (
     <div className="text-center">
-      <h1 className="text-4xl"> Design here </h1>
+      <h1 className="text-4xl">
+        PROMPT:
+        <span className="text-blue-400">{drawPrompts[chooseRandom]}</span>{" "}
+      </h1>
       <p className="text-xl"> create your pixel art</p>
-      <p> {drawPrompts[chooseRandom]} </p>
     </div>
   );
 }
