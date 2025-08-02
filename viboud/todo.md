@@ -1,0 +1,3 @@
+- [ ] Test secondary on dark mode
+- [ ] CHeck if sticky on navbar is working
+- [ ] Finish ThemeContext
