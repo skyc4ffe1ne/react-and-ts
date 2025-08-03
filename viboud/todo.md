@@ -1,3 +1,7 @@
 - [ ] Test secondary on dark mode
-- [ ] CHeck if sticky on navbar is working
-- [ ] Finish ThemeContext
+- [x] CHeck if (sticky or fixed)? on navbar is working
+
+- [x] Finish ThemeContext
+- [x] Add logic on faq
+- [x] Add mask on reviews
+- [ ] Check responsive
