@@ -16,15 +16,26 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --animate-marquee: marquee 20s infinite linear;
+  --animate-marquee-x: marquee-x 20s infinite linear;
+  --animate-marquee-y: marquee-y 20s infinite linear;
 
-  @keyframes marquee {
+  @keyframes marquee-x {
     from {
       transform: translateX(0);
     }
 
     to {
       transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+
+  @keyframes marquee-y {
+    from {
+      transform: translateY(0);
+    }
+
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
     }
   }
 }

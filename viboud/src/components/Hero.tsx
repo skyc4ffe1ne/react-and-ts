@@ -17,7 +17,7 @@ export default function Hero() {
         Pick your favorite songs with your friends
       </h1>
 
-      <p className="text-secondary-foreground mb-8 max-w-3xl text-center text-xs tracking-tight text-balance sm:text-lg/6">
+      <p className="text-secondary-foreground mb-8 max-w-3xl text-center text-sm/5 tracking-tight text-balance sm:text-lg/6">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta,
         eveniet! Saepe, dolores. Deleniti harum quaerat in nam, asperiores
       </p>

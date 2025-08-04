@@ -39,10 +39,10 @@ const topMarquee = [
 
 export default function MarqueeCard() {
   return (
-    <div className="group relative my-10 flex flex-row gap-4 overflow-hidden p-2 [--gap:1rem]">
-      {Array.from({ length: topMarquee.length }, (_, idx) => (
+    <div className="group relative my-10 flex max-h-screen flex-col gap-4 overflow-hidden p-2 [--gap:1rem] sm:flex-row">
+      {Array.from({ length: 2 }, (_, idx) => (
         <div
-          className="animate-marquee flex shrink-0 [gap:var(--gap)]"
+          className="animate-marquee flex shrink-0 flex-col [gap:var(--gap)] overflow-hidden sm:flex-row"
           key={idx}
         >
           {topMarquee.map(({ review, name, description }, idx) => {
@@ -52,7 +52,7 @@ export default function MarqueeCard() {
 
             return (
               <div
-                className="animate-marquee border-border bg-background w-fit rounded-xl border p-4"
+                className="animate-marquee-y sm:animate-marquee-x border-border bg-background w-fit rounded-xl border p-4"
                 key={idx}
               >
                 <p className="text-foreground/90 max-w-96 pb-6 leading-relaxed font-normal select-none">
@@ -63,7 +63,7 @@ export default function MarqueeCard() {
                   {textSplitted[3]}
                 </p>
 
-                <div className="h-container flex items-center gap-2">
+                <div className="flex items-center gap-2">
                   <div className="size-8 rounded-full bg-linear-30 from-sky-300 to-orange-400" />
                   <div className="">
                     <h3 className="text-foreground/90 font-medium"> {name} </h3>
@@ -78,8 +78,8 @@ export default function MarqueeCard() {
         </div>
       ))}
 
-      <div className="from-background pointer-events-none absolute inset-y-0 left-0 h-full w-1/4 bg-gradient-to-r from-20%" />
-      <div className="from-background pointer-events-none absolute inset-y-0 right-0 h-full w-1/4 bg-gradient-to-l from-20%" />
+      <div className="from-background pointer-events-none absolute inset-x-0 top-0 h-1/4 w-full bg-gradient-to-b from-20% sm:inset-y-0 sm:left-0 sm:h-full sm:w-1/4 sm:bg-gradient-to-r" />
+      <div className="from-background pointer-events-none absolute inset-x-0 bottom-0 h-1/4 w-full bg-gradient-to-t from-20% sm:inset-y-0 sm:right-0 sm:h-full sm:w-1/4 sm:bg-gradient-to-l sm:left-auto" />
     </div>
   );
 }
