@@ -1,11 +1,11 @@
 export default function PreviewApp() {
   return (
-    <div className="relative flex w-full items-center justify-center">
+    <div className="relative flex w-full items-center justify-center transition-transform duration-800 translate-y-0 starting:translate-y-12">
       <div className="border-border mt-16 w-full rounded-lg border p-2 shadow-lg">
         <div className="h-[70vh] w-full rounded-md bg-gray-200" />
       </div>
 
-      <div className="from-background via-background pointer-events-none absolute inset-x-0 -bottom-12 h-1/3 bg-gradient-to-t to-transparent lg:h-1/4" />
+      <div className="from-background via-background pointer-events-none absolute inset-x-0 -bottom-12 h-1/3 bg-gradient-to-t to-transparent lg:h-1/4 " />
     </div>
   );
 }

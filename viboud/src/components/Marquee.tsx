@@ -57,7 +57,7 @@ export default function MarqueeCard() {
               >
                 <p className="text-foreground/90 max-w-96 pb-6 leading-relaxed font-normal select-none">
                   {textSplitted[1]}
-                  <span className="text-accent font-medium">
+                  <span className="text-accent-foreground font-medium">
                     {textSplitted[2]}
                   </span>
                   {textSplitted[3]}
