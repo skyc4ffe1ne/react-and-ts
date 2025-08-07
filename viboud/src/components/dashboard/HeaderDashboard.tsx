@@ -2,7 +2,7 @@ export default function HeaderDashboard() {
   return (
     <div className="border-border border-b px-12">
       <header className="flex items-center justify-between py-4">
-        <h2> Dashboard </h2>
+        <h2 className="text-xl"> Dashboard/RoomName </h2>
 
         <div className="flex items-center gap-2">
           <div className="size-10 rounded-full bg-gray-400" />

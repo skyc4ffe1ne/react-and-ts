@@ -15,6 +15,8 @@ export default function Button({
   const v: Variants = {
     primary: "bg-foreground text-background hover:bg-primary/80 ",
     secondary: "bg-secondary text-foreground-secondary hover:bg-secondary/70 ",
+    thirdiary:
+      "bg-secondary/40 text-foreground-secondary hover:bg-secondary/70 ",
     ghost: "text-foreground bg-transparent ",
     outline: "shadow-sm border border-border bg-background text-foreground ",
     accent: "bg-accent text-background hover:bg-accent/80 ",
