@@ -3,6 +3,7 @@ import type { ButtonVariants, Variants } from "../../lib/types";
 export default function Button({
   children,
   variant,
+  className = "",
   ...other
 }: {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ export default function Button({
     accent: "bg-accent text-background hover:bg-accent/80 ",
   };
   return (
-    <button className={s + v[variant]} {...other}>
+    <button className={s + v[variant] + className} {...other}>
       {children}
     </button>
   );

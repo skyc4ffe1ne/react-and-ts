@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "./ui/Button";
 import { Hamburger, X } from "./ui/icons";
+import logo from "../../public/logo_viboud.svg";
+import { Link } from "react-router";
 export default function NavBar() {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -38,7 +40,9 @@ export default function NavBar() {
       className="bg-background/75 fixed inset-0 top-0 left-0 z-50 mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4"
       ref={headerRef}
     >
-      <div className="flex-1">LOGO</div>
+      <Link to="/" className="flex-1">
+        <img src={logo} className="dark:invert-100" />
+      </Link>
 
       <nav className="hidden flex-1 justify-center text-sm/6 sm:flex">
         <ul>
@@ -62,10 +66,12 @@ export default function NavBar() {
         )}
       </div>
 
-
       {open && (
-        <div className="flex flex-col absolute top-[100%] w-full bg-background/75 border-t border-border backdrop-blur-lg mx-auto left-0 px-4 py-8">
-          <ul> <li> How It Works </li></ul>
+        <div className="bg-background/75 border-border absolute top-[100%] left-0 mx-auto flex w-full flex-col border-t px-4 py-8 backdrop-blur-lg">
+          <ul>
+            {" "}
+            <li> How It Works </li>
+          </ul>
 
           <Button variant="ghost"> Login </Button>
           <Button variant="accent"> SignUp </Button>

@@ -188,3 +188,59 @@ export function X(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function Exit(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="m16 17 5-5-5-5" />
+      <path d="M21 12H9" />
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+    </svg>
+  );
+}
+
+export function Settings(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+export function ViboudLogo(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M9.57196 2.83381C8.86554 2.45581 8.35512 2.18223 8.15212 1.16898C8.07862 0.801479 7.74146 0.554146 7.36521 0.586229C6.99246 0.623562 6.70837 0.937396 6.70837 1.31248V8.48106C6.28021 8.28623 5.78787 8.16665 5.25004 8.16665C3.61437 8.16665 2.33337 9.19156 2.33337 10.5C2.33337 11.8084 3.61437 12.8333 5.25004 12.8333C6.88571 12.8333 8.16671 11.8084 8.16671 10.5V3.6989C8.41346 3.86806 8.66079 3.9999 8.88362 4.11948C9.71021 4.56165 10.2084 4.82823 10.2084 6.27081C10.2084 6.67331 10.535 6.99998 10.9375 6.99998C11.34 6.99998 11.6667 6.67331 11.6667 6.27081C11.6667 3.95498 10.5053 3.33315 9.57196 2.83381Z" />
+    </svg>
+  );
+}
