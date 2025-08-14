@@ -1,10 +1,14 @@
 import { useTheme } from "../contexts/ThemeProvider";
 import { Sun, Moon } from "./ui/icons";
+import logo from "../../public/logo_viboud.svg";
+import { Link } from "react-router";
 export default function Footer() {
   const { theme, setTheme } = useTheme();
   return (
     <footer className="border-border mt-24 mb-4 flex justify-between border-t pt-10">
-      <h1> Logo </h1>
+      <Link to="/">
+        <img src={logo} className="dark:invert-100" />
+      </Link>
       <div className="flex gap-1 rounded-full bg-gray-950/15 p-1 dark:bg-white/10">
         <span
           aria-label="Light theme"

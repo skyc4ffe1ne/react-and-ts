@@ -5,7 +5,7 @@ export default function HeaderSection({ intro, title }: HeaderSectionProps) {
       <h4 className="text-secondary-foreground pb-0.5 font-mono text-sm/4 font-bold tracking-wide uppercase">
         {intro}
       </h4>
-      <h2 className="text-foreground text-5xl font-medium tracking-tight first-letter:uppercase">
+      <h2 className="text-foreground max-w-xs text-3xl font-medium tracking-tight first-letter:uppercase sm:max-w-none md:text-5xl">
         {title}
       </h2>
     </header>

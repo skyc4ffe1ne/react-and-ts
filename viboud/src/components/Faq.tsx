@@ -42,11 +42,11 @@ export default function Faq() {
             onClick={() => setOpenFaq(idx)}
           >
             <div className="flex justify-between">
-              <h4 className="text-lg/6 font-semibold group-hover:underline">
+              <h4 className="sm:text-lg/6 sm:font-semibold group-hover:underline text-sm font-medium">
                 {question}
               </h4>
               <ArrowDown
-                className={`size-6 transition-transform duration-150 ease-in ${openFaq === idx ? "rotate-180" : ""}`}
+                className={`size-8 sm:size-6 transition-transform duration-150 ease-in ${openFaq === idx ? "rotate-180" : ""}`}
               />
             </div>
             <p

@@ -3,7 +3,21 @@ export interface HeaderSectionProps {
   title: string;
 }
 
-export type ButtonVariants = "primary" | "secondary" | "link";
+export type ButtonVariants =
+  | "primary"
+  | "secondary"
+  | "link"
+  | "outline"
+  | "accent"
+  | "ghost";
+
+export interface Variants {
+  primary: string;
+  secondary: string;
+  link: string;
+  outline: string;
+  accent: string;
+}
 
 export type Theme = "dark" | "light";
 
