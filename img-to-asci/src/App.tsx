@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import Canvas from "./components/Canvas";
-import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
-import plchImage from "./assets/c6f74734f717200b37afc5c56f59d765.jpg";
-import { calculateLines, getAscii, asciiColors } from "./utils/utility.ts";
+import { getAscii } from "./utils/utility.ts";
+import { ThemeProvider } from "./context/ContextTheme.tsx";
 
 function App() {
   const [picture, setPicture] = useState<null | HTMLImageElement>(null);
@@ -13,26 +11,27 @@ function App() {
   const canvasRef = useRef<null | HTMLCanvasElement>(null);
   const preRef = useRef<null | HTMLPreElement>(null);
   const [zoom, setZoom] = useState<number>(100);
-  const [color, setColor] = useState<boolean>(true);
+  const [color, setColor] = useState<boolean>(false);
 
   async function writeClipboardAsciiArt() {
     if (!preRef.current) return;
     try {
-      await navigator.clipboard.writeText(preRef.current.textContent);
+      await navigator.clipboard.writeText(preRef.current.textContent!);
     } catch (error) {
       console.error(error);
     }
   }
 
   function handleImage() {
-    if (!inputRef.current) return;
-    const blobImg = inputRef.current.files[0];
-    const img = new Image();
-    img.src = URL.createObjectURL(blobImg);
-    img.onload = () => {
-      setPicture(img);
-      setZoom(100);
-    };
+    if (inputRef.current && inputRef.current.files![0]) {
+      const blobImg = inputRef.current.files![0];
+      const img = new Image();
+      img.src = URL.createObjectURL(blobImg);
+      img.onload = () => {
+        setPicture(img);
+        setZoom(100);
+      };
+    }
   }
 
   useEffect(() => {
@@ -49,39 +48,41 @@ function App() {
       const maxRow = Math.floor(canvas.width);
       let asciiCharArr = getAscii(ctx, canvas, color, maxRow);
       if (!color) {
-        preRef.current.innerHTML = calculateLines(maxRow, asciiCharArr, color);
+        preRef.current.innerHTML = asciiCharArr.join("");
       } else {
-        preRef.current.innerHTML = asciiCharArr;
+        preRef.current.innerHTML = asciiCharArr.join("");
       }
     }
   }, [picture]);
 
   return (
-    <main className="bg-background text-foreground mx-auto min-h-screen">
-      <Navbar
-        inputRef={inputRef}
-        handleImage={handleImage}
-        handleCopy={writeClipboardAsciiArt}
-      />
-      <div className="flex justify-center">
-        <Sidebar
-          canvasRef={canvasRef}
-          setZoom={setZoom}
-          zoom={zoom}
-          picture={picture}
-          setColor={setColor}
+    <ThemeProvider>
+      <main className="bg-background text-foreground mx-auto min-h-screen">
+        <Navbar
+          inputRef={inputRef}
+          handleImage={handleImage}
+          handleCopy={writeClipboardAsciiArt}
         />
-        <div className="bg-background grip h-[calc(100vh-80px)] w-full place-items-center overflow-hidden pt-4">
-          {picture && (
-            <pre
-              ref={preRef}
-              className="text-foreground max-h-screen origin-top-left font-mono text-[8px] leading-none whitespace-pre"
-              style={{ transform: `scale(${zoom + "%"})` }}
-            ></pre>
-          )}
+        <div className="flex justify-center">
+          <Sidebar
+            canvasRef={canvasRef}
+            setZoom={setZoom}
+            zoom={zoom}
+            picture={picture}
+            setColor={setColor}
+          />
+          <div className="bg-background grip h-[calc(100vh-80px)] w-full place-items-center overflow-hidden pt-4">
+            {picture && (
+              <pre
+                ref={preRef}
+                className="text-foreground max-h-screen origin-top-left font-mono text-[8px] leading-none whitespace-pre"
+                style={{ transform: `scale(${zoom + "%"})` }}
+              ></pre>
+            )}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </ThemeProvider>
   );
 }
 

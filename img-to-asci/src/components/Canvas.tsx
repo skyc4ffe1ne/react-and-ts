@@ -1,4 +1,8 @@
-export default function Canvas({ canvasRef }) {
+export default function Canvas({
+  canvasRef,
+}: {
+  canvasRef: React.RefObject<null | HTMLCanvasElement>;
+}) {
   return (
     <canvas
       ref={canvasRef}

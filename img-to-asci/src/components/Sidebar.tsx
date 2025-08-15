@@ -1,4 +1,5 @@
 import Canvas from "./Canvas";
+import type { SidebarProps } from "../lib/types.ts";
 
 export default function Sidebar({
   canvasRef,
@@ -6,7 +7,7 @@ export default function Sidebar({
   zoom,
   picture,
   setColor,
-}) {
+}: SidebarProps) {
   return (
     <div className="border-border h-[calc(100vh-80px)] w-[300px] border-r px-4 font-mono shadow-xs">
       <div className="pt-8">
@@ -24,7 +25,9 @@ export default function Sidebar({
           min="20"
           max="200"
           disabled={picture ? false : true}
-          onChange={(e) => setZoom(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setZoom(Number(e.target.value))
+          }
         />
       </div>
 
@@ -33,9 +36,9 @@ export default function Sidebar({
         <input
           type="checkbox"
           id="color"
-          checked
-          disabled={picture ? false : true}
-          onChange={(e) => setColor(e.target.checked)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setColor(e.target.checked)
+          }
         />
       </div>
     </div>
