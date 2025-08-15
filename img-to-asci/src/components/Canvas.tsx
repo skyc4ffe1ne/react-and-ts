@@ -4,7 +4,7 @@ export default function Canvas({ canvasRef }) {
       ref={canvasRef}
       width="1200"
       height="500"
-      className="mt-12 border border-red-400"
+      className="bg-background z-50 shadow-md rounded-md"
     ></canvas>
   );
 }

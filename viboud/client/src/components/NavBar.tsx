@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "./ui/Button";
 import { Hamburger, X } from "./ui/icons";
-import logo from "../../public/logo_viboud.svg";
 import { Link } from "react-router";
 export default function NavBar() {
   const [open, setOpen] = useState<boolean>(false);
@@ -41,7 +40,7 @@ export default function NavBar() {
       ref={headerRef}
     >
       <Link to="/" className="flex-1">
-        <img src={logo} className="dark:invert-100" />
+        <img src="/logo_viboud.svg" className="dark:invert-100" />
       </Link>
 
       <nav className="hidden flex-1 justify-center text-sm/6 sm:flex">
@@ -51,8 +50,8 @@ export default function NavBar() {
       </nav>
 
       <div className="hidden flex-1 justify-end gap-2 sm:flex">
-        <Button variant="ghost"> Login </Button>
-        <Button variant="accent"> SignUp </Button>
+        <Link to="/login"><Button variant="ghost"> Login </Button> </Link>
+        <Link to="/signup"><Button variant="accent"> SignUp </Button> </Link>
       </div>
 
       <div
@@ -69,7 +68,6 @@ export default function NavBar() {
       {open && (
         <div className="bg-background/75 border-border absolute top-[100%] left-0 mx-auto flex w-full flex-col border-t px-4 py-8 backdrop-blur-lg">
           <ul>
-            {" "}
             <li> How It Works </li>
           </ul>
 
