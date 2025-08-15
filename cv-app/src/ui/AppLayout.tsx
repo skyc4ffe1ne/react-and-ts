@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import PreviewCurriculum from "./PreviewCurriculum";
-import type { State } from "../lib/types"
+import type { State } from "../lib/types";
 
 export default function AppLayout({ state }: { state: State }) {
   return (

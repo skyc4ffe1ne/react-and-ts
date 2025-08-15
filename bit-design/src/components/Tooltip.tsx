@@ -1,5 +1,5 @@
 import Button from "./ui/Button";
-import { Pen, Eraser, Brush, Box, Trash, Sun, Moon } from "./ui/icons";
+import { Pen, Eraser, Brush, Box, Trash, Sun, Moon, Cloud } from "./ui/icons";
 import { useBoard } from "../contexts/BoardProvider";
 import type { colorBox, sizeBoard } from "../lib/types";
 import { useTheme } from "../contexts/ThemeProvider";
@@ -77,7 +77,7 @@ export default function Tooltip() {
 
       <div className="">
         {theme === "dark" && (
-          <Button variant="ghost" onClick={() => setTheme("light")} >
+          <Button variant="ghost" onClick={() => setTheme("light")}>
             <Moon className="size-5" />
           </Button>
         )}

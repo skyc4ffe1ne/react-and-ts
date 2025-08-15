@@ -20,10 +20,10 @@ function App() {
           <Route path="/signup" element={<SignUpForm />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<DashboardUser />} />
-            <Route path="/dashboard_rooms" element={<h1> ROoms </h1>} />
+            <Route path="/dashboard_rooms" element={<h1> Rooms </h1>} />
             <Route
               path="/dashboard_add_friends"
-              element={<h1> add friends </h1>}
+              element={<h1> Add friends </h1>}
             />
           </Route>
         </Routes>

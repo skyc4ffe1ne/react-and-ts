@@ -38,7 +38,7 @@ const songs = [
 
 export default function SongsList() {
   return (
-    <div className="border-border relative h-[80vh] w-full scroll-mt-32 overflow-y-scroll rounded-lg border shadow-xs">
+    <div className="border-border relative row-span-2 w-full scroll-mt-32 overflow-y-scroll rounded-lg border shadow-xs">
       <div className="bg-background/75 sticky inset-x-0 top-0 z-10 pl-4 backdrop-blur-lg">
         <ul className="border-border flex items-center border-b text-center">
           <li className="border-foregound w-full cursor-pointer border-b p-4">

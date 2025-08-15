@@ -11,3 +11,5 @@
 
 - [ ] Hamburger Menu ?
 - [ ] Fix Marquee
+
+- [ ] Add a spinner
