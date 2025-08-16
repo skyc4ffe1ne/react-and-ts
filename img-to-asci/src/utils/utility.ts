@@ -14,12 +14,13 @@ export function getChar(lightness: number): string {
   else return " ";
 }
 
+//
+//
 // TODO: Try do this
-export function getAccurateChar(lightness: number): string {
-  const chars = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'\";
-}
-
-
+// export function getAccurateChar(lightness: number): string {
+//  const chars = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'\";
+// }
+//
 
 export function getAscii(
   ctx: CanvasRenderingContext2D,
