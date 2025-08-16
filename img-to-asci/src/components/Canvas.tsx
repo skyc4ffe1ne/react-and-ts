@@ -1,10 +1,12 @@
-export default function Canvas({ canvasRef }) {
+export default function Canvas({
+  canvasRef,
+}: {
+  canvasRef: React.RefObject<null | HTMLCanvasElement>;
+}) {
   return (
     <canvas
       ref={canvasRef}
-      width="1200"
-      height="500"
-      className="bg-background z-50 shadow-md rounded-md"
+      className="bg-background z-50 rounded-md shadow-md"
     ></canvas>
   );
 }
