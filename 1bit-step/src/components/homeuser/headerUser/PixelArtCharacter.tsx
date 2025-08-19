@@ -42,15 +42,8 @@ export default function PixelArtCharacter() {
   //    }
   //  }, []);
   return (
-    <div className="col-start-4 row-start-1">
-      <div className="mx-auto w-[250px]">
-        {/*<canvas ref={canvasRef} className="border border-border"></canvas> */}
-        <img
-          src={placeHolderChar}
-          alt="Your character"
-          className="h-full w-full"
-        />
-      </div>
+    <div className="row-start-1 mx-auto w-[100px] sm:w-[200px] md:row-start-1">
+      <img src={placeHolderChar} alt="Your character" />
     </div>
   );
 }
