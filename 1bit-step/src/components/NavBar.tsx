@@ -41,7 +41,7 @@ export function Close(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-const navLinks = ["Home", "Daily Task", "Extra Task"];
+const navLinks = ["Home", "Daily Task", "Extra Task", "Hello"];
 export default function NavBar() {
   const [hamburger, setHamburger] = useState<boolean>(false);
   return (
@@ -73,7 +73,7 @@ export default function NavBar() {
         <nav className="bg-background absolute top-[60px] right-0 z-10 h-screen w-full px-2">
           <ul>
             {navLinks.map((link) => (
-              <li className="cursor-pointer py-4 px-2 rounded-lg hover:bg-gray-100">
+              <li className="cursor-pointer rounded-lg px-2 py-4 hover:bg-gray-100">
                 {" "}
                 {link}{" "}
               </li>
