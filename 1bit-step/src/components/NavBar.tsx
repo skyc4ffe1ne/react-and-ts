@@ -42,6 +42,7 @@ export function Close(props: React.SVGProps<SVGSVGElement>) {
 }
 
 const navLinks = ["Home", "Daily Task", "Extra Task", "Hello"];
+
 export default function NavBar() {
   const [hamburger, setHamburger] = useState<boolean>(false);
   return (

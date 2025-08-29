@@ -1,7 +1,15 @@
-export default function TaskList() {
+export default function TaskList({ setPromptTask }) {
   return (
     <div className="hidden md:block">
-      <h2 className="pb-10 text-4xl"> Daily Task </h2>
+      <div className="flex items-center gap-4 pb-10">
+        <h2 className="text-4xl"> Daily Task </h2>
+        <button
+          className="border-border bg-accent text-accent-foreground cursor-pointer rounded-md border px-2 py-1 text-sm/5 font-semibold"
+          onClick={() => setPromptTask(true)}
+        >
+          Add a task
+        </button>
+      </div>
       <ul className="list-disc">
         <div className="grid grid-cols-[minmax(0,_150px)_minmax(0px,_1fr)_minmax(0px,_150px)_minmax(0px,_150px)_minmax(0px,_150px)] items-center">
           <div className="font-mono text-xs uppercase"> Time </div>
