@@ -11,7 +11,7 @@ function App() {
       <HeaderToolTip />
 
       <div className="max-w-7xl">
-        <Canvas canvasScale={canvasScale} />
+        <Canvas />
       </div>
 
       <Zoom setCanvasScale={setCanvasScale} />

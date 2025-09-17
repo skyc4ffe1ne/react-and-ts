@@ -1,140 +1,79 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-export default function Canvas({ canvasScale: scale }) {
+type DrawRectArg = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  c: string;
+  ctx: CanvasRenderingContext2D;
+};
+
+function drawRect({ x, y, w, h, c, ctx }: DrawRectArg) {
+  ctx.fillStyle = c;
+  ctx.fillRect(x, y, w, h);
+}
+
+export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  // const [isDrawing, setIsDrawing] = useState<boolean>(false);
-  //  const [lastPos, setLastPos] = useState<{ x: number; y: number } | null>(null);
 
-  // Initialize Canvas
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (canvas === null) return;
+    const ctx = canvas?.getContext("2d") as CanvasRenderingContext2D;
+
+    if (!canvas || !ctx) return;
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-  }, []);
 
-  function drawRect(
-    x: number,
-    y: number,
-    w: number,
-    h: number,
-    c: string,
-    ctx: CanvasRenderingContext2D,
-  ) {
-    ctx.fillStyle = c;
-    ctx.fillRect(x, y, w, h);
-  }
+    drawRect({ x: 0, y: 0, w: 100, h: 100, c: "red", ctx });
+    drawRect({ x: 200, y: 200, w: 100, h: 100, c: "green", ctx });
 
-  useEffect(() => {
-    if (canvasRef.current) {
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+    let initialX = 0;
+    let initialY = 0;
 
-      let previousX = 0;
-      let previousY = 0;
-
-      // Initial pos of the canvas
-      const viewport = {
-        x: 0,
-        y: 0,
-        scale: 1,
-      };
-
-      drawRect(0, 0, 100, 100, "red", ctx);
-      drawRect(200, 200, 100, 100, "blue", ctx);
-
-      function render() {
-        ctx?.setTransform(1, 0, 0, 1, 0, 0);
-        ctx?.clearRect(0, 0, canvas.width, canvas.height);
-        ctx?.setTransform(
-          viewport.scale,
-          0,
-          0,
-          viewport.scale,
-          viewport.x,
-          viewport.y,
-        );
-
-        drawRect(0, 0, 100, 100, "red", ctx);
-        drawRect(200, 200, 100, 100, "blue", ctx);
-      }
-
-      function moving(e: MouseEvent) {
-        viewport.x += e.clientX - previousX;
-        viewport.y += e.clientY - previousY;
-
-        previousX = e.clientX;
-        previousY = e.clientY;
-
-        render();
-      }
-
-      function startMoving(e: MouseEvent) {
-        console.log("e:", e);
-        console.log("MouseDown, start");
-
-        previousX = e.clientX;
-        previousY = e.clientY;
-        canvas.addEventListener("mousemove", moving);
-      }
-
-      function stopMoving(e: MouseEvent) {
-        console.log("e: ", e);
-        console.log("MouseUp, stop");
-        canvas.removeEventListener("mousemove", moving);
-      }
-
-      canvas.addEventListener("mousedown", startMoving);
-      canvas.addEventListener("mouseup", stopMoving);
-
-      return () => {
-        canvas.removeEventListener("mousedown", startMoving);
-        canvas.removeEventListener("mouseup", stopMoving);
-      };
+    function startMoving(e: MouseEvent) {
+      initialX = e.clientX;
+      initialY = e.clientY;
+      window.addEventListener("mousemove", moving);
     }
-  }, []);
 
-  // -- CODE FOR DRAWING WHEN PEN IS ACTIVE --
-  //  useEffect(() => {
-  //    if (canvasRef.current) {
-  //      const canvas = canvasRef.current;
-  //      const ctx = canvas.getContext("2d");
-  //
-  //      drawRect(0, 0, 100, 100, "red", ctx);
-  //      drawRect(200, 200, 100, 100, "blue", ctx);
-  //
-  //      function startDrawing(e: MouseEvent) {
-  //        setIsDrawing(true);
-  //        setLastPos({ x: e.clientX, y: e.clientY });
-  //        ctx.beginPath();
-  //        ctx.moveTo(e.clientX, e.clientY);
-  //      }
-  //      function stopDrawing() {
-  //        setIsDrawing(false);
-  //        ctx.closePath();
-  //      }
-  //
-  //      function drawing(e: MouseEvent) {
-  //        if (!isDrawing) return;
-  //        ctx.lineWidth = 2;
-  //        ctx.strokeStyle = "black";
-  //        ctx.lineTo(e.clientX, e.clientY);
-  //        ctx.stroke();
-  //      }
-  //
-  //      canvas.addEventListener("mousedown", startDrawing);
-  //      canvas.addEventListener("mouseup", stopDrawing);
-  //      canvas.addEventListener("mouseout", stopDrawing);
-  //      canvas.addEventListener("mousemove", drawing);
-  //
-  //      return () => {
-  //        canvas.removeEventListener("mousedown", startDrawing);
-  //        canvas.removeEventListener("mouseup", stopDrawing);
-  //        canvas.removeEventListener("mousemove", drawing);
-  //        canvas.removeEventListener("mouseout", drawing);
-  //      };
-  //    }
-  //  }, [isDrawing, scale]);
+    function moving(e: MouseEvent) {
+      render(e.clientX, e.clientY);
+    }
+
+    function stopMoving() {
+      window.removeEventListener("mousemove", moving);
+    }
+
+    let nextX = 0;
+    let nextY = 0;
+
+    function render(x: number, y: number) {
+      if (!canvas) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+      // Memoizing the next pos, becoming the base after
+      nextX += x - initialX;
+      nextY += y - initialY;
+
+      initialX = x;
+      initialY = y;
+
+      ctx.setTransform(1, 0, 0, 1, nextX, nextY);
+      drawRect({ x: 0, y: 0, w: 100, h: 100, c: "red", ctx });
+      drawRect({ x: 200, y: 200, w: 100, h: 100, c: "green", ctx });
+    }
+
+    window.addEventListener("mousedown", startMoving);
+    window.addEventListener("mouseup", stopMoving);
+
+    return () => {
+      window.removeEventListener("mousedown", startMoving);
+      window.removeEventListener("mouseup", stopMoving);
+    };
+  }, []);
 
   return <canvas ref={canvasRef} className="bg-background-canvas"></canvas>;
 }
