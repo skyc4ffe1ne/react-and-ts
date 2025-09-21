@@ -1,10 +1,11 @@
 import express from "express";
-import { handleSignup, handleTest } from "../controllers/handleSignup.js";
+import { handleSignup } from "../controllers/handleSignup.js";
+import { handleLogin } from "../controllers/handleLogin.js";
 
 const router = express.Router()
 
 
-router.get("/", handleTest)
 router.post("/signup", handleSignup)
+router.post("/login", handleLogin)
 
 export default router;
