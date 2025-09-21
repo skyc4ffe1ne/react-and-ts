@@ -40,7 +40,7 @@ export default function NavBar() {
       ref={headerRef}
     >
       <Link to="/" className="flex-1">
-        <img src="/logo_viboud.svg" className="dark:invert-100" />
+        <img src="../assets/logo_viboud.svg" className="dark:invert-100" />
       </Link>
 
       <nav className="hidden flex-1 justify-center text-sm/6 sm:flex">

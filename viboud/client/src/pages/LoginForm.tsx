@@ -5,21 +5,50 @@ import { ArrowRight } from "../components/ui/icons";
 import { Link } from "react-router";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
+  const [email, setEmail] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   function handleEmail(e) {
-    console.log(e);
+    const emailUser = e.target.value;
+    setEmail(emailUser)
   }
+
   function handlePassword(e) {
-    console.log(e);
+    const passwordUser = e.target.value;
+    setPassword(passwordUser)
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true)
+    try {
+      const req = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ email, password })
+      })
+
+      if (!req.ok) {
+        throw new Error(`${req.status},${req.statusText}`)
+      }
+
+      const res = await req.json()
+      console.log("Res:", res)
+
+    } catch (err) {
+      console.error(err.message)
+    } finally {
+      setLoading(false)
+
+    }
   }
 
   return (
     <div className="grid h-screen grid-cols-1 place-items-center">
       <div className="grid grid-cols-1 gap-8 sm:min-w-md">
         <div className="flex items-start">LOGO</div>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="flex max-w-xl flex-col gap-2">
             <label
               htmlFor="email"
@@ -39,7 +68,7 @@ export default function LoginForm() {
           </div>
 
           <Button variant="primary" className="mt-10">
-            Sign In
+            {loading ? "Loading..." : "Sign In"}
           </Button>
           <p className="text-foreground mt-6 flex items-center gap-2 text-sm font-semibold">
             <span className="text-secondary-foreground text-sm">

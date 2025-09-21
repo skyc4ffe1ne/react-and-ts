@@ -10,7 +10,7 @@ import {
   ViboudLogo,
 } from "../ui/icons";
 import { useTheme } from "../../contexts/ThemeProvider";
-import logo from "../../../public/logo_viboud.svg";
+import logo from "../../assets/logo_viboud.svg";
 
 export default function Sidebar() {
   const { theme, setTheme } = useTheme();

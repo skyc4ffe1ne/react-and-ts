@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="border-border mt-24 mb-4 flex justify-between border-t pt-10">
       <Link to="/">
-        <img src="/logo_viboud.svg" className="dark:invert-100" />
+        <img src="../assets/logo_viboud.svg" className="dark:invert-100" />
       </Link>
       <div className="flex gap-1 rounded-full bg-gray-950/15 p-1 dark:bg-white/10">
         <span

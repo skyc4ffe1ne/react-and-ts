@@ -27,20 +27,28 @@ export default function SignUpForm() {
 
 
   async function handleSubmit(e) {
+    console.log("0")
     e.preventDefault();
     setLoading(true);
     try {
-      const req = await fetch("http://localhost:3000/api/signup", {
+      const req = await fetch("http://localhost:3000/api/signup/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
       })
+
+      console.log("1")
+
       if (!req.ok) {
         setError("Something went wrong!")
         throw new Error(`${req.status} ${req.statusText}`);
       }
 
+
+      console.log("2")
       const res = await req.json();
+      console.log("Res client:", res)
+
     } catch (err) {
       console.error(err.message)
     } finally {
@@ -53,6 +61,7 @@ export default function SignUpForm() {
     <div className="grid h-screen grid-cols-1 place-items-center">
       <div className="grid grid-cols-1 gap-8 sm:min-w-md">
         <Link to="/" className="flex items-start">LOGO</Link>
+        {error && <p className="text-destructive text-sm/6 font-semibold"> {error} </p>}
         <form onSubmit={(e) => handleSubmit(e)}>
           <div className="flex max-w-xl flex-col gap-2">
             <label
@@ -84,9 +93,7 @@ export default function SignUpForm() {
             <Input type="password" onChange={(e) => handlePassword(e)} />
           </div>
 
-          <Button variant="primary" className="mt-10"
-
-          >
+          <Button variant="primary" className="mt-10">
             {loading ? "loading" : "Sign Up"}
           </Button>
           <p className="text-foreground mt-6 flex items-center gap-2 text-sm font-semibold">
