@@ -1,12 +1,13 @@
 import { useTheme } from "../contexts/ThemeProvider";
 import { Sun, Moon } from "./ui/icons";
 import { Link } from "react-router";
+import { LogoViboud } from "./ui/LogoViboud";
 export default function Footer() {
   const { theme, setTheme } = useTheme();
   return (
     <footer className="border-border mt-24 mb-4 flex justify-between border-t pt-10">
       <Link to="/">
-        <img src="../assets/logo_viboud.svg" className="dark:invert-100" />
+        <LogoViboud className="fill-foreground" />
       </Link>
       <div className="flex gap-1 rounded-full bg-gray-950/15 p-1 dark:bg-white/10">
         <span

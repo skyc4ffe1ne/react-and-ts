@@ -25,3 +25,13 @@ export interface ThemeContextProps {
   theme: Theme;
   setTheme: (t: Theme) => void;
 }
+
+export type User = {
+  username: string;
+  avatar?: string;
+}
+
+export type SessionProps = {
+  session: User | null;
+  setSession: () => void;
+}

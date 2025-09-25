@@ -5,4 +5,3 @@ CREATE TABLE "user"(
   "password" TEXT NOT NULL,
   PRIMARY KEY("id")
 );
-
