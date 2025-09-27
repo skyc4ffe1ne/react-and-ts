@@ -122,7 +122,6 @@ export const logout = async (req, res) => {
 
 export const me = async (req, res) => {
   try {
-    console.log(req.cookies.token)
     if (!req.cookies.token) throw new Error("User arleady alogged")
     let user = jwt.verify(req.cookies.token, process.env.JWT_TOKEN)
     const userID = user.id

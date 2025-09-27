@@ -13,3 +13,8 @@
 - [ ] Fix Marquee
 
 - [ ] Add a spinner
+- [ ] When render on dashboard
+        and there is no session
+        kick it on "/login"
+
+

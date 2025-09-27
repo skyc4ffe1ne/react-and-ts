@@ -1,17 +1,17 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "./ui/Button";
 import { Hamburger, X } from "./ui/icons";
 import { Link } from "react-router";
 import { LogoViboud } from "./ui/LogoViboud";
 import { useSession } from "../contexts/SessionProvider";
-import { logout as logoutServer } from "../utils/logout";
+import { clearToken } from "../utils/logout";
 
 export default function NavBar() {
   const [open, setOpen] = useState<boolean>(false);
   const { setSession, session } = useSession()
 
   const handleLogout = async () => {
-    await logoutServer()
+    await clearToken()
     setSession(null)
   }
 

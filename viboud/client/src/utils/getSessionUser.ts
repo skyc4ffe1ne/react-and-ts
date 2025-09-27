@@ -6,7 +6,6 @@ export async function getSessionUser(): Promise<User | null> {
       credentials: 'include',
     })
     const res = await req.json()
-    console.log("res: ", res.data)
     if (!res.data) throw new Error("No data for the current user!") // User not logged
     return res.data[0]
   } catch (error) {

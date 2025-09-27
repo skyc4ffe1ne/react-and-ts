@@ -46,18 +46,12 @@ export default function SignUpForm() {
       if (!req.ok) {
         throw new Error(`${req.status} ${req.statusText}`);
       }
-
-
       const res = await req.json();
-      console.log("res:", res)
-
       if (res.status === 404) {
         throw new Error(res.message ?? "Something went wrong!")
       }
-
       setSession(res.data)
       navigate('/dashboard')
-
     } catch (err) {
       setError(err.message ?? "Something went wrong!")
       console.error(err.message)

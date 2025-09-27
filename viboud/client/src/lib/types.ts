@@ -35,3 +35,7 @@ export type SessionProps = {
   session: User | null;
   setSession: () => void;
 }
+
+export interface PopupProps {
+  setPopup: (b: boolean) => void;
+}

@@ -36,17 +36,15 @@ export default function LoginForm() {
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ email, password })
       })
-
       if (!req.ok) {
         throw new Error(`${req.status},${req.statusText}`)
       }
-
       const res = await req.json()
-
       if (res.status === 404) {
         throw new Error(res.message ?? "Something went wrong!")
       }
       setSession(res.data)
+      console.log("Login:", res.data)
       navigate('/dashboard')
     } catch (err) {
       setError(err.message ?? "Something went wrong!")

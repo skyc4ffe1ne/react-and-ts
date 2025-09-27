@@ -9,6 +9,8 @@ import { SessionProvider } from "./contexts/SessionProvider";
 import LoginForm from "./pages/LoginForm";
 import SignUpForm from "./pages/SignUpForm";
 import DashboardUser from "./components/dashboard/DashboardUser";
+import DashboardRoom from "./components/dashboard/DashboardRoom"
+
 
 function App() {
   return (
@@ -24,13 +26,8 @@ function App() {
               <Route path="/signup" element={<SignUpForm />} />
             </Route>
             <Route path="/dashboard" element={<DashboardLayout />}>
-
               <Route index element={<DashboardUser />} />
-              <Route path="/dashboard_rooms" element={<h1> Rooms </h1>} />
-              <Route
-                path="/dashboard_add_friends"
-                element={<h1> Add friends </h1>}
-              />
+              <Route path="/dashboard/room/:roomID" element={<DashboardRoom />} />
             </Route>
           </Routes>
         </BrowserRouter>
@@ -40,3 +37,5 @@ function App() {
 }
 
 export default App;
+
+

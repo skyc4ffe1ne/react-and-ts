@@ -1,5 +1,5 @@
 
-export async function logout(): Promise<undefined> {
+export async function clearToken(): Promise<undefined> {
   try {
     await fetch("http://localhost:3000/api/auth/logout/", {
       method: "post",

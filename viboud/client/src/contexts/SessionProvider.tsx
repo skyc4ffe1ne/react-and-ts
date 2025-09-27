@@ -1,30 +1,37 @@
-import { createContext, use, useEffect, useState } from "react";
+import { createContext, useEffect, useMemo, useState, useContext } from "react";
 import { getSessionUser } from "../utils/getSessionUser";
-import type { SessionProps } from "../lib/types.ts"
-const SessionContext = createContext<SessionProps | null>(null)
+import type { SessionProps } from "../lib/types.ts";
 
+const SessionContext = createContext<SessionProps | null>(null);
 
 export const SessionProvider = ({ children }: { children: React.ReactNode }) => {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState("Hello");
+  const [loading, setLoading] = useState(true);
 
-  const value: SessionProps = { session, setSession }
+
   useEffect(() => {
     async function validateRequest() {
       const check = await getSessionUser();
-      setSession(check)
+      setSession(check);
+      setLoading(false)
     }
-    validateRequest()
-  }, [])
+    validateRequest();
+  }, []);
 
-  return <SessionContext value={value}> {children} </SessionContext>
-}
 
+
+  const value: SessionProps = useMemo(() => {
+    return { session, setSession, loading };
+  }, [session, setSession, loading]);
+
+  return <SessionContext.Provider value={value}> {children} </SessionContext.Provider>
+};
 
 export function useSession() {
-  const context = use(SessionContext);
+  const context = useContext(SessionContext);
   if (context === undefined) {
-    throw new Error("useSession should be used in SessionProvider");
+    throw new Error("useSession must be used within a SessionProvider");
   }
-
   return context;
 }
+
