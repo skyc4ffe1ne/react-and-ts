@@ -2,7 +2,7 @@ import { useState } from "react";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { ArrowRight } from "../components/ui/icons";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { LogoViboud } from "../components/ui/LogoViboud";
 import { useSession } from "../contexts/SessionProvider";
 
@@ -13,7 +13,6 @@ export default function LoginForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { setSession } = useSession()
-  const navigate = useNavigate()
 
 
   function handleEmail(e) {
@@ -44,8 +43,6 @@ export default function LoginForm() {
         throw new Error(res.message ?? "Something went wrong!")
       }
       setSession(res.data)
-      console.log("Login:", res.data)
-      navigate('/dashboard')
     } catch (err) {
       setError(err.message ?? "Something went wrong!")
       console.error(err.message)

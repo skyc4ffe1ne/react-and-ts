@@ -6,6 +6,7 @@ import AuthLayout from "./components/AuthLayout";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
 import { ThemeProvider } from "./contexts/ThemeProvider";
 import { SessionProvider } from "./contexts/SessionProvider";
+import { RoomProvider } from "./contexts/RoomProvider";
 import LoginForm from "./pages/LoginForm";
 import SignUpForm from "./pages/SignUpForm";
 import DashboardUser from "./components/dashboard/DashboardUser";
@@ -15,23 +16,25 @@ import DashboardRoom from "./components/dashboard/DashboardRoom"
 function App() {
   return (
     <SessionProvider>
-      <ThemeProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<AppLayout />}>
-              <Route index element={<HomePage />} />
-            </Route>
-            <Route element={<AuthLayout />}>
-              <Route path="/login" element={<LoginForm />} />
-              <Route path="/signup" element={<SignUpForm />} />
-            </Route>
-            <Route path="/dashboard" element={<DashboardLayout />}>
-              <Route index element={<DashboardUser />} />
-              <Route path="/dashboard/room/:roomID" element={<DashboardRoom />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
+      <RoomProvider>
+        <ThemeProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<AppLayout />}>
+                <Route index element={<HomePage />} />
+              </Route>
+              <Route element={<AuthLayout />}>
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/signup" element={<SignUpForm />} />
+              </Route>
+              <Route path="/dashboard" element={<DashboardLayout />}>
+                <Route index element={<DashboardUser />} />
+                <Route path="/dashboard/room/:roomName" element={<DashboardRoom />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
+      </RoomProvider>
     </SessionProvider >
   );
 }

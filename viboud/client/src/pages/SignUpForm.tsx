@@ -3,7 +3,6 @@ import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { ArrowRight } from "../components/ui/icons";
 import { Link } from "react-router";
-import { useNavigate } from "react-router";
 import { useSession } from "../contexts/SessionProvider";
 import { LogoViboud } from "../components/ui/LogoViboud";
 
@@ -15,7 +14,6 @@ export default function SignUpForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { setSession } = useSession()
-  const navigate = useNavigate();
 
   // TODO: Zod
   function handleEmail(e) {
@@ -51,7 +49,6 @@ export default function SignUpForm() {
         throw new Error(res.message ?? "Something went wrong!")
       }
       setSession(res.data)
-      navigate('/dashboard')
     } catch (err) {
       setError(err.message ?? "Something went wrong!")
       console.error(err.message)

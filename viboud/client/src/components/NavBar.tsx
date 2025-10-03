@@ -96,15 +96,16 @@ export default function NavBar() {
         open && (
           <div className="bg-background/75 border-border absolute top-[100%] left-0 mx-auto flex w-full flex-col border-t px-4 py-8 backdrop-blur-lg">
             <ul>
-              <li> How It Works </li>
+              <li className="px-3 py-2 font-medium text-xl/9 rounded-md cursor-pointer hover:bg-black/10"> How It Works </li>
             </ul>
 
+            <div className="my-6 bg-gray-950/15 h-px w-full" />
             <Link to="/login/">
-              <Button variant="ghost"> Login </Button>
+              <p className="px-3 py-2 font-medium text-xl/9 rounded-md cursor-pointer hover:bg-black/10 mb-1"> Login </p>
             </Link>
 
             <Link to="/signup/">
-              <Button variant="accent"> SignUp </Button>
+              <Button variant="accent" className="w-full font-medium text-xl/9"> SignUp </Button>
             </Link>
           </div>
         )

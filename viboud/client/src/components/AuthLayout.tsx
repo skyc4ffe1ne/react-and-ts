@@ -7,7 +7,7 @@ export default function AuthLayout() {
   const { session } = useSession()
 
   useEffect(() => {
-    if (session) navigate("/")
+    if (session) navigate("/dashboard")
   }, [session])
   return (
     <main className="bg-background text-foreground mx-auto min-h-screen max-w-7xl px-4">

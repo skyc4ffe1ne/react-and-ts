@@ -40,10 +40,10 @@ const topMarquee = [
 export default function MarqueeCard() {
   return (
     <div className="group relative my-10 flex max-h-screen flex-col gap-4 overflow-hidden p-2 [--gap:1rem] sm:flex-row">
-      {Array.from({ length: 2 }, (_, idx) => (
-        <div
-          className="animate-marquee flex shrink-0 flex-col [gap:var(--gap)] overflow-hidden sm:flex-row"
-          key={idx}
+      {Array.from({ length: 2 }, (_, ix) => (
+        <ul
+          className="animate-marquee flex shrink-0 min-w-full flex-col [gap:var(--gap)] overflow-hidden sm:flex-row animate-marquee-y sm:animate-marquee-x"
+          key={ix}
         >
           {topMarquee.map(({ review, name, description }, idx) => {
             let rgxForSplit = /^(.+)\*(.*)\*(.*)$/gm;
@@ -51,8 +51,8 @@ export default function MarqueeCard() {
             const textSplitted = allText[0];
 
             return (
-              <div
-                className="animate-marquee-y sm:animate-marquee-x border-border bg-background w-fit rounded-xl border p-4"
+              <li
+                className=" bg-background w-fit rounded-xl border p-4 border-border"
                 key={idx}
               >
                 <p className="text-foreground/90 max-w-96 pb-6 leading-relaxed font-normal select-none">
@@ -72,10 +72,10 @@ export default function MarqueeCard() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       ))}
 
       <div className="from-background pointer-events-none absolute inset-x-0 top-0 h-1/4 w-full bg-gradient-to-b from-20% sm:inset-y-0 sm:left-0 sm:h-full sm:w-1/4 sm:bg-gradient-to-r" />

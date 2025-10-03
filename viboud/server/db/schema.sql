@@ -5,3 +5,12 @@ CREATE TABLE "user"(
   "password" TEXT NOT NULL,
   PRIMARY KEY("id")
 );
+
+
+CREATE TABLE "room"(
+  "id" INTEGER,
+  "name" TEXT NOT NULL,
+  "user_id" INTEGER,
+  PRIMARY KEY("id"),
+  FOREIGN KEY("user_id") REFERENCES "user"("id")
+);

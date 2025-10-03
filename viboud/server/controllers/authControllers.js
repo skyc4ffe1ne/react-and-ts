@@ -66,6 +66,7 @@ export const login = async (req, res) => {
     }
     const sqlUser = db.prepare("SELECT * from user where email = ?").all(email)
     let hashedPassword = sqlUser[0].password
+
     const checkPassword = await argon2.verify(hashedPassword, password)
     if (!checkPassword) throw new Error("Email or password are not good!");
 
@@ -75,10 +76,15 @@ export const login = async (req, res) => {
       httpOnly: true,
       sameSite: "Lax",
       // secure: true,
-      maxAge: 3600 * 1000,
+      maxAge: 3600 * 10000,
       path: "/",
     })
-    return res.json({ message: "Everything is good", status: 200 });
+    const username = sqlUser[0].username
+    return res.json({
+      message: "Everything is good", status: 200, data: {
+        username
+      }
+    });
 
   } catch (error) {
     console.error(error.message)
