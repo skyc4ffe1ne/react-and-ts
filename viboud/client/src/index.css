@@ -16,8 +16,8 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --animate-marquee-x: marquee-x 10s infinite linear;
-  --animate-marquee-y: marquee-y 10s infinite linear;
+  --animate-marquee-x: marquee-x 20s infinite linear;
+  --animate-marquee-y: marquee-y 20s infinite linear;
 
   @keyframes marquee-x {
     from {

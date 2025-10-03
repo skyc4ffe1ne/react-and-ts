@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Button from "./ui/Button";
 import { Dot, Note, SmallArrowRight, ArrowRight } from "./ui/icons";
 
@@ -22,9 +23,11 @@ export default function Hero() {
         eveniet! Saepe, dolores. Deleniti harum quaerat in nam, asperiores
       </p>
 
-      <Button variant="accent">
-        Get Started <ArrowRight className="size-4" />
-      </Button>
+      <Link to="/signup">
+        <Button variant="accent">
+          Get Started <ArrowRight className="size-4" />
+        </Button>
+      </Link>
     </div>
   );
 }

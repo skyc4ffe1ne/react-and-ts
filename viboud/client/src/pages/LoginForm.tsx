@@ -3,11 +3,17 @@ import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { ArrowRight } from "../components/ui/icons";
 import { Link } from "react-router";
+import { LogoViboud } from "../components/ui/LogoViboud";
+import { useSession } from "../contexts/SessionProvider";
+
 
 export default function LoginForm() {
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const { setSession } = useSession()
+
 
   function handleEmail(e) {
     const emailUser = e.target.value;
@@ -25,18 +31,20 @@ export default function LoginForm() {
     try {
       const req = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ email, password })
       })
-
       if (!req.ok) {
         throw new Error(`${req.status},${req.statusText}`)
       }
-
       const res = await req.json()
-      console.log("Res:", res)
-
+      if (res.status === 404) {
+        throw new Error(res.message ?? "Something went wrong!")
+      }
+      setSession(res.data)
     } catch (err) {
+      setError(err.message ?? "Something went wrong!")
       console.error(err.message)
     } finally {
       setLoading(false)
@@ -47,7 +55,10 @@ export default function LoginForm() {
   return (
     <div className="grid h-screen grid-cols-1 place-items-center">
       <div className="grid grid-cols-1 gap-8 sm:min-w-md">
-        <div className="flex items-start">LOGO</div>
+        <Link to="/">
+          <LogoViboud className="fill-foreground flex items-start" />
+        </Link>
+        {error && <p className="text-destructive text-sm/6 font-semibold"> {error} </p>}
         <form onSubmit={handleSubmit}>
           <div className="flex max-w-xl flex-col gap-2">
             <label

@@ -3,6 +3,9 @@ import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { ArrowRight } from "../components/ui/icons";
 import { Link } from "react-router";
+import { useSession } from "../contexts/SessionProvider";
+import { LogoViboud } from "../components/ui/LogoViboud";
+
 
 export default function SignUpForm() {
   const [email, setEmail] = useState<string>();
@@ -10,6 +13,7 @@ export default function SignUpForm() {
   const [password, setPassword] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const { setSession } = useSession()
 
   // TODO: Zod
   function handleEmail(e) {
@@ -27,29 +31,26 @@ export default function SignUpForm() {
 
 
   async function handleSubmit(e) {
-    console.log("0")
     e.preventDefault();
     setLoading(true);
     try {
-      const req = await fetch("http://localhost:3000/api/signup/", {
+      const req = await fetch("http://localhost:3000/api/auth/signup/", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
       })
 
-      console.log("1")
-
       if (!req.ok) {
-        setError("Something went wrong!")
         throw new Error(`${req.status} ${req.statusText}`);
       }
-
-
-      console.log("2")
       const res = await req.json();
-      console.log("Res client:", res)
-
+      if (res.status === 404) {
+        throw new Error(res.message ?? "Something went wrong!")
+      }
+      setSession(res.data)
     } catch (err) {
+      setError(err.message ?? "Something went wrong!")
       console.error(err.message)
     } finally {
       setLoading(false)
@@ -60,7 +61,9 @@ export default function SignUpForm() {
   return (
     <div className="grid h-screen grid-cols-1 place-items-center">
       <div className="grid grid-cols-1 gap-8 sm:min-w-md">
-        <Link to="/" className="flex items-start">LOGO</Link>
+        <Link to="/" className="flex items-start">
+          <LogoViboud className="fill-foreground flex items-start" />
+        </Link>
         {error && <p className="text-destructive text-sm/6 font-semibold"> {error} </p>}
         <form onSubmit={(e) => handleSubmit(e)}>
           <div className="flex max-w-xl flex-col gap-2">

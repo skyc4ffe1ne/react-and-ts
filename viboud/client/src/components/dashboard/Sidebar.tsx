@@ -11,9 +11,18 @@ import {
 } from "../ui/icons";
 import { useTheme } from "../../contexts/ThemeProvider";
 import logo from "../../assets/logo_viboud.svg";
+import { clearToken } from "../../utils/logout.js";
+import { useSession } from "../../contexts/SessionProvider.tsx"
 
 export default function Sidebar() {
   const { theme, setTheme } = useTheme();
+  const { setSession } = useSession()
+
+
+  const handleLogout = async () => {
+    await clearToken()
+    setSession(null)
+  }
 
   return (
     <div className="h-screnn border-border flex w-full flex-col items-center justify-between border-r p-4">
@@ -76,9 +85,9 @@ export default function Sidebar() {
           </div>
         </li>
         <li>
-          <div className="hover:bg-foreground/10 cursor-pointer rounded-xl p-3">
+          <button className="hover:bg-foreground/10 cursor-pointer rounded-xl p-3" onClick={handleLogout}>
             <Exit className="stroke-secondary-foreground size-5" />
-          </div>
+          </button>
         </li>
       </ul>
     </div>

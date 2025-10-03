@@ -6,3 +6,11 @@ CREATE TABLE "user"(
   PRIMARY KEY("id")
 );
 
+
+CREATE TABLE "room"(
+  "id" INTEGER,
+  "name" TEXT NOT NULL,
+  "user_id" INTEGER,
+  PRIMARY KEY("id"),
+  FOREIGN KEY("user_id") REFERENCES "user"("id")
+);

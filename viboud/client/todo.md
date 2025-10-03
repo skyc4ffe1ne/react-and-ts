@@ -9,7 +9,14 @@
 - [x] Add animations at first enter
 - [x] Fix types
 
-- [ ] Hamburger Menu ?
-- [ ] Fix Marquee
+- [x] Hamburger Menu ?
+- [x] Fix Marquee
 
-- [ ] Add a spinner
+- [x] Add a spinner
+
+- [x] When render on dashboard
+        and there is no session
+        kick it on "/login"
+
+- [ ] Create a table in db
+        for room/songs.
