@@ -29,18 +29,35 @@ const io = new Server(server, {
   },
 });
 
-let allSong = [];
-
-let rooms = {};
+let rooms = {
+  roomName: [
+    {
+      songs: "song",
+    },
+  ],
+};
 
 io.on("connection", (socket) => {
   console.log("an user connected:");
-  socket.on("new-song", ({ song, room }) => {
-    rooms[room] ? (rooms[room] = []) : rooms[room];
-    rooms[room].push(song);
-    console.log("rooms:", rooms);
-    console.log("Object array:", rooms[room]);
-    io.emit("update-songs", rooms[room]);
+
+  socket.on("initial-songs", (roomName) => {
+    socket.join(roomName);
+
+    if (!rooms[roomName]) {
+      rooms[roomName] = [];
+    }
+    socket.emit("update-local", rooms[roomName]);
+  });
+
+  socket.on("new-song", ({ roomName, song }) => {
+    if (!rooms[roomName]) {
+      rooms[roomName] = [];
+    }
+
+    rooms[roomName].push(song);
+    socket.to(roomName).emit("song-added", song);
+
+    // io.emit("update-songs", rooms[room]);
   });
 });
 

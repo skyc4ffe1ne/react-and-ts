@@ -27,6 +27,8 @@ export default function PopupSong({
       },
       roomName,
     );
+
+    setPopupSong(false);
   }, [newSong]);
 
   return (

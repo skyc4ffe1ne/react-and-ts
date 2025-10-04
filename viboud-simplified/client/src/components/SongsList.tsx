@@ -1,7 +1,10 @@
+import { useState } from "react";
 import type { SongsProps } from "../lib/types.ts";
+import PopupSong from "./PopupSong.tsx";
 import { Like, Play } from "./ui/icons";
 
-export default function SongsList({ songs }: SongsProps) {
+export default function SongsList({ songs, handleNewSong }: SongsProps) {
+  const [popup, setPopupSong] = useState<boolean>(false);
   return (
     <>
       <div className="bg-background/75 sticky inset-x-0 top-0 z-10 pl-4 backdrop-blur-lg">
@@ -43,6 +46,19 @@ export default function SongsList({ songs }: SongsProps) {
           </div>
         </div>
       ))}
+
+      <footer className="">
+        <button
+          onClick={() => setPopupSong(true)}
+          className="text-medium focus:ring-ring text-background bg-foreground cursor-pointer rounded-xl px-4 py-2 text-sm focus:ring-1 focus:outline-none has-[svg]:flex has-[svg]:items-center has-[svg]:justify-center has-[svg]:gap-2"
+        >
+          Add a song
+        </button>
+      </footer>
+
+      {popup && (
+        <PopupSong setPopupSong={setPopupSong} handleNewSong={handleNewSong} />
+      )}
     </>
   );
 }
