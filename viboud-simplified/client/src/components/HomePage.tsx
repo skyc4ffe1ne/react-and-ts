@@ -18,7 +18,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <h1 className="text-foreground pt-10 text-4xl tracking-tighter text-balance max-lg:font-medium sm:text-5xl lg:text-6xl xl:text-8xl">
+      <h1 className="text-foreground text-4xl tracking-tighter text-balance max-lg:font-medium sm:text-5xl lg:text-6xl xl:text-8xl">
         Pick your favorite songs with your friends{" "}
       </h1>
 

@@ -1,15 +1,31 @@
 import { useTheme } from "../contexts/ThemeProvider";
-import { Sun, Moon } from "./ui/icons";
+import { Sun, Moon, AddFriend } from "./ui/icons";
 import { Link } from "react-router";
 import { LogoViboud } from "./ui/LogoViboud";
 export default function Footer() {
   const { theme, setTheme } = useTheme();
   return (
-    <footer className="border-border mt-24 mb-4 flex justify-between border-t pt-10">
+    <footer className="mb-4 flex justify-between">
       <Link to="/">
         <LogoViboud className="fill-foreground" />
       </Link>
-      <div className="flex gap-1 rounded-full bg-gray-950/15 p-1 dark:bg-white/10">
+
+      <div className="">
+        <ul className="flex gap-2">
+          <li>
+            <div className="text-shadow-accent grid size-10 place-content-center rounded-full bg-gradient-to-b from-purple-400 to-blue-400 text-xl font-semibold text-gray-100/95 text-shadow-2xs">
+              S
+            </div>
+          </li>
+          <li className="cursor-pointer">
+            <div className="text-foreground border-border grid size-8 place-content-center rounded-full border">
+              <AddFriend className="stroke-muted-foreground size-4" />
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div className="flex h-fit gap-1 rounded-full bg-gray-950/15 p-1 dark:bg-white/10">
         <span
           aria-label="Light theme"
           className="aria-checked:bg-background sun_footer fill-foreground p-1.5 aria-checked:rounded-full aria-checked:ring aria-checked:ring-gray-950/20 aria-checked:inset-ring-white/10"
