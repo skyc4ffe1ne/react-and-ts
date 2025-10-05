@@ -20,6 +20,7 @@ export default function PopupSong({
 
     handleNewSong(
       {
+        id: Date.now(),
         name: userSong,
         artist: "artist",
         duration: "3:28",
@@ -32,7 +33,7 @@ export default function PopupSong({
   }, [newSong]);
 
   return (
-    <div className="border-border bg-background absolute top-1/2 left-1/2 z-2 mx-auto w-fit -translate-x-1/2 -translate-y-1/2 rounded-md border p-8">
+    <div className="border-border bg-background absolute top-1/2 left-1/2 z-10 mx-auto w-fit -translate-x-1/2 -translate-y-1/2 rounded-md border p-8">
       <h3 className="font-mono text-xs/6 font-medium tracking-widest text-gray-600 uppercase">
         Your Song
       </h3>

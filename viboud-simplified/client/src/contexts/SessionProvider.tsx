@@ -18,7 +18,8 @@ async function getSession(): Promise<string | null> {
     if (res.status == 404) {
       throw new Error("There is no user session!");
     }
-    return res.data;
+
+    return res.data.username;
   } catch (err) {
     console.error("error:", err.message);
     return null;

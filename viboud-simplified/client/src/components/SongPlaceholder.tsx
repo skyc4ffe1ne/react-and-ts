@@ -9,7 +9,7 @@ export default function SongPlaceholder({
   const [popup, setPopupSong] = useState<boolean>(false);
 
   return (
-    <div className="grid h-full w-full place-content-center">
+    <div className="grid w-full place-content-center">
       <Note className="mx-auto mb-2 size-6 stroke-gray-400" />
       <h3 className="mb-5"> There is no song yet! </h3>
       <button

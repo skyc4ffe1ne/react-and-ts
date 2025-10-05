@@ -26,7 +26,7 @@ export default function PopupUser() {
       if (res.status == 404) {
         throw new Error("Something went wrong!");
       }
-      setSession(res.data);
+      setSession(res.data.username);
     } catch (err) {
       console.error("error:", err.message);
       return null;
