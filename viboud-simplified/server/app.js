@@ -1,5 +1,6 @@
 import express from "express";
 import { me, createMe } from "./controllers/authControllers.js";
+import { getSong } from "./controllers/songControllers.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import http from "http";
@@ -17,7 +18,8 @@ app
   .use(express.json())
   .use(cookieParser())
   .get("/api/auth/me", me)
-  .post("/api/auth/me", createMe);
+  .post("/api/auth/me", createMe)
+  .post("/api/song", getSong);
 
 const server = http.createServer(app);
 
@@ -36,12 +38,11 @@ let rooms = {
   },
 };
 
-// -> Room page <-
+//-> Room page < -
 io.on("connection", (socket) => {
   console.log("an user connected:");
 
   socket.on("initial-songs", ({ roomName, username }) => {
-    console.log("Username - server:initial-songs:", username);
     socket.join(roomName);
 
     if (!rooms[roomName]) {

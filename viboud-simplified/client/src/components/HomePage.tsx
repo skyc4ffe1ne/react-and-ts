@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "./ui/icons";
 import { useNavigate } from "react-router";
+import { generateRandomID } from "../utils/utils.ts";
 
 export default function HomePage() {
   const inputRef = useRef<null | HTMLInputElement>(null);
@@ -8,7 +9,10 @@ export default function HomePage() {
   const [room, setRoom] = useState<null | string>(null);
   function handleClick() {
     if (inputRef.current === null || !inputRef) return;
-    const roomName = inputRef.current.value;
+    console.log(inputRef.current.value);
+    const roomName = inputRef.current.value
+      ? inputRef.current.value
+      : generateRandomID();
     setRoom(roomName);
   }
 

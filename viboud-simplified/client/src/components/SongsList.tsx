@@ -8,6 +8,7 @@ export default function SongsList({
   handleNewSong,
   handleLikeSong,
 }: SongsListProps) {
+  console.log("SongList__Songs:", songs);
   const [popup, setPopupSong] = useState<boolean>(false);
   return (
     <>
@@ -24,14 +25,23 @@ export default function SongsList({
           </li>
         </ul>
       </div>
-      {songs.map(({ id, name, artist, duration, like }) => (
-        <div className="borde-red-400 border-border border-b p-4" key={id}>
+
+      {songs.map(({ id, title, user, duration, thumbnails, like }, idx) => (
+        <div className="border-border border-b p-4" key={idx}>
           <div className="flex items-center justify-between">
             <div className="flex gap-4">
-              <div className="size-12 rounded-md bg-gradient-to-b from-blue-50 to-cyan-300" />
+              <div className="aspect-auto size-12 rounded-md bg-gradient-to-b from-blue-50 to-cyan-300">
+                <img
+                  src={thumbnails.url}
+                  alt=""
+                  className="h-full w-full rounded-md"
+                />
+              </div>
               <div className="">
-                <h3 className="text-foreground">{name} </h3>
-                <p className="text-secondary-foreground"> {artist}</p>
+                <h3 className="text-foreground overflow-ellipsis whitespace-nowrap">
+                  {title}{" "}
+                </h3>
+                <p className="text-secondary-foreground"> {user}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">

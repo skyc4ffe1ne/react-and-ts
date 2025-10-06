@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "./ui/icons";
 import { useParams } from "react-router";
 import type { PopupSongsProps } from "../lib/types.ts";
-// import { useSong } from "../contexts/SongProvider.tsx";
 
 export default function PopupSong({
   setPopupSong,
@@ -15,20 +14,9 @@ export default function PopupSong({
   useEffect(() => {
     if (inputSongRef === null || inputSongRef.current === null) return;
     const userSong = inputSongRef.current.value;
-    // TODO: userSongs validate
+    // TODO: userSong validate
     if (!roomName || !userSong) return;
-
-    handleNewSong(
-      {
-        id: Date.now(),
-        name: userSong,
-        artist: "artist",
-        duration: "3:28",
-        like: 1,
-      },
-      roomName,
-    );
-
+    handleNewSong(userSong, roomName);
     setPopupSong(false);
   }, [newSong]);
 

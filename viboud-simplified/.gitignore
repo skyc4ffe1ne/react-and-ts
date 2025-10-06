@@ -22,4 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-todo.md
+
+**/todo.md
+*.env
+*/.env
