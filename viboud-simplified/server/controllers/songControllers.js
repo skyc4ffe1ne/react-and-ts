@@ -8,8 +8,7 @@ import { formatTime } from "../utils/utils.js";
 
 export const getSong = async (req, res) => {
   try {
-    const { urlID } = req.body;
-    console.log("ID:", urlID);
+    const { urlID, urlSong } = req.body;
     const username = req.cookies.viboudUser;
 
     const reqFetch = await fetch(
@@ -28,7 +27,6 @@ export const getSong = async (req, res) => {
     }
 
     const resFetch = await reqFetch.json();
-    console.log("Res__fetch:", resFetch);
     const { title, thumbnails } = resFetch.items[0].snippet;
     // The duration is formatted as an ISO 8601 string
     const { duration } = resFetch.items[0].contentDetails;
@@ -43,13 +41,6 @@ export const getSong = async (req, res) => {
         time.seconds = match?.groups?.seconds;
       }
 
-      // let hourFormatted =
-      //   time.hour && time.hour.length === 1
-      //     ? "0" + time.hour + ":"
-      //     : time.hour !== undefined
-      //       ? time.hour + ":"
-      //       : time.hour;
-      //
       let hourFormatted = time.hour ? formatTime(time.hour) : time.hour;
       let minuteFormatted = time.minutes
         ? formatTime(time.minutes)
@@ -78,6 +69,8 @@ export const getSong = async (req, res) => {
         user: username,
         duration: newTime,
         like: 1,
+        urlSong,
+        createdAt: Date.now(),
       },
     });
   } catch (error) {

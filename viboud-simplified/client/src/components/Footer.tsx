@@ -59,8 +59,10 @@ export default function Footer({ users, roomName }: FooterProps) {
       setTimeout(() => {
         setFeedback(false);
       }, 3000);
-    } catch (error) {
-      console.error(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
     }
   }
   return (

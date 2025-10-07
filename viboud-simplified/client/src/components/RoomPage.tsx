@@ -1,16 +1,17 @@
 import { useSession } from "../contexts/SessionProvider";
-// import { useSong } from "../contexts/SongProvider";
 import PopupUser from "./PopupUser";
 import SongsList from "./SongsList";
 import SongPlaceholder from "./SongPlaceholder";
 import Backdrop from "./Backdrop";
 import { useParams } from "react-router";
 import type { Song } from "../lib/types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { socket } from "../socket";
 import Footer from "./Footer";
 import { getInfo } from "../utils/utils";
+import { Message } from "./ui/icons.tsx";
+import ErrorPopup from "./ErrorPopup.tsx";
 
 export default function RoomPage() {
   const { session, loading } = useSession();
@@ -18,6 +19,7 @@ export default function RoomPage() {
   const [users, setAllUsers] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { roomName } = useParams();
+  const inputMessageRef = useRef(null);
 
   // First socket iteraction
   useEffect(() => {
@@ -29,6 +31,7 @@ export default function RoomPage() {
     socket.emit("initial-songs", { roomName, username: session });
     socket.on("update-local", ({ songs, users }) => {
       console.log("update-local__users:", users);
+      console.log("update-local__songs:", songs);
       setAllSongs(songs);
       setAllUsers(users);
     });
@@ -49,7 +52,6 @@ export default function RoomPage() {
       socket.off("update-like");
     };
   }, [roomName, session, loading]);
-  // Should i use useCallback
 
   // Update the songs
   function handleNewSong(songURL: string) {
@@ -59,42 +61,76 @@ export default function RoomPage() {
     for (const match of getSongID) {
       songID = match?.groups?.songID;
     }
+    console.log("songID : ", songID);
 
     async function getInfoAs() {
-      if (songID === undefined)
-        throw new Error("Something is wrong with the ID");
-      let newSong = await getInfo(songID);
-      console.log("New song:", newSong);
-      if (!newSong) {
-        setError("Something went wrong please try again");
-      } else {
-        socket.emit("new-song", { song: newSong, roomName });
-        setAllSongs((as) => (as = [...as, newSong]));
+      try {
+        // If we don't get any match from rURLID (regex)
+        if (songID === undefined) {
+          throw new Error("Not a valid URL, please enter it again!");
+        }
+        let newSong = await getInfo(songID, songURL);
+        if (!newSong) {
+          throw new Error("Not a valid URL, please enter it again!");
+        } else {
+          socket.emit("new-song", { song: newSong, roomName });
+          setAllSongs((as) => (as = [newSong, ...as]));
+        }
+      } catch (error) {
+        console.error("Error:", error.message);
+        setError(error.message ?? "Something went wrong!");
       }
     }
     getInfoAs();
   }
 
   function handleLikeSong(songID: number) {
+    // Need to use io; for making the event work also for the current user that emit it!
     socket.emit("new-like", { roomName, songID });
   }
+
+  function handleMessage() { }
+
   return (
     <div className="grid h-full grid-rows-[minmax(0,calc(100dvh-80px))_80px]">
-      {allSongs.length > 0 ? (
-        <SongsList
-          songs={allSongs}
-          handleNewSong={handleNewSong}
-          handleLikeSong={handleLikeSong}
-        />
-      ) : (
-        <SongPlaceholder handleNewSong={handleNewSong} />
-      )}
+      <div className="grid w-full grid-cols-[minmax(0,1fr)_400px] gap-x-4">
+        <div>
+          {allSongs.length > 0 ? (
+            <SongsList
+              songs={allSongs}
+              handleNewSong={handleNewSong}
+              handleLikeSong={handleLikeSong}
+            />
+          ) : (
+            <SongPlaceholder handleNewSong={handleNewSong} />
+          )}
+        </div>
 
-      {!session && !loading && <PopupUser />}
-      {!session && !loading && <Backdrop />}
-      {error && <h3 className="text-xl text-red-400"> {error} </h3>}
+        {!session && !loading && <PopupUser />}
+        {!session && !loading && <Backdrop />}
+        {error && <ErrorPopup error={error} setError={setError} />}
 
-      <Footer users={users} roomName={roomName} />
+        <div className="grid h-full grid-rows-[minmax(0px,1fr)_80px] rounded-md">
+          <div className="border-border relative w-full rounded-t-lg border"></div>
+
+          <div className="border-border flex items-center justify-center gap-2 rounded-b-md border border-t-0">
+            <input
+              type="text"
+              placeholder="Chat..."
+              className="text-foreground focus:ring-foreground outline-border h-10 w-3/4 rounded-lg bg-gray-950/5 px-3 text-base focus:ring dark:bg-white/10"
+              ref={inputMessageRef}
+            />
+
+            <button
+              className="focus:ring-ring cursor-pointer rounded-xl px-4 py-2 text-sm focus:ring-1 focus:outline-none has-[svg]:flex has-[svg]:items-center has-[svg]:justify-center"
+              onClick={() => handleMessage()}
+            >
+              <Message className="size-6" />
+            </button>
+          </div>
+        </div>
+      </div>
+      <Footer users={users} roomName={roomName ?? ""} />
     </div>
   );
 }

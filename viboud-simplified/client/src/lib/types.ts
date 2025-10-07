@@ -13,13 +13,19 @@ export interface SessionProviderProps {
 }
 
 export interface Song {
+  createdAt: number;
   id: number;
-  name: string;
-  artist: string;
+  title: string;
+  user: string;
   duration: string;
+  thumbnails: {
+    height: number;
+    url: string;
+    width: number;
+  };
   like: number;
+  urlSong: string;
 }
-
 export type Users = string[];
 
 export interface FooterProps {
@@ -35,14 +41,14 @@ export interface SongsListProps {
 
 export interface SongProviderProps {
   allSongs: Song[];
-  handleNewSong: (song: Song, roomName: string) => void;
+  handleNewSong: (s: string) => void;
 }
 
 export interface PopupSongsProps {
   setPopupSong: (b: boolean) => void;
-  handleNewSong: (song: Song, roomName: string) => void;
+  handleNewSong: (song: string, roomName: string) => void;
 }
 
 export interface SongPlacehodlerProps {
-  handleNewSong: (song: Song, roomName: string) => void;
+  handleNewSong: (song: string, roomName: string) => void;
 }

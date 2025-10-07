@@ -17,6 +17,7 @@ export default function HomePage() {
   }
 
   useEffect(() => {
+    if (room === null) return;
     navigate(room);
   }, [room]);
 

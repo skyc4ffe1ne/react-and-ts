@@ -32,10 +32,10 @@ const io = new Server(server, {
 });
 
 let rooms = {
-  roomName: {
-    songs: [{}],
-    users: [],
-  },
+  // roomName: {
+  //   songs: [{}],
+  //   users: [""],
+  // },
 };
 
 //-> Room page < -
@@ -61,7 +61,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("new-song", ({ roomName, song }) => {
-    rooms[roomName].songs.push(song);
+    rooms[roomName].songs.unshift(song);
     socket.to(roomName).emit("song-added", song);
     // io.emit("update-songs", rooms[room]);
   });
@@ -74,7 +74,7 @@ io.on("connection", (socket) => {
       return el;
     });
 
-    socket.to(roomName).emit("update-like", rooms[roomName].songs);
+    io.to(roomName).emit("update-like", rooms[roomName].songs);
   });
 });
 

@@ -1,8 +1,3 @@
-// ahb-djvy-jsh
-
-import type { Song } from "../lib/types";
-
-//
 export function generateRandomID() {
   const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -18,7 +13,7 @@ export function generateRandomID() {
   return getChars(3) + "-" + getChars(4) + "-" + getChars(3);
 }
 
-export async function getInfo(urlID: string) {
+export async function getInfo(urlID: string, urlSong: string) {
   try {
     const req = await fetch("http://localhost:3000/api/song", {
       method: "POST",
@@ -28,6 +23,7 @@ export async function getInfo(urlID: string) {
       },
       body: JSON.stringify({
         urlID,
+        urlSong,
       }),
     });
 
@@ -42,6 +38,8 @@ export async function getInfo(urlID: string) {
     console.log("Data info:", res.data);
     return res.data;
   } catch (error) {
-    console.error("error:", error.message);
+    if (error instanceof Error) {
+      console.error("error:", error.message);
+    }
   }
 }
