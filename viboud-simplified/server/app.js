@@ -35,6 +35,11 @@ let rooms = {
   // roomName: {
   //   songs: [{}],
   //   users: [""],
+  //   chat:[{
+  //    user,
+  //    createdAt,
+  //    message,
+  //   }]
   // },
 };
 
@@ -45,10 +50,12 @@ io.on("connection", (socket) => {
   socket.on("initial-songs", ({ roomName, username }) => {
     socket.join(roomName);
 
+    // Initialize
     if (!rooms[roomName]) {
       rooms[roomName] = {};
       rooms[roomName].songs = [];
       rooms[roomName].users = [];
+      rooms[roomName].chat = [];
     }
 
     let currUser = rooms[roomName].users;
@@ -75,6 +82,12 @@ io.on("connection", (socket) => {
     });
 
     io.to(roomName).emit("update-like", rooms[roomName].songs);
+  });
+
+  socket.on("new-message", ({ msg, roomName, session }) => {
+    console.log("session:", session);
+    rooms[roomName].chat.push({ username: session, msg });
+    io.to(roomName).emit("add-message", { username: session, msg });
   });
 });
 

@@ -11,8 +11,7 @@ export default function ErrorPopup({
       <header className="justify-left flex items-end gap-1">
         <TriangleAlert className="stroke-background size-8 fill-red-400" />
         <h3 className="font-mono text-sm/6 font-medium tracking-widest uppercase">
-          {" "}
-          Error{" "}
+          Error
         </h3>
       </header>
       <h3 className="pt-4 text-lg/7 text-red-500"> {error} </h3>

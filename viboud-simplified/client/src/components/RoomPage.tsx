@@ -4,13 +4,13 @@ import SongsList from "./SongsList";
 import SongPlaceholder from "./SongPlaceholder";
 import Backdrop from "./Backdrop";
 import { useParams } from "react-router";
-import type { Song } from "../lib/types";
+import type { Message, Song } from "../lib/types";
 import { useEffect, useRef, useState } from "react";
 
 import { socket } from "../socket";
 import Footer from "./Footer";
 import { getInfo } from "../utils/utils";
-import { Message } from "./ui/icons.tsx";
+import { MessageIcon } from "./ui/icons.tsx";
 import ErrorPopup from "./ErrorPopup.tsx";
 
 export default function RoomPage() {
@@ -18,8 +18,9 @@ export default function RoomPage() {
   const [allSongs, setAllSongs] = useState<Song[]>([]);
   const [users, setAllUsers] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<Message[]>([]);
   const { roomName } = useParams();
-  const inputMessageRef = useRef(null);
+  const inputMessageRef = useRef<HTMLInputElement | null>(null);
 
   // First socket iteraction
   useEffect(() => {
@@ -27,11 +28,8 @@ export default function RoomPage() {
 
     socket.connect();
 
-    console.log("Re-render");
     socket.emit("initial-songs", { roomName, username: session });
     socket.on("update-local", ({ songs, users }) => {
-      console.log("update-local__users:", users);
-      console.log("update-local__songs:", songs);
       setAllSongs(songs);
       setAllUsers(users);
     });
@@ -41,8 +39,11 @@ export default function RoomPage() {
     });
 
     socket.on("update-like", (updatedSongs) => {
-      console.log("Handle like song - update-like: ", updatedSongs);
       setAllSongs(updatedSongs);
+    });
+
+    socket.on("add-message", ({ username, msg }) => {
+      setMessage((prev) => [...prev, { username, msg }]);
     });
 
     return () => {
@@ -50,6 +51,7 @@ export default function RoomPage() {
       socket.off("update-local");
       socket.off("song-added");
       socket.off("update-like");
+      socket.off("add-message");
     };
   }, [roomName, session, loading]);
 
@@ -77,8 +79,12 @@ export default function RoomPage() {
           setAllSongs((as) => (as = [newSong, ...as]));
         }
       } catch (error) {
-        console.error("Error:", error.message);
-        setError(error.message ?? "Something went wrong!");
+        if (error instanceof Error) {
+          console.error("Error:", error.message);
+          setError(error.message);
+        } else {
+          setError("Something went wrong!");
+        }
       }
     }
     getInfoAs();
@@ -89,7 +95,12 @@ export default function RoomPage() {
     socket.emit("new-like", { roomName, songID });
   }
 
-  function handleMessage() { }
+  function handleMessage() {
+    if (!inputMessageRef || inputMessageRef?.current === null) return;
+    const msg = inputMessageRef?.current.value;
+    socket.emit("new-message", { roomName, msg, session });
+    inputMessageRef.current.value = "";
+  }
 
   return (
     <div className="grid h-full grid-rows-[minmax(0,calc(100dvh-80px))_80px]">
@@ -111,7 +122,24 @@ export default function RoomPage() {
         {error && <ErrorPopup error={error} setError={setError} />}
 
         <div className="grid h-full grid-rows-[minmax(0px,1fr)_80px] rounded-md">
-          <div className="border-border relative w-full rounded-t-lg border"></div>
+          <ul className="border-border @container relative flex w-full flex-col gap-2 rounded-t-lg border p-2">
+            {message.map(({ msg, username }, idx) => (
+              <li key={idx} className="flex w-full items-start gap-3">
+                <div className="text-shadow-accent grid size-6 place-content-center rounded-full bg-gradient-to-b from-purple-400 to-blue-400 text-sm font-semibold text-gray-100/95 text-shadow-2xs hover:cursor-default">
+                  {username !== null ? username[0] : "A"}
+                </div>
+
+                <div className="flex w-full max-w-full items-start gap-1.5">
+                  <h3 className="font-regular text-xs/5 font-medium text-gray-600">
+                    {username}
+                  </h3>
+                  <p className="font-regular text-foreground text-sm/6 break-all">
+                    {msg}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
 
           <div className="border-border flex items-center justify-center gap-2 rounded-b-md border border-t-0">
             <input
@@ -123,9 +151,9 @@ export default function RoomPage() {
 
             <button
               className="focus:ring-ring cursor-pointer rounded-xl px-4 py-2 text-sm focus:ring-1 focus:outline-none has-[svg]:flex has-[svg]:items-center has-[svg]:justify-center"
-              onClick={() => handleMessage()}
+              onClick={handleMessage}
             >
-              <Message className="size-6" />
+              <MessageIcon className="size-6" />
             </button>
           </div>
         </div>

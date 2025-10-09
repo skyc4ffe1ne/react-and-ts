@@ -160,7 +160,7 @@ export function TriangleAlert(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function Message(props: React.SVGProps<SVGSVGElement>) {
+export function MessageIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

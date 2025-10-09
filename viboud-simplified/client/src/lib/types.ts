@@ -52,3 +52,8 @@ export interface PopupSongsProps {
 export interface SongPlacehodlerProps {
   handleNewSong: (song: string, roomName: string) => void;
 }
+
+export interface Message {
+  msg: string;
+  username: string;
+}
