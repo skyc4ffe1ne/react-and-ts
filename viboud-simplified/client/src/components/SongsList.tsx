@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Song, SongsListProps } from "../lib/types.ts";
 import PopupSong from "./PopupSong.tsx";
 import { Like, Play } from "./ui/icons";
+import PopupPlayer from "./PopupPlayer.tsx";
 
 type SortHeader = "all" | "trending" | "recent";
 
@@ -39,13 +40,13 @@ export default function SongsList({
 }: SongsListProps) {
   const [popup, setPopupSong] = useState<boolean>(false);
   const [sortHeader, setSortHeader] = useState<SortHeader>("all");
+  const [popupPlayer, setPopupPlayer] = useState<boolean>(false);
+  const [urlSong, setUrlSong] = useState<string>("");
 
   function handleSortSongs(e: React.MouseEvent<HTMLUListElement, MouseEvent>) {
     if (e.target instanceof HTMLLIElement) {
-      setSortHeader(e.target.dataset.sort as SortHeader ?? sortHeader);
-      console.log("Here?")
+      setSortHeader((e.target.dataset.sort as SortHeader) ?? sortHeader);
     }
-
   }
 
   const newSongs = sortSongs(sortHeader, songs);
@@ -115,14 +116,18 @@ export default function SongsList({
                     <Like className="size-4" />
                     <span className="text-sm font-semibold"> {like}</span>
                   </button>
-                  <a
-                    href={urlSong}
-                    target="_blank"
-                    rel="noreferrer"
+                  {/* href={urlSong} */}
+                  {/* target="_blank" */}
+                  {/* rel="noreferrer" */}
+                  <button
                     className="text-medium focus:ring-ring bg-secondary/40 text-foreground-secondary hover:bg-secondary/70 cursor-pointer rounded-xl px-4 py-2 text-sm focus:ring-1 focus:outline-none has-[svg]:flex has-[svg]:items-center has-[svg]:justify-center has-[svg]:gap-2"
+                    onClick={() => {
+                      setPopupPlayer(true);
+                      setUrlSong(urlSong);
+                    }}
                   >
                     <Play className="fill-foreground size-4" />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -140,6 +145,10 @@ export default function SongsList({
 
       {popup && (
         <PopupSong setPopupSong={setPopupSong} handleNewSong={handleNewSong} />
+      )}
+
+      {popupPlayer && (
+        <PopupPlayer setPopupPlayer={setPopupPlayer} urlSong={urlSong} />
       )}
     </>
   );

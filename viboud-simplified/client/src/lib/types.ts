@@ -57,3 +57,8 @@ export interface Message {
   msg: string;
   username: string;
 }
+
+export interface PopupPlayerProps {
+  setPopupPlayer: (b: boolean) => void;
+  urlSong: string;
+}

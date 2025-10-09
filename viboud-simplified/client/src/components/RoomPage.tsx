@@ -63,7 +63,6 @@ export default function RoomPage() {
     for (const match of getSongID) {
       songID = match?.groups?.songID;
     }
-    console.log("songID : ", songID);
 
     async function getInfoAs() {
       try {
