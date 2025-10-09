@@ -7,6 +7,7 @@
 
 export const createMe = async (req, res) => {
   try {
+    // TODO: validate and check the username
     const { username } = req.body;
     res.cookie("viboudUser", username, {
       httpOnly: true,
@@ -36,8 +37,13 @@ export const createMe = async (req, res) => {
 
 export const me = async (req, res) => {
   try {
-    if (!req.cookies.viboudUser) throw new Error("User arleady alogged");
-    console.log("req:", req);
+    if (!req.cookies.viboudUser) throw new Error("Something went wrong");
+    const username = req.cookies.viboudUser;
+    res.json({
+      message: "Everything is good",
+      status: 200,
+      data: { username },
+    });
   } catch (error) {
     console.error(error.message);
     return res.json({ message: "Something went wrong", status: 404 });
