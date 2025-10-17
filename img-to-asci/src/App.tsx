@@ -71,7 +71,7 @@ function App() {
             picture={picture}
             setColor={setColor}
           />
-          <div className="bg-background grip h-[calc(100vh-80px)] w-full place-items-center overflow-hidden pt-4">
+          <div className="bg-background grid h-[calc(100vh-80px)] w-full place-items-center overflow-hidden pt-4">
             {picture && (
               <pre
                 ref={preRef}
