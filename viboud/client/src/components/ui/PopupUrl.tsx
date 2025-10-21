@@ -7,11 +7,12 @@ import Button from "./Button.tsx";
 
 export default function PopupUrl({ setPopupUrl, setRoom }: PopupUrlProps) {
   const inputUrlRef = useRef<null | HTMLInputElement>(null);
-  const handleRoom = () => {
-    if (!inputUrlRef || !inputUrlRef.current) return;
-    setRoom(inputUrlRef?.current?.value)
-  }
 
+  const handleRoom = () => {
+    if (inputUrlRef.current === null || !inputUrlRef) return;
+    const roomName = inputUrlRef.current.value;
+    setRoom(roomName);
+  }
 
   return (
     <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-background text-foreground  z-100 p-4 rounded-md shadow-md">
