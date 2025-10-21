@@ -4,7 +4,6 @@ import SongPlacehodler from "./SongPlaceholder.tsx";
 export default function SongsList({ allSong, setSong }: SongsListProps) {
   return (
     <div className="border-border relative row-span-2 w-full scroll-mt-32 overflow-y-scroll rounded-lg border shadow-xs">
-
       {allSong?.length > 0 ?
         (
           <Songs songs={allSong} />
