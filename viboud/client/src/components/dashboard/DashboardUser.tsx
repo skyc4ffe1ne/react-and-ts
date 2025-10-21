@@ -7,16 +7,16 @@ export default function DashboardUser() {
 
   const navigate = useNavigate()
   const [popupUrl, setPopupUrl] = useState<boolean>(false)
-  const [room, setRoom] = useState<string | null>(null)
+  const [room, setRoom] = useState<string | null>("")
 
   function handleClickRoom() {
     setPopupUrl(true)
   }
 
-  // useEffect(() => {
-  //   navigate(`/dashboard/room/${room}`)
-  // }, [room])
-  //
+  useEffect(() => {
+    if (!room) return;
+    navigate(`/dashboard/room/${room}`)
+  }, [room])
   console.log("Room:", room)
 
   return (

@@ -1,6 +1,6 @@
 export type Task = {
   task: string;
-  time: number;
+  duration: number;
   reward: number;
   type:
   | "creativity"
@@ -39,3 +39,15 @@ export type Status =
   | "emotional"
   | "social"
   | "creativity";
+
+export interface ToastProps {
+  title: string;
+  duration: number;
+  dX: "right" | "left";
+  dY: "top" | "bottom";
+}
+
+export interface PromptTaskProps {
+  setPromptTask: (b: boolean) => void;
+  setAllTask: (t: Task[]) => void;
+}

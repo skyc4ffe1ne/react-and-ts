@@ -50,13 +50,12 @@ export default function NavBar() {
       <div className="cursor-pointer font-mono text-lg">1-bit-step</div>
       <nav className="hidden md:block">
         <ul className="flex cursor-pointer gap-4 font-mono">
-          <li className="border-accent-foreground border border-dashed">
+          <li className="">
             <span className="text-secondary-foreground">[</span>Home
             <span className="text-secondary-foreground">]</span>
           </li>
           <li className="text-secondary-foreground border border-transparent">
-            {" "}
-            Daily Task{" "}
+            Daily Task
           </li>
           <li className="text-secondary-foreground"> Extra Task </li>
         </ul>

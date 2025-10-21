@@ -1,6 +1,7 @@
 import { X, Circle, Triangle } from "./Icons.tsx";
 import { useToast } from "../../contexts/ToastProvider.tsx";
 import { useEffect, useState } from "react";
+import type { ToastProps } from "../../lib/types.ts";
 
 const LOADING_ANIMATION = 100;
 
@@ -10,7 +11,13 @@ function calculate(duration: number): number {
   return increment;
 }
 
-export default function Toast({ title, duration, dY, dX }) {
+export default function Toast({
+  title,
+  duration,
+  dY = "bottom",
+  dX = "right",
+}: ToastProps) {
+  console.log("Here???");
   const { setToast } = useToast();
   const [timer, setTimer] = useState<number>(0);
 
@@ -31,7 +38,7 @@ export default function Toast({ title, duration, dY, dX }) {
   }, []);
 
   return (
-    <div className={`fixed ${dX}-0 ${dY}-0 w-sm bg-gray-100 p-4`}>
+    <div className={`fixed ${dX}-0 ${dY}-0 z-50 w-sm bg-gray-100 p-4`}>
       <header className="border-border flex items-center justify-between border-b">
         <h3 className="font-mono text-sm/6 font-medium uppercase">Info </h3>
         <div className="flex">

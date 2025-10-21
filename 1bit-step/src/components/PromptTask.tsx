@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useToast } from "../contexts/ToastProvider";
+import type { PromptTaskProps, Task } from "../lib/types";
+
+const taskTYpes = ["task", "duration", "exp", "reward", "type"];
 let createTask = [
   {
     id: "task",
@@ -10,10 +13,10 @@ let createTask = [
   },
 
   {
-    id: "time",
-    labelForm: "Time",
+    id: "duration",
+    labelForm: "Duration",
     type: "number",
-    placeholder: "Duration",
+    placeholder: "Time duration...",
     isError: false,
   },
   {
@@ -27,30 +30,60 @@ let createTask = [
     id: "type",
     labelForm: "Type",
     type: "select",
-    placeholder: "Task name...",
     isError: false,
   },
 ];
 
-export default function PromptTask({ setPromptTask, setAllTask }) {
-  const [newTask, setNewTask] = useState<Task>({
+export default function PromptTask({
+  setPromptTask,
+  setAllTask,
+}: PromptTaskProps) {
+  const [error, setError] = useState<boolean>(false);
+  const [newTask, setNewTask] = useState<Task | { type: "creativity" }>({
     type: "creativity",
   });
 
   const { setToast } = useToast();
 
-  function handleNewTask(id, e) {
-    const { value } = e.target;
-    setNewTask((nt) => (nt = { ...nt, [id]: value }));
+  function handleNewTask(
+    id: string,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) {
+    let { value } = e.target;
+    let newValue: string | number = value;
+    if (e.target.type === "number") {
+      newValue = Number(value);
+    }
+    setNewTask((nt) => (nt = { ...nt, [id]: newValue }));
   }
 
   function handleAllTask() {
-    console.log("New task:", newTask);
     let flag = false;
     // Check if there is an empty obj (user didn't compile any input)
     let convertArr = Object.entries(newTask);
+
+    if (convertArr.length < createTask.length) {
+      // Understant with type misses
+      const typesInput = createTask.map((el) => el.id);
+
+      const currentTypes = Object.keys(newTask);
+
+      let errorArr = typesInput.filter((t) => {
+        let check = currentTypes.find((el) => el === t || el === "checked");
+        if (check) return;
+        return t;
+      });
+
+      errorArr.forEach((el) => {
+        createTask = createTask.map((t) =>
+          t.id === el ? { ...t, isError: true } : t,
+        );
+      });
+
+      setError(!error);
+      return;
+    }
     // If the values in the new object, are less than our inputs; return
-    if (convertArr.length < createTask.length) return;
 
     // Check if one of the field are empty
     for (const [key, value] of convertArr) {
@@ -63,37 +96,34 @@ export default function PromptTask({ setPromptTask, setAllTask }) {
       }
     }
 
-    console.log("CreateTask:", createTask);
     if (flag) return;
-
-    setAllTask((at) => [...at, newTask]);
+    setAllTask((at: Task) => [...at, newTask]);
     setPromptTask(false);
-    setNewTask({});
+    setNewTask({ type: "creativity" });
     setToast(true);
   }
 
   return (
-    <div className="bg-background backdrop:bg-background absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-4 rounded-md border border-black p-8">
+    <div className="bg-background backdrop:bg-background absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-6 rounded-md border border-black p-8">
       {createTask.map(({ id, labelForm, type, placeholder, isError }, idx) => (
-        <React.Fragment key={idx}>
+        <div key={idx}>
           <>
-            {isError && <p> Something went wrong here </p>}
-            <label htmlFor="task" className="flex flex-col font-mono">
+            <label htmlFor="task" className="mb-2 flex flex-col font-mono">
               {labelForm}
             </label>
 
             <div
-              className="bg-background h-4 w-full"
+              className={`${isError ? "bg-red-200" : "bg-background"} h-4 w-full`}
               style={{
                 backgroundImage: `
                   linear-gradient(90deg, var(--color-muted) 1px, transparent 0),
                   linear-gradient(180deg, var(--color-muted) 1px, transparent 0),
-                  repeating-linear-gradient(45deg, var(--color-gray-200) 0 2px, transparent 2px 6px)`,
+                  repeating-linear-gradient(45deg, ${isError ? "var(--color-red-400)" : "var(--color-gray-300)"} 0 2px, transparent 2px 6px)`,
               }}
             />
             {type === "select" ? (
               <select
-                className="bg-background outline-border foucs:ring-2 focus:ring-foreground h-10 w-full rounded-md px-3 text-base outline -outline-offset-1 focus:ring"
+                className="bg-background outline-border foucs:ring-2 focus:ring-foreground mt-2 h-10 w-full rounded-md px-3 text-base outline -outline-offset-1 focus:ring"
                 id={id}
                 onChange={(e) => {
                   handleNewTask(id, e);
@@ -109,18 +139,17 @@ export default function PromptTask({ setPromptTask, setAllTask }) {
               </select>
             ) : (
               <input
-                className="bg-background outline-border foucs:ring-2 focus:ring-foreground h-10 w-fit rounded-md px-3 text-base outline -outline-offset-1 focus:ring"
+                className={`bg-background foucs:ring-2 focus:ring-foreground mt-2 h-10 w-fit rounded-md px-3 text-base outline -outline-offset-1 focus:ring ${isError ? "outline-red-400" : "outline-border"}`}
                 type={type}
                 id={id}
                 onChange={(e) => {
                   handleNewTask(id, e);
                 }}
-                value={newTask[id] ?? ""}
                 placeholder={placeholder}
               />
             )}
           </>
-        </React.Fragment>
+        </div>
       ))}
 
       <button
