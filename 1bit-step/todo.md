@@ -6,10 +6,14 @@
 
 - [x] Quando clicco sulla task (name), checkare la label
 
-- [ ] Se la task è checkata cambiare colore-liena in mezzo
+- [x] Se la task è checkata cambiare colore-liena in mezzo
 
-- [ ] Fix types
+- [x] Fix types
 
-- [ ] Ignore todo.md in .gitignore
+- [x] Ignore todo.md in .gitignore
 
-- [ ]
+- [x] Mettere backdrop dietro promptTask
+
+- [x] quando clicco al di fuori del form, chiudere promptTask
+
+- [ ] Rendere accessibile sia il form prompttask che il toast

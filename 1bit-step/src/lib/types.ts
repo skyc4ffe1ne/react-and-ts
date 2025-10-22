@@ -1,15 +1,18 @@
-export type Task = {
-  task: string;
-  duration: number;
-  reward: number;
-  type:
+export type TaskTypes =
   | "creativity"
   | "intelligence"
   | "discipline"
   | "strenght"
   | "emotonial"
   | "social";
-};
+
+export interface Task {
+  task: "" | string;
+  duration: "" | string;
+  reward: "" | string;
+  type: TaskTypes;
+  isChecked: boolean;
+}
 
 export type allTask = Task[];
 
@@ -49,5 +52,22 @@ export interface ToastProps {
 
 export interface PromptTaskProps {
   setPromptTask: (b: boolean) => void;
-  setAllTask: (t: Task[]) => void;
+  promptTask: boolean;
+  setAllTask: React.Dispatch<React.SetStateAction<Task[]>>;
+}
+
+export interface TaskListProps {
+  setPromptTask: (b: boolean) => void;
+  promptTask: boolean;
+  setAllTask: React.Dispatch<React.SetStateAction<Task[]>>;
+  allTask: Task[];
+}
+export interface ListTaskProps {
+  allTask: Task[];
+  handleChecked: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: TaskTypes,
+    reward: string,
+    id: number,
+  ) => void;
 }

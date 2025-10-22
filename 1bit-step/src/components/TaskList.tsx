@@ -2,16 +2,21 @@ import Toast from "./ui/Toast";
 import { useUser } from "../contexts/UserProvider";
 import { useToast } from "../contexts/ToastProvider";
 import { useState } from "react";
-import type { Status } from "../lib/types.ts";
+import type {
+  ListTaskProps,
+  TaskTypes,
+  Task,
+  TaskListProps,
+} from "../lib/types.ts";
 
 const headerTypesTask = ["Time", "Task", "Reward", "Type"];
 
-function ListTask({ allTask, handleChecked }) {
+function ListTask({ allTask, handleChecked }: ListTaskProps) {
   return (
     <>
-      {allTask.map(({ task, duration, reward, type }, idx) => (
+      {allTask.map(({ task, duration, reward, type, isChecked }, idx) => (
         <li
-          className="border-foreground mt-4 grid items-center border-b md:grid-cols-[minmax(0,_150px)_minmax(0px,_1fr)_minmax(0px,_150px)_minmax(0px,_150px)]"
+          className={`border-foreground mt-4 grid items-center border-b md:grid-cols-[minmax(0,_150px)_minmax(0px,_1fr)_minmax(0px,_150px)_minmax(0px,_150px)] ${isChecked ? "text-muted-foreground line-through" : "text-foregound"}`}
           key={idx}
         >
           <span className="font-mono"> {duration} hours </span>
@@ -36,23 +41,37 @@ function ListTask({ allTask, handleChecked }) {
   );
 }
 
-export default function TaskList({ setPromptTask, allTask }) {
+export default function TaskList({
+  setPromptTask,
+  promptTask,
+  setAllTask,
+  allTask,
+}: TaskListProps) {
   const [taskChecked, setTaskChecked] = useState<boolean>();
   const { setUserStats, userStats } = useUser();
   const { toast } = useToast();
-  console.log("toast:", toast);
 
   function handleChecked(
     e: React.ChangeEvent<HTMLInputElement>,
-    type: Status,
-    reward: number,
+    type: TaskTypes,
+    reward: string,
+    id: number,
   ) {
+    setAllTask((prev) => {
+      return prev.map((task: Task, idx: number) =>
+        id === idx && e.target.checked === true
+          ? { ...task, isChecked: true }
+          : { ...task, isChecked: false },
+      );
+    });
+
     setTaskChecked(e.target.checked);
-    if (e.target.checked === false) {
-      console.log(Number(userStats[type]) - Number(reward));
-    } else {
-      console.log(Number(userStats[type]) + Number(reward));
-    }
+
+    // if (e.target.checked === false) {
+    //   console.log(Number(userStats[type]) - Number(reward));
+    // } else {
+    //   console.log(Number(userStats[type]) + Number(reward));
+    // }
   }
 
   return (
@@ -62,6 +81,7 @@ export default function TaskList({ setPromptTask, allTask }) {
         <button
           className="border-border bg-accent text-accent-foreground cursor-pointer rounded-md border px-2 py-1 text-sm/5 font-semibold"
           onClick={() => setPromptTask(true)}
+          id="btnPromptTast"
         >
           Add a task
         </button>

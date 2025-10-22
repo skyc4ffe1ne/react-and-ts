@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useToast } from "../contexts/ToastProvider";
 import type { PromptTaskProps, Task } from "../lib/types";
+import Backdrop from "./ui/Backdrop";
 
-const taskTYpes = ["task", "duration", "exp", "reward", "type"];
-let createTask = [
+interface InputTaskProps {
+  id: "task" | "duration" | "reward" | "type";
+  labelForm: string;
+  type: string;
+  placeholder?: string;
+  isError: boolean;
+}
+let initialInputTask: InputTaskProps[] = [
   {
     id: "task",
     labelForm: "Task",
@@ -34,17 +41,47 @@ let createTask = [
   },
 ];
 
+const initialTaskValue: Task = {
+  task: "",
+  duration: "",
+  reward: "",
+  type: "creativity",
+  isChecked: false,
+};
+
 export default function PromptTask({
   setPromptTask,
   setAllTask,
+  promptTask,
 }: PromptTaskProps) {
-  const [error, setError] = useState<boolean>(false);
-  const [newTask, setNewTask] = useState<Task | { type: "creativity" }>({
-    type: "creativity",
-  });
+  const promptTaskRef = useRef<null | HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (
+      promptTaskRef.current === null ||
+      promptTaskRef === null ||
+      promptTask === false
+    )
+      return;
+    function handleContainer(e: MouseEvent) {
+      const target = e.target as HTMLElement;
+      if (
+        !promptTaskRef?.current?.contains(target) &&
+        !target.closest("#btnPromptTask")
+      ) {
+        setPromptTask(false);
+      }
+    }
+    window.addEventListener("click", handleContainer);
+    return () => {
+      window.removeEventListener("click", handleContainer);
+    };
+  }, []);
+
+  const [inputTask, setInputTask] =
+    useState<InputTaskProps[]>(initialInputTask);
+  const [newTask, setNewTask] = useState<Task>(initialTaskValue);
   const { setToast } = useToast();
-
   function handleNewTask(
     id: string,
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -59,107 +96,92 @@ export default function PromptTask({
 
   function handleAllTask() {
     let flag = false;
-    // Check if there is an empty obj (user didn't compile any input)
-    let convertArr = Object.entries(newTask);
 
-    if (convertArr.length < createTask.length) {
-      // Understant with type misses
-      const typesInput = createTask.map((el) => el.id);
-
-      const currentTypes = Object.keys(newTask);
-
-      let errorArr = typesInput.filter((t) => {
-        let check = currentTypes.find((el) => el === t || el === "checked");
-        if (check) return;
-        return t;
-      });
-
-      errorArr.forEach((el) => {
-        createTask = createTask.map((t) =>
-          t.id === el ? { ...t, isError: true } : t,
-        );
-      });
-
-      setError(!error);
-      return;
-    }
-    // If the values in the new object, are less than our inputs; return
-
-    // Check if one of the field are empty
-    for (const [key, value] of convertArr) {
-      if (!value) {
-        createTask = createTask.map((el) =>
-          el.id === key ? { ...el, isError: true } : el,
-        );
+    let arr_0 = inputTask.map((el) => {
+      const { id } = el;
+      if (newTask[id] === "") {
+        el = { ...el, isError: true };
         flag = true;
-        return;
+      } else {
+        el = { ...el, isError: false };
       }
-    }
+
+      return el;
+    });
+
+    setInputTask(arr_0);
 
     if (flag) return;
-    setAllTask((at: Task) => [...at, newTask]);
+    setAllTask((at: Task[]) => [...at, newTask]);
     setPromptTask(false);
-    setNewTask({ type: "creativity" });
+    setNewTask(initialTaskValue);
     setToast(true);
+    setInputTask(initialInputTask);
   }
 
   return (
-    <div className="bg-background backdrop:bg-background absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-6 rounded-md border border-black p-8">
-      {createTask.map(({ id, labelForm, type, placeholder, isError }, idx) => (
-        <div key={idx}>
-          <>
-            <label htmlFor="task" className="mb-2 flex flex-col font-mono">
-              {labelForm}
-            </label>
+    <>
+      <Backdrop />
+      <div
+        className="bg-background backdrop:bg-background absolute top-1/2 left-1/2 z-2 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-6 rounded-md border border-black p-8"
+        ref={promptTaskRef}
+      >
+        {inputTask.map(({ id, labelForm, type, placeholder, isError }, idx) => (
+          <div key={idx}>
+            <>
+              <label htmlFor="task" className="mb-2 flex flex-col font-mono">
+                {labelForm}
+              </label>
 
-            <div
-              className={`${isError ? "bg-red-200" : "bg-background"} h-4 w-full`}
-              style={{
-                backgroundImage: `
+              <div
+                className={`${isError ? "bg-red-200" : "bg-background"} h-4 w-full`}
+                style={{
+                  backgroundImage: `
                   linear-gradient(90deg, var(--color-muted) 1px, transparent 0),
                   linear-gradient(180deg, var(--color-muted) 1px, transparent 0),
                   repeating-linear-gradient(45deg, ${isError ? "var(--color-red-400)" : "var(--color-gray-300)"} 0 2px, transparent 2px 6px)`,
-              }}
-            />
-            {type === "select" ? (
-              <select
-                className="bg-background outline-border foucs:ring-2 focus:ring-foreground mt-2 h-10 w-full rounded-md px-3 text-base outline -outline-offset-1 focus:ring"
-                id={id}
-                onChange={(e) => {
-                  handleNewTask(id, e);
                 }}
-                defaultValue="creativity"
-              >
-                <option value="creativity">creativity</option>
-                <option value="intelligence">intelligence</option>
-                <option value="discipline">discipline</option>
-                <option value="strenght">strenght</option>
-                <option value="emotonial">emotional</option>
-                <option value="social">social</option>
-              </select>
-            ) : (
-              <input
-                className={`bg-background foucs:ring-2 focus:ring-foreground mt-2 h-10 w-fit rounded-md px-3 text-base outline -outline-offset-1 focus:ring ${isError ? "outline-red-400" : "outline-border"}`}
-                type={type}
-                id={id}
-                onChange={(e) => {
-                  handleNewTask(id, e);
-                }}
-                placeholder={placeholder}
               />
-            )}
-          </>
-        </div>
-      ))}
+              {type === "select" ? (
+                <select
+                  className="bg-background outline-border foucs:ring-2 focus:ring-foreground mt-2 h-10 w-full rounded-md px-3 text-base outline -outline-offset-1 focus:ring"
+                  id={id}
+                  onChange={(e) => {
+                    handleNewTask(id, e);
+                  }}
+                  defaultValue="creativity"
+                >
+                  <option value="creativity">creativity</option>
+                  <option value="intelligence">intelligence</option>
+                  <option value="discipline">discipline</option>
+                  <option value="strenght">strenght</option>
+                  <option value="emotonial">emotional</option>
+                  <option value="social">social</option>
+                </select>
+              ) : (
+                <input
+                  className={`bg-background foucs:ring-2 focus:ring-foreground mt-2 h-10 w-fit rounded-md px-3 text-base outline -outline-offset-1 focus:ring ${isError ? "outline-red-400" : "outline-border"}`}
+                  type={type}
+                  id={id}
+                  onChange={(e) => {
+                    handleNewTask(id, e);
+                  }}
+                  placeholder={placeholder}
+                />
+              )}
+            </>
+          </div>
+        ))}
 
-      <button
-        className="border-border bg-accent text-accent-foreground outline-accent-foreground cursor-pointer rounded-md border py-2 text-base font-semibold outline outline-offset-2"
-        onClick={() => {
-          handleAllTask();
-        }}
-      >
-        createTask
-      </button>
-    </div>
+        <button
+          className="border-border bg-accent text-accent-foreground outline-accent-foreground cursor-pointer rounded-md border py-2 text-base font-semibold outline outline-offset-2"
+          onClick={() => {
+            handleAllTask();
+          }}
+        >
+          createTask
+        </button>
+      </div>
+    </>
   );
 }

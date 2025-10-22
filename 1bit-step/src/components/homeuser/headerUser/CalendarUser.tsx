@@ -46,7 +46,7 @@ export default function CalendarUser() {
           className="border-border flex items-center justify-center border font-mono text-xs md:text-sm lg:text-base"
           key={idx}
         >
-          {c.check && "X"}
+          {c?.check && "X"}
         </div>
       ))}
     </div>

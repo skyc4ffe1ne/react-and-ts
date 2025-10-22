@@ -17,7 +17,6 @@ export default function Toast({
   dY = "bottom",
   dX = "right",
 }: ToastProps) {
-  console.log("Here???");
   const { setToast } = useToast();
   const [timer, setTimer] = useState<number>(0);
 
