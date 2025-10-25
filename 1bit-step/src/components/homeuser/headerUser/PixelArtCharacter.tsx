@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import placeHolderChar from "../../../assets/placeholder_character.png";
+// import placeHolderChar from "../../../assets/placeholder_character.png";
 import { pixelCharacter } from "../../../data/pixelCharacter.ts";
 
 export default function PixelArtCharacter() {
@@ -43,8 +43,8 @@ export default function PixelArtCharacter() {
   }, []);
   return (
     <div className="row-start-1 mx-auto w-[100px] sm:w-[200px] md:row-start-1">
-      <img src={placeHolderChar} alt="Your character" />
-      {/* <canvas ref={canvasRef} /> */}
+      {/* <img src={placeHolderChar} alt="Your character" /> */}
+      <canvas ref={canvasRef} />
     </div>
   );
 }

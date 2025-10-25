@@ -1,12 +1,11 @@
 import Toast from "./ui/Toast";
 import { useUser } from "../contexts/UserProvider";
 import { useToast } from "../contexts/ToastProvider";
-import { useState } from "react";
 import type {
   ListTaskProps,
   TaskTypes,
-  Task,
   TaskListProps,
+  UserStats,
 } from "../lib/types.ts";
 
 const headerTypesTask = ["Time", "Task", "Reward", "Type"];
@@ -43,12 +42,10 @@ function ListTask({ allTask, handleChecked }: ListTaskProps) {
 
 export default function TaskList({
   setPromptTask,
-  promptTask,
   setAllTask,
   allTask,
 }: TaskListProps) {
-  const [taskChecked, setTaskChecked] = useState<boolean>();
-  const { setUserStats, userStats } = useUser();
+  const { setUserStats, userStats, statsYear, setStatsYear } = useUser();
   const { toast } = useToast();
 
   function handleChecked(
@@ -57,21 +54,58 @@ export default function TaskList({
     reward: string,
     id: number,
   ) {
-    setAllTask((prev) => {
-      return prev.map((task: Task, idx: number) =>
-        id === idx && e.target.checked === true
-          ? { ...task, isChecked: true }
-          : { ...task, isChecked: false },
-      );
-    });
+    setAllTask((prev) =>
+      prev.map((task, idx) =>
+        idx === id ? { ...task, isChecked: e.target.checked } : task,
+      ),
+    );
 
-    setTaskChecked(e.target.checked);
+    if (e.target.checked === false) {
+      const statsUser = Number(userStats[type]);
+      const currReward = Number(reward);
 
-    // if (e.target.checked === false) {
-    //   console.log(Number(userStats[type]) - Number(reward));
-    // } else {
-    //   console.log(Number(userStats[type]) + Number(reward));
-    // }
+
+
+      setStatsYear((prev) => {
+        const getYear = prev[currentYear]
+        const updatedYear = {
+          ...getYear,
+          jan: getYear.jan - currReward
+        }
+        return {
+          ...prev,
+          [currentYear]: updatedYear
+        };
+      });
+
+
+      setUserStats((prev: UserStats) => {
+        prev = { ...prev, [type]: statsUser - currReward };
+        return prev;
+      });
+    } else {
+      const statsUser = Number(userStats[type]);
+      const currReward = Number(reward);
+
+
+      // TODO: Do a dropdown for chose the year
+      setStatsYear((prev) => {
+        const getYear = prev[currentYear]
+        const updatedYear = {
+          ...getYear,
+          jan: getYear.jan + currReward
+        }
+        return {
+          ...prev,
+          [currentYear]: updatedYear
+        };
+      });
+
+      setUserStats((prev: UserStats) => {
+        prev = { ...prev, [type]: statsUser + currReward };
+        return prev;
+      });
+    }
   }
 
   return (
@@ -81,7 +115,7 @@ export default function TaskList({
         <button
           className="border-border bg-accent text-accent-foreground cursor-pointer rounded-md border px-2 py-1 text-sm/5 font-semibold"
           onClick={() => setPromptTask(true)}
-          id="btnPromptTast"
+          id="btnPromptTask"
         >
           Add a task
         </button>

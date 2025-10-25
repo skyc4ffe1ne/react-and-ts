@@ -16,4 +16,14 @@
 
 - [x] quando clicco al di fuori del form, chiudere promptTask
 
-- [ ] Rendere accessibile sia il form prompttask che il toast
+- [ ] Rendere accessibile sia il form promptTask che il toast
+
+- [x] Update the stats of the user 
+
+- [x] Make a context for exp stats user.
+
+- [ ] Config the character as you want in *pixel or (other way?)*
+
+- [ ] Update stats, graph based on what you need to do
+    - [ ] Week day
+    - [ ] Achiviments

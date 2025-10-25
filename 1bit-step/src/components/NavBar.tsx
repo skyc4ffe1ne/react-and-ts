@@ -41,23 +41,42 @@ export function Close(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-const navLinks = ["Home", "Daily Task", "Extra Task", "Hello"];
+type Link = "Home" | "Daily Task" | "Extra Task";
+
+type NavLinks = ["Home", "Daily Task", "Extra Task"];
+
+const navLinks: NavLinks = ["Home", "Daily Task", "Extra Task"];
 
 export default function NavBar() {
   const [hamburger, setHamburger] = useState<boolean>(false);
+
+  const [activeLink, setActiveLink] = useState<string>(navLinks[0]);
+
+  function isActive(link: Link) {
+    return activeLink === link;
+  }
   return (
     <header className="relative flex h-[80px] w-full items-center justify-between px-4 md:px-8">
       <div className="cursor-pointer font-mono text-lg">1-bit-step</div>
       <nav className="hidden md:block">
         <ul className="flex cursor-pointer gap-4 font-mono">
-          <li className="">
-            <span className="text-secondary-foreground">[</span>Home
-            <span className="text-secondary-foreground">]</span>
-          </li>
-          <li className="text-secondary-foreground border border-transparent">
-            Daily Task
-          </li>
-          <li className="text-secondary-foreground"> Extra Task </li>
+          {navLinks.map((link, idx) => (
+            <li
+              className="hover:text-foreground text-secondary-foreground border border-transparent"
+              key={idx}
+              onClick={() => setActiveLink(link)}
+            >
+              {isActive(link) ? (
+                <>
+                  <span className="text-secondary-foreground">[</span>
+                  <span className="text-foreground">{link}</span>
+                  <span className="text-secondary-foreground">]</span>
+                </>
+              ) : (
+                <>{link}</>
+              )}
+            </li>
+          ))}
         </ul>
       </nav>
 
@@ -74,8 +93,7 @@ export default function NavBar() {
           <ul>
             {navLinks.map((link) => (
               <li className="cursor-pointer rounded-lg px-2 py-4 hover:bg-gray-100">
-                {" "}
-                {link}{" "}
+                {link}
               </li>
             ))}
           </ul>

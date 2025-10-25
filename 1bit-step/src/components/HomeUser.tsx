@@ -24,7 +24,6 @@ export default function HomeUser() {
 
         <TaskList
           setPromptTask={setPromptTask}
-          promptTask={promptTask}
           setAllTask={setAllTask}
           allTask={allTask}
         />

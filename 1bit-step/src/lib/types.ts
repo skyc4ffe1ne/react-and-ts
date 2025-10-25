@@ -1,16 +1,16 @@
-export type TaskTypes =
+export type Status =
+  | "strength"
   | "creativity"
   | "intelligence"
   | "discipline"
-  | "strenght"
-  | "emotonial"
+  | "emotional"
   | "social";
 
 export interface Task {
   task: "" | string;
   duration: "" | string;
   reward: "" | string;
-  type: TaskTypes;
+  type: Status;
   isChecked: boolean;
 }
 
@@ -24,7 +24,7 @@ export type ToastProviderProps = {
 export type UserStats = {
   strength: number;
   discipline: number;
-  inteliggence: number;
+  intelligence: number;
   emotional: number;
   social: number;
   creativity: number;
@@ -34,14 +34,6 @@ export type UserProviderProps = {
   userStats: UserStats;
   setUserStats: (user: UserStats) => void;
 };
-
-export type Status =
-  | "strength"
-  | "discipline"
-  | "inteliggence"
-  | "emotional"
-  | "social"
-  | "creativity";
 
 export interface ToastProps {
   title: string;
@@ -58,7 +50,6 @@ export interface PromptTaskProps {
 
 export interface TaskListProps {
   setPromptTask: (b: boolean) => void;
-  promptTask: boolean;
   setAllTask: React.Dispatch<React.SetStateAction<Task[]>>;
   allTask: Task[];
 }
@@ -66,7 +57,7 @@ export interface ListTaskProps {
   allTask: Task[];
   handleChecked: (
     e: React.ChangeEvent<HTMLInputElement>,
-    type: TaskTypes,
+    type: Status,
     reward: string,
     id: number,
   ) => void;

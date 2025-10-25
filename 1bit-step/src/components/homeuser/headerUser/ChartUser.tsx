@@ -1,3 +1,4 @@
+import { CherwonDown } from "../../ui/Icons";
 import PixelBlur from "../../ui/PixelBlur";
 import AchivimentUser from "./AchivimentUser";
 import CalendarUser from "./CalendarUser";
@@ -43,8 +44,24 @@ export default function ChartUser() {
 
       <div className="col-start-1 col-end-5 row-start-2 px-4">
         <div className="border-border relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-md border py-4">
+
+
+          <div className="border border-red-400  self-end mr-8 px-3 py-1 text-sm flex flex-col cursor-pointer">
+            <header className="flex gap-2 items-center" >
+              Hello?
+              <CherwonDown className="size-4" />
+            </header>
+
+            <div className="">
+
+            </div>
+          </div>
+
+
           <PixelBlur type="xl-b-l" />
+
           <ChartYear />
+
           <div className="flex items-center gap-2 self-end pr-8">
             <h3 className="font-sans text-3xl font-light"> + 5.7% </h3>
             <div className="border-muted-foreground grid size-7 place-content-center rounded-full border">
