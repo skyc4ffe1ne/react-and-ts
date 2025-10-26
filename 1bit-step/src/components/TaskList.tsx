@@ -1,15 +1,8 @@
 import Toast from "./ui/Toast";
 import { useUser } from "../contexts/UserProvider";
 import { useToast } from "../contexts/ToastProvider";
-import type {
-  ListTaskProps,
-  TaskTypes,
-  TaskListProps,
-  UserStats,
-} from "../lib/types.ts";
-
+import type { ListTaskProps, Status, TaskListProps } from "../lib/types.ts";
 const headerTypesTask = ["Time", "Task", "Reward", "Type"];
-
 function ListTask({ allTask, handleChecked }: ListTaskProps) {
   return (
     <>
@@ -45,12 +38,12 @@ export default function TaskList({
   setAllTask,
   allTask,
 }: TaskListProps) {
-  const { setUserStats, userStats, statsYear, setStatsYear } = useUser();
+  const { handleUserYear, handleUserStats } = useUser();
   const { toast } = useToast();
 
   function handleChecked(
     e: React.ChangeEvent<HTMLInputElement>,
-    type: TaskTypes,
+    type: Status,
     reward: string,
     id: number,
   ) {
@@ -59,52 +52,12 @@ export default function TaskList({
         idx === id ? { ...task, isChecked: e.target.checked } : task,
       ),
     );
-
     if (e.target.checked === false) {
-      const statsUser = Number(userStats[type]);
-      const currReward = Number(reward);
-
-
-
-      setStatsYear((prev) => {
-        const getYear = prev[currentYear]
-        const updatedYear = {
-          ...getYear,
-          jan: getYear.jan - currReward
-        }
-        return {
-          ...prev,
-          [currentYear]: updatedYear
-        };
-      });
-
-
-      setUserStats((prev: UserStats) => {
-        prev = { ...prev, [type]: statsUser - currReward };
-        return prev;
-      });
+      handleUserYear(reward, "remove");
+      handleUserStats(reward, "remove", type);
     } else {
-      const statsUser = Number(userStats[type]);
-      const currReward = Number(reward);
-
-
-      // TODO: Do a dropdown for chose the year
-      setStatsYear((prev) => {
-        const getYear = prev[currentYear]
-        const updatedYear = {
-          ...getYear,
-          jan: getYear.jan + currReward
-        }
-        return {
-          ...prev,
-          [currentYear]: updatedYear
-        };
-      });
-
-      setUserStats((prev: UserStats) => {
-        prev = { ...prev, [type]: statsUser + currReward };
-        return prev;
-      });
+      handleUserYear(reward, "add");
+      handleUserStats(reward, "add", type);
     }
   }
 

@@ -1,93 +1,56 @@
-import { createContext, use, useState } from "react";
-
-import type { UserProviderProps, UserStats } from "../lib/types.ts";
-
-type Months = {
-  jan: number;
-  feb: number;
-  mar: number;
-  apr: number;
-  may: number;
-  jun: number;
-  jul: number;
-  aug: number;
-  sep: number;
-  oct: number;
-  nov: number;
-  dec: number;
-};
-
-type StatsYear<T, S> = {
-  T: S;
-};
-
-// TODO: Get it from local stoarge
-
-function getInitialStats(): UserStats {
-  return {
-    strength: 5,
-    discipline: 0,
-    intelligence: 5,
-    emotional: 4,
-    social: 2,
-    creativity: 6,
-  };
-}
-
-// TODO: Get it from local stoarge
-
-const a = new Set([1, 2, 3]);
-
-console.log("Years:", a);
-function getInitialYear(): StatsYear<string, Months> {
-  return {
-    "2024": {
-      jan: 200,
-      feb: 150,
-      mar: 0,
-      apr: 0,
-      may: 40,
-      jun: 0,
-      jul: 0,
-      aug: 10,
-      sep: 0,
-      oct: 300,
-      nov: 0,
-      dec: 1000,
-    },
-  };
-}
-
-let test: StatsYear<string, Months> = {
-  "2024": {
-    jan: 0,
-    feb: 0,
-    mar: 0,
-    apr: 0,
-    may: 0,
-    jun: 0,
-    jul: 0,
-    aug: 0,
-    sep: 0,
-    oct: 0,
-    nov: 0,
-    dec: 0,
-  },
-};
+import { createContext, use, useEffect, useState } from "react";
+import type { Status, UserProviderProps } from "../lib/types.ts";
+import { getUser } from "../utils/user.ts";
+import { getShortMont } from "../utils/utils.ts";
 
 const UserContext = createContext<undefined | UserProviderProps>(undefined);
 
+const defaultYear = new Date().getFullYear().toString();
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const [userStats, setUserStats] = useState<UserStats>(getInitialStats());
-  const [statsYear, setStatsYear] = useState<StatsYear>(getInitialYear());
+  const [user, setUser] = useState(getUser());
+  const [activeYear, setActiveYear] = useState(defaultYear);
 
-  // User can choose the  year, and based on that return the whole uear stats
+  useEffect(() => {
+    const userJSON = JSON.stringify(user);
+    localStorage.setItem("user", userJSON);
+  }, [user]);
+
+  function handleUserStats(reward: string, operation: "add" | "remove", type: Status) {
+    const { stats } = user;
+    const rew = Number(reward);
+    const updatedStats = {
+      ...stats,
+      [type]: operation === "add" ? stats[type] + rew : stats[type] - rew,
+    };
+    setUser((prev) => ({ ...prev, stats: updatedStats }));
+  }
+
+  function handleUserYear(
+    reward: string,
+    operation: "add" | "remove",
+  ) {
+    let currYear = new Date().getFullYear().toString();
+    let getYear = user.year[currYear];
+    const rew = Number(reward);
+    let currentMonth = getShortMont();
+    const updatedYear = {
+      ...getYear,
+      [currentMonth]:
+        operation === "add"
+          ? getYear[currentMonth] + rew
+          : getYear[currentMonth] - rew,
+    };
+    user.year[currYear] = updatedYear;
+
+    setUser(user);
+  }
 
   const value = {
-    userStats,
-    setUserStats,
-    statsYear,
-    setStatsYear,
+    user,
+    handleUserStats,
+    handleUserYear,
+    activeYear,
+    setActiveYear,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

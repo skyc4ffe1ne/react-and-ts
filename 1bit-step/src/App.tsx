@@ -5,7 +5,9 @@ import Footer from "./components/Footer";
 // import Toast from "./components/ui/Toast";
 import { ToastProvider } from "./contexts/ToastProvider";
 import { UserProvider } from "./contexts/UserProvider";
+import { dummyData } from "./utils/dummyData.ts"
 function App() {
+  dummyData();
   return (
     <>
       <UserProvider>
