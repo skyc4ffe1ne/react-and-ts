@@ -75,6 +75,25 @@ export function CherwonDown(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
+export function Check(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
+
 // Pixels Icon
 // https://pixeliconlibrary.com/
 //
@@ -117,21 +136,16 @@ export function StarPxl(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function Check(props: React.SVGProps<SVGSVGElement>) {
+export function BinPxl(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
+      id="trash-alt-solid"
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
       viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
       {...props}
     >
-      <path d="M20 6 9 17l-5-5" />
+      <polygon points="22 3 22 5 2 5 2 3 8 3 8 2 9 2 9 1 15 1 15 2 16 2 16 3 22 3" />
+      <path d="m4,7v15h1v1h14v-2h1V7H4Zm12,12h-2v-10h2v10Zm-6,0h-2v-10h2v10Z" />
     </svg>
   );
 }

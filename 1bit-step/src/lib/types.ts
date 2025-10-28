@@ -30,7 +30,6 @@ export type UserStats = {
   creativity: number;
 };
 
-
 export interface ToastProps {
   title: string;
   duration: number;
@@ -48,6 +47,7 @@ export interface TaskListProps {
   setPromptTask: (b: boolean) => void;
   setAllTask: React.Dispatch<React.SetStateAction<Task[]>>;
   allTask: Task[];
+  handleRemoveTask: (id: number) => void;
 }
 export interface ListTaskProps {
   allTask: Task[];
@@ -57,6 +57,7 @@ export interface ListTaskProps {
     reward: string,
     id: number,
   ) => void;
+  handleRemoveTask: (id: number) => void;
 }
 
 export type Months = {
@@ -75,18 +76,18 @@ export type Months = {
 };
 
 export type Week = {
-  mon: boolean,
-  tue: boolean,
-  wed: boolean,
-  thu: boolean,
-  fri: boolean,
-  sat: boolean,
-  sun: boolean,
+  mon: boolean;
+  tue: boolean;
+  wed: boolean;
+  thu: boolean;
+  fri: boolean;
+  sat: boolean;
+  sun: boolean;
 };
 
 export type Year<S> = {
   T: S;
-}
+};
 
 export interface User {
   stats: UserStats;
@@ -95,9 +96,17 @@ export interface User {
 }
 
 export type UserProviderProps = {
-  user: User,
-  handleUserStats: (reward: string, operation: "add" | "remove", type: Status) => void,
-  handleUserYear: (reward: string, operation: "add" | "remove") => void,
-  activeYear: string,
-  setActiveYear: (year: string) => void,
+  user: User;
+  handleUserStats: (
+    reward: string,
+    operation: "add" | "remove",
+    type: Status,
+  ) => void;
+  handleUserYear: (reward: string, operation: "add" | "remove") => void;
+  activeYear: string;
+  setActiveYear: (year: string) => void;
 };
+
+export interface SpinnerProps {
+  setSpinner: (b: boolean) => void;
+}

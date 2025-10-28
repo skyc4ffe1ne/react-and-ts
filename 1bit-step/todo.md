@@ -27,3 +27,9 @@
 - [ ] Update stats, graph based on what you need to do
     - [ ] Week day
     - [ ] Achiviments
+
+- [ ] Be able to remove the task
+
+- [ ] Don't use input number, use range- with steps and max value 
+
+- [ ] Task localStorage???

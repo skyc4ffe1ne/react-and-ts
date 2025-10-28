@@ -1,7 +1,7 @@
 import { createContext, use, useEffect, useState } from "react";
 import type { Status, UserProviderProps } from "../lib/types.ts";
 import { getUser } from "../utils/user.ts";
-import { getShortMont } from "../utils/utils.ts";
+import { getShortMont, getShortDay } from "../utils/utils.ts";
 
 const UserContext = createContext<undefined | UserProviderProps>(undefined);
 
@@ -11,11 +11,27 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const [activeYear, setActiveYear] = useState(defaultYear);
 
   useEffect(() => {
+    const activeDay = getShortDay();
+    const { week } = user;
+    const updatedWeeks = {
+      ...week,
+      [activeDay]: true,
+    };
+    setUser((prev) => ({ ...prev, week: updatedWeeks }));
+  }, []);
+
+  console.log("user:", user);
+
+  useEffect(() => {
     const userJSON = JSON.stringify(user);
     localStorage.setItem("user", userJSON);
   }, [user]);
 
-  function handleUserStats(reward: string, operation: "add" | "remove", type: Status) {
+  function handleUserStats(
+    reward: string,
+    operation: "add" | "remove",
+    type: Status,
+  ) {
     const { stats } = user;
     const rew = Number(reward);
     const updatedStats = {
@@ -25,10 +41,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     setUser((prev) => ({ ...prev, stats: updatedStats }));
   }
 
-  function handleUserYear(
-    reward: string,
-    operation: "add" | "remove",
-  ) {
+  function handleUserYear(reward: string, operation: "add" | "remove") {
     let currYear = new Date().getFullYear().toString();
     let getYear = user.year[currYear];
     const rew = Number(reward);

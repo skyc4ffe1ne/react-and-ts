@@ -1,4 +1,5 @@
-const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+import { useUser } from "../../../contexts/UserProvider";
+
 const checkDay = [
   {
     day: 1,
@@ -31,22 +32,26 @@ const checkDay = [
   },
 ];
 export default function CalendarUser() {
+  const { user } = useUser();
+  const { week } = user;
+  const daysOfWeek = Object.keys(week);
+  const dayCheck = Object.values(week);
   return (
     <div className="border-border grid h-full w-full grid-cols-7 grid-rows-2 rounded-md border">
       {daysOfWeek.map((day, idx) => (
         <div
-          className="border-border flex items-center justify-center border font-mono text-xs md:text-sm lg:text-base"
+          className="border-border flex items-center justify-center border font-mono text-xs capitalize md:text-sm lg:text-base"
           key={idx}
         >
           {day}
         </div>
       ))}
-      {checkDay.map((c, idx) => (
+      {dayCheck.map((c, idx) => (
         <div
           className="border-border flex items-center justify-center border font-mono text-xs md:text-sm lg:text-base"
           key={idx}
         >
-          {c?.check && "X"}
+          {c === true && "X"}
         </div>
       ))}
     </div>

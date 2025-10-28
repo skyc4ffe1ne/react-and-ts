@@ -1,14 +1,15 @@
 import Toast from "./ui/Toast";
 import { useUser } from "../contexts/UserProvider";
 import { useToast } from "../contexts/ToastProvider";
+import { BinPxl } from "./ui/Icons.tsx";
 import type { ListTaskProps, Status, TaskListProps } from "../lib/types.ts";
 const headerTypesTask = ["Time", "Task", "Reward", "Type"];
-function ListTask({ allTask, handleChecked }: ListTaskProps) {
+function ListTask({ allTask, handleChecked, handleRemoveTask }: ListTaskProps) {
   return (
     <>
       {allTask.map(({ task, duration, reward, type, isChecked }, idx) => (
         <li
-          className={`border-foreground mt-4 grid items-center border-b md:grid-cols-[minmax(0,_150px)_minmax(0px,_1fr)_minmax(0px,_150px)_minmax(0px,_150px)] ${isChecked ? "text-muted-foreground line-through" : "text-foregound"}`}
+          className={`border-foreground mt-4 grid items-center border-b md:grid-cols-[minmax(0,_150px)_minmax(0px,_1fr)_minmax(0px,_150px)_minmax(0px,_150px)_minmax(0px,_150px)] ${isChecked ? "text-muted-foreground line-through" : "text-foregound"}`}
           key={idx}
         >
           <span className="font-mono"> {duration} hours </span>
@@ -27,6 +28,12 @@ function ListTask({ allTask, handleChecked }: ListTaskProps) {
           </label>
           <span className="font-mono"> {reward}xp </span>
           <span className="font-mono"> {type} </span>
+          <button
+            className="focus-visible:border-ring focus-visible:ring-ring/50 ml-auto inline-flex w-fit cursor-pointer items-center justify-center gap-2 rounded-md bg-red-400/20 px-3 py-1 text-sm font-medium text-red-800 transition-colors outline-none focus-visible:ring-[3px] has-[>svg]:px-3"
+            onClick={() => handleRemoveTask(idx)}
+          >
+            <BinPxl className="size-4 fill-red-800" />
+          </button>
         </li>
       ))}
     </>
@@ -37,6 +44,7 @@ export default function TaskList({
   setPromptTask,
   setAllTask,
   allTask,
+  handleRemoveTask,
 }: TaskListProps) {
   const { handleUserYear, handleUserStats } = useUser();
   const { toast } = useToast();
@@ -73,17 +81,38 @@ export default function TaskList({
           Add a task
         </button>
       </div>
-
-      <header className="grid grid-cols-[minmax(0,_150px)_minmax(0px,_1fr)_minmax(0px,_150px)_minmax(0px,_150px)] items-center">
-        {headerTypesTask.map((tt, idx) => (
-          <div className="font-mono text-xs uppercase" key={idx}>
-            {tt}
-          </div>
-        ))}
-      </header>
-      <ul className="list-disc">
-        <ListTask allTask={allTask} handleChecked={handleChecked} />
-      </ul>
+      {allTask.length > 0 ? (
+        <>
+          <header className="grid grid-cols-[minmax(0,_150px)_minmax(0px,_1fr)_minmax(0px,_150px)_minmax(0px,_150px)_minmax(0px,_150px)] items-center">
+            {headerTypesTask.map((tt, idx) => (
+              <div className="font-mono text-xs uppercase" key={idx}>
+                {tt}
+              </div>
+            ))}
+          </header>
+          <ul className="list-disc">
+            <ListTask
+              allTask={allTask}
+              handleChecked={handleChecked}
+              handleRemoveTask={handleRemoveTask}
+            />
+          </ul>
+        </>
+      ) : (
+        <div className="border-border ring-ring grid h-[40vh] place-content-center rounded-md border bg-gray-400/20 text-center shadow-sm ring">
+          <h2 className="font-not-found animate-colors text-rainbow text-[200px]/50">
+            404
+          </h2>
+          {/* text-[hsl(var(--change-colors-fg),_70%,_70%)] */}
+          <button
+            className="animate-colors font-not-found border-foreground cursor-pointer border text-4xl uppercase"
+            onClick={() => setPromptTask(true)}
+            id="btnPromptTask"
+          >
+            Task not found
+          </button>
+        </div>
+      )}
 
       {toast && (
         <Toast title="Task added" duration={3000} dX="right" dY="bottom" />

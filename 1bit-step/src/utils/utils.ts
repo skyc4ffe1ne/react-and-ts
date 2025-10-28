@@ -7,7 +7,12 @@ export function getShortMont() {
   return month.toLowerCase();
 }
 
-// export function getInitialYear(): StatsYear<string, Months> {
-//   let a = new Date().getFullYear().toString();
-//   return local[a];
-// }
+export function getShortDay() {
+  const date = new Date();
+  let options = {
+    weekday: "short",
+  };
+  let day = new Intl.DateTimeFormat("en-US", options).format(date);
+
+  return day.toLowerCase();
+}
