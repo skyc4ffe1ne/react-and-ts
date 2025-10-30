@@ -24,12 +24,16 @@
 
 - [ ] Config the character as you want in *pixel or (other way?)*
 
-- [ ] Update stats, graph based on what you need to do
-    - [ ] Week day
+- [x] Update stats, graph based on what you need to do
+    - [x] Week day
     - [ ] Achiviments
 
-- [ ] Be able to remove the task
-
-- [ ] Don't use input number, use range- with steps and max value 
+- [x] Be able to remove the task
 
 - [ ] Task localStorage???
+
+- [x] Don't use input number, use range- with steps and max value 
+        - [x] Show the value of the range
+
+- [- ] PromptTask - ListTask *refactor*
+---
