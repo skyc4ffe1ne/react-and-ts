@@ -59,3 +59,18 @@ export function getAscii(
   }
   return asciiCharArr;
 }
+
+// Adjust the width and the height of the canvas
+// in the sidebar, based on the maxWidth of the sidebar and the padding.
+export function adjustCanvas(
+  canvas: HTMLCanvasElement,
+  width: number,
+  height: number,
+) {
+  let maxWidthCanvas = 300;
+  let sidebarPadding = 64;
+  let scaleCanvas = (maxWidthCanvas - sidebarPadding) / width;
+
+  canvas.width = width * scaleCanvas;
+  canvas.height = height * scaleCanvas;
+}
