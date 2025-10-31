@@ -1,8 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Bytesized&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Tiny5&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@property --change-colors-bg {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --change-colors-fg {
+  syntax: "<number>";
+  initial-value: 260;
+  inherits: false;
+}
+
+@keyframes slide {
+  from {
+    left: 0%;
+  }
+
+  to {
+    left: 100%;
+  }
+}
+
 @theme {
+  --font-not-found: "Bytesized", sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
@@ -18,6 +43,15 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --radius-radius: var(--radius);
+  --animate-colors: colors 12s ease-in-out infinite;
+  --animate-box: racebit 2s linear infinite;
+
+  @keyframes colors {
+    to {
+      --change-colors-bg: 360;
+      --change-colors-fg: 0;
+    }
+  }
 }
 
 :root {
@@ -52,4 +86,81 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
+}
+
+@keyframes visible {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 100;
+  }
+}
+
+@keyframes hidden {
+  from {
+    opacity: 100;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes hvh {
+  0% {
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 100;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.to-visible {
+  animation: visible 2s linear infinite;
+}
+
+.to-hidden {
+  animation: hidden 2s linear infinite;
+}
+
+#bit_1-hidden {
+  opacity: 0;
+  animation: hvh 1.8s linear;
+}
+
+#bit_0 {
+  opacity: 0;
+  animation: visible 0.3s ease-in 0.5s forwards;
+}
+
+#bit_2 {
+  opacity: 0;
+  animation: visible 0.3s ease-in 2s forwards;
+}
+
+#bit_3 {
+  opacity: 0;
+  animation: visible 0.3s ease-in 2.1s forwards;
+}
+
+#bit_4 {
+  opacity: 0;
+  animation: visible 0.3s ease-in 2.2s forwards;
+}
+
+#bit_5 {
+  opacity: 0;
+  animation: visible 0.3s ease-in 2.3s forwards;
+}
+
+#bit_text {
+  opacity: 0;
+  animation: visible 0.3s ease-in 2.4s forwards;
 }

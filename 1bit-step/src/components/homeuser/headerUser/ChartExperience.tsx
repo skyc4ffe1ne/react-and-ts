@@ -11,7 +11,8 @@ import {
 } from "recharts";
 
 export default function ChartExperience() {
-  const { userStats } = useUser();
+  const { user } = useUser();
+  const userStats = user.stats;
 
   const newData = useMemo(() => {
     const newArr = [];
@@ -31,8 +32,29 @@ export default function ChartExperience() {
           dataKey="subject"
           className="hidden text-xs font-extralight md:block"
         />
-        {/*        <PolarRadiusAxis domain={[0, 20]} /> */}
-        <Tooltip />
+        <Tooltip
+          separator=":"
+          itemStyle={{
+            fontSize: "14px",
+            fontFamily: "monospace",
+          }}
+          labelStyle={{
+            fontSize: "12px",
+            textTransform: "uppercase",
+            fontFamily: "monospace",
+            color: "var(--color-secondary-foreground)",
+            fontWeight: 500,
+          }}
+          contentStyle={{
+            background: "rgba(255,255,255,0.25)",
+            backdropFilter: "blur(1rem)",
+            borderRadius: "6px",
+          }}
+          wrapperStyle={{
+            border: "1px solid background",
+            borderRadius: "6px",
+          }}
+        />
         <Radar
           name="Status"
           dataKey="A"

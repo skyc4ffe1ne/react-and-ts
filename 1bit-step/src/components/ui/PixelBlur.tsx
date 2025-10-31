@@ -1,4 +1,8 @@
-export default function PixelBlur({ type }: { type: string }) {
+export default function PixelBlur({
+  type,
+}: {
+  type: "base-t-r" | "sm-b-l" | "xl-b-l";
+}) {
   // Direction (top-left);  Size ???
   // w    dx dy
   // base-t-r

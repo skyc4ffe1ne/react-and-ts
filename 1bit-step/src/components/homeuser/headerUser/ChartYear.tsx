@@ -10,21 +10,16 @@ import {
 import { useUser } from "../../../contexts/UserProvider";
 import { useMemo } from "react";
 export default function ChartYear() {
-
-  const { statsYear } = useUser()
-
-  // TODO: "2024"  to statsYear[dynamicYear]
-  const { "2024": choosedYear } = statsYear
-
+  const { user, activeYear } = useUser();
+  const statsYear = user.year[activeYear];
   const newData = useMemo(() => {
     const newArr = [];
-    for (const [key, value] of Object.entries(choosedYear)) {
+    for (const [key, value] of Object.entries(statsYear)) {
       let newObj = { name: key, exp: value };
       newArr.push(newObj);
     }
     return newArr;
   }, [statsYear]);
-
 
   return (
     <ResponsiveContainer width="90%" height="100%">

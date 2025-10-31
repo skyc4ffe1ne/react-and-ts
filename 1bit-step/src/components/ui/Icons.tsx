@@ -56,7 +56,6 @@ export function Triangle(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-
 export function CherwonDown(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -72,7 +71,25 @@ export function CherwonDown(props: React.SVGProps<SVGSVGElement>) {
       {...props}
     >
       <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
 
+export function Check(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M20 6 9 17l-5-5" />
     </svg>
   );
 }
@@ -115,6 +132,20 @@ export function StarPxl(props: React.SVGProps<SVGSVGElement>) {
       {...props}
     >
       <polygon points="23 8 23 10 22 10 22 11 21 11 21 12 20 12 20 13 19 13 19 14 18 14 18 19 19 19 19 23 17 23 17 22 15 22 15 21 13 21 13 20 11 20 11 21 9 21 9 22 7 22 7 23 5 23 5 19 6 19 6 14 5 14 5 13 4 13 4 12 3 12 3 11 2 11 2 10 1 10 1 8 8 8 8 6 9 6 9 4 10 4 10 2 11 2 11 1 13 1 13 2 14 2 14 4 15 4 15 6 16 6 16 8 23 8" />
+    </svg>
+  );
+}
+
+export function BinPxl(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      id="trash-alt-solid"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      {...props}
+    >
+      <polygon points="22 3 22 5 2 5 2 3 8 3 8 2 9 2 9 1 15 1 15 2 16 2 16 3 22 3" />
+      <path d="m4,7v15h1v1h14v-2h1V7H4Zm12,12h-2v-10h2v10Zm-6,0h-2v-10h2v10Z" />
     </svg>
   );
 }
