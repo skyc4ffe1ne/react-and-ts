@@ -2,6 +2,9 @@ export interface NavbarProps {
   handleImage: () => void;
   inputRef: React.RefObject<null | HTMLInputElement>;
   handleCopy: () => void;
+  picture: null | HTMLImageElement;
+  setFC: (b: boolean) => void;
+  fc: boolean;
 }
 
 export interface SidebarProps {
@@ -10,4 +13,6 @@ export interface SidebarProps {
   zoom: number;
   picture: null | HTMLImageElement;
   setColor: (b: boolean) => void;
+  accuracy: number;
+  setAccuracy: (n: number) => void;
 }
