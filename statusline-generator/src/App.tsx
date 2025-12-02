@@ -1,20 +1,21 @@
 import './App.css'
 import Navbar from "./components/Navbar"
-import Header from "./components/Header"
-import StatusLine from "./components/StatusLine"
+import Content from "./components/Content"
 import { ThemeProvider } from './contexts/ThemeProvider'
+import { ContextProvider } from './contexts/ContextProvider'
 
 function App() {
-
-
 	return (
 		<ThemeProvider>
-			<Navbar />
-			<main className="px-4 sm:px-6">
-				<Header />
-				<StatusLine />
-			</main>
-	</ThemeProvider>
+			<ContextProvider>
+
+				<Navbar />
+				<main className="px-4 sm:px-6 min-h-dvh">
+					<Content />
+				</main>
+
+			</ContextProvider>
+		</ThemeProvider>
 	)
 }
 
