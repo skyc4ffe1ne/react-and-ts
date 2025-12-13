@@ -1,4 +1,4 @@
-import { createContext, use, useReducer } from "react"
+import { createContext, use, useReducer } from "react";
 import type { State, Action, ContextProps } from "../lib/types.ts";
 
 const initialState = {
@@ -32,27 +32,32 @@ const initialState = {
 			active: false,
 			text: { content: "StatusLine2", color: "#ffffff" },
 			separator: { content: "/", color: "#ffffff" },
-		}
-	]
-
-}
+		},
+	],
+};
 
 function reducer(state: State, action: Action) {
 	switch (action.type) {
-		case 'ACTIVE': {
+		case "ACTIVE": {
 			const { payload } = action;
-			const newActive = state.statusLine.map((el) => el.id === payload.id ? { ...el, active: true } : { ...el, active: false });
+			const newActive = state.statusLine.map((el) =>
+				el.id === payload.id
+					? { ...el, active: true }
+					: { ...el, active: false },
+			);
 			const getActive = newActive.filter((el) => el.id === payload.id);
 			return {
 				...state,
 				activeColor: payload.color,
 				activeBlock: getActive[0],
 				statusLine: newActive,
-			}
+			};
 		}
-		case 'CHANGE_COLOR': {
+		case "CHANGE_COLOR": {
 			const { payload } = action;
-			const changeColor = state.statusLine.map((el) => el.active === true ? { ...el, color: payload.color } : el)
+			const changeColor = state.statusLine.map((el) =>
+				el.active === true ? { ...el, color: payload.color } : el,
+			);
 			const getActive = changeColor.filter((el) => el.active === true);
 			return {
 				...state,
@@ -62,29 +67,44 @@ function reducer(state: State, action: Action) {
 			};
 		}
 
-		case 'CHANGE_CONTENT': {
+		case "CHANGE_CONTENT": {
 			const { payload } = action;
-
+			const changeContent = state.statusLine.map((el) =>
+				el.active === true
+					? { ...el, text: { ...el.text, content: payload.content } }
+					: el,
+			)
+			const getActive = changeContent.filter((el) => el.active === true);
 			return {
 				...state,
-				statusLine: state.statusLine.map((el) => el.active === true ? { ...el, text: { ...el.text, content: payload.content } } : el)
-
+				statusLine: changeContent,
+				activeBlock: getActive[0],
 			};
 		}
 
-		case 'CHANGE_CONTENTCOLOR': {
+		case "CHANGE_CONTENTCOLOR": {
 			const { payload } = action;
+			const changeContentColor = state.statusLine.map((el) =>
+				el.active === true
+					? { ...el, text: { ...el.text, color: payload.color } }
+					: el,
+			)
+			const getActive = changeContentColor.filter((el) => el.active === true);
 			return {
 				...state,
-				statusLine: state.statusLine.map((el) => el.active === true ? { ...el, text: { ...el.text, color: payload.color } } : el)
+				statusLine: changeContentColor,
+				activeBlock: getActive[0],
 			};
 		}
 
-		case 'CHANGE_SEPARATOR': {
+		case "CHANGE_SEPARATOR": {
 			const { payload } = action;
-			const changeSeparator = state.statusLine.map((el) => el.active === true ? { ...el, separator: { ...el.separator, content: payload.content } } : el)
+			const changeSeparator = state.statusLine.map((el) =>
+				el.active === true
+					? { ...el, separator: { ...el.separator, content: payload.content } }
+					: el,
+			);
 			const getActive = changeSeparator.filter((el) => el.active === true);
-			console.log("getActive:", getActive);
 			return {
 				...state,
 				activeBlock: getActive[0],
@@ -92,18 +112,22 @@ function reducer(state: State, action: Action) {
 			};
 		}
 
-		case 'CHANGE_SEPARATORCOLOR': {
+		case "CHANGE_SEPARATORCOLOR": {
 			const { payload } = action;
-			const changeSeparatorColor = state.statusLine.map((el) => el.active === true ? { ...el, separator: { ...el.separator, color: payload.color } } : el)
+			const changeSeparatorColor = state.statusLine.map((el) =>
+				el.active === true
+					? { ...el, separator: { ...el.separator, color: payload.color } }
+					: el,
+			);
 			const getActive = changeSeparatorColor.filter((el) => el.active === true);
 			return {
 				...state,
 				activeBlock: getActive[0],
 				statusLine: changeSeparatorColor,
-			}
+			};
 		}
 
-		case 'CHANGE_FONTSIZE': {
+		case "CHANGE_FONTSIZE": {
 			const { payload } = action;
 			return {
 				...state,
@@ -111,38 +135,32 @@ function reducer(state: State, action: Action) {
 			};
 		}
 
-
-
 		default:
-			throw new Error('Unknown action: ' + action.type);
+			throw new Error("Unknown action: " + action.type);
 	}
 }
 
+const Context = createContext<undefined | ContextProps>(undefined);
 
-const Context = createContext<undefined | ContextProps>(undefined)
-
-
-export const ContextProvider = ({ children }: { children: React.ReactNode }) => {
+export const ContextProvider = ({
+	children,
+}: {
+	children: React.ReactNode;
+}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
 	const value = {
 		state,
-		dispatch
-	}
+		dispatch,
+	};
 
-
-	return (
-		<Context.Provider value={value}>
-			{children}
-		</Context.Provider>
-	)
-}
-
+	return <Context.Provider value={value}>{children}</Context.Provider>;
+};
 
 export const useStatusLine = () => {
-	const context = use(Context)
+	const context = use(Context);
 	if (context === undefined) {
 		throw new Error("useStatusLine cannot be used outside of ThemeProvider");
 	}
 	return context;
-}
+};

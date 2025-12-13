@@ -4,7 +4,7 @@ export default function ControllersLayer() {
 	const { state, dispatch } = useStatusLine();
 
 	return (
-		<div className="border-r" data-name="global-layers">
+		<div>
 			<h3 className="text-sm/5 font-semibold text-foreground mb-4"> Layers </h3>
 
 			<div className="mb-6">

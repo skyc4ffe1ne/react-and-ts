@@ -7,7 +7,7 @@ export default function ControllerGlobal() {
 	const [localFontSize, setLocalFontSize] = useState<string>(state.fontSize);
 
 	return (
-		<div className="" data-name="global-variables">
+		<div>
 			<h3 className="text-sm/5 font-semibold text-foreground mb-4"> Globals </h3>
 
 			<div className="mb-6">

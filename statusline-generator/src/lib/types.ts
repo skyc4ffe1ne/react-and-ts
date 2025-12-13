@@ -5,11 +5,21 @@ export interface ThemeContextProps {
 	setTheme: (t: Theme) => void;
 }
 
+export interface StatusLineBlock {
+	id: ID,
+	color: string,
+	active: boolean,
+	text: { content: string, color: string },
+	separator: { content: string, color: string },
+}
+
 export interface State {
 	activeColor: string;
 	history: string[];
 	statusLine: StatusLine[];
+	activeBlock: StatusLineBlock;
 	fontSize: string;
+
 }
 
 type ID = "status0" | "status1" | "status2";
@@ -47,13 +57,8 @@ export interface ContextProps {
 
 export interface MenuProps {
 	setShowMenu: (b: boolean) => void;
-	setLocalContent: (s: string) => void;
+	setNerdSymbol: (s: string) => void;
+	dispatch: (a: Action) => void;
 }
 
-export interface StatusLineBlock {
-	id: ID,
-	color: string,
-	active: boolean,
-	text: { content: string, color: string },
-	separator: { content: string, color: string },
-}
+

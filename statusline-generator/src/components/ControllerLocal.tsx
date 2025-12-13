@@ -1,22 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { useStatusLine } from "../contexts/ContextProvider";
 import Input from "./ui/Input";
 import Button from "./ui/Button";
 import { ChervonDown } from "../components/ui/icons";
-import type{ StatusLineBlock, MenuProps } from "../lib/types";
+import type { StatusLineBlock, MenuProps } from "../lib/types";
 
-const symbols = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+const symbols = [" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
 
-function Menu({ setShowMenu, setLocalContent }: MenuProps) {
+function Menu({ setShowMenu, dispatch, setNerdSymbol}: MenuProps) {
 	return (
-		<div className="bg-background absolute top-full left-40 z-50 grid grid-cols-5 w-full translate-x-[-50%] translate-y-[-50%] gap-4 border duration-200 sm:max-w-lg rounded-xl border-none bg-clip-padding p-2 pb-11 shadow-2xl ring-4 ring-neutral-200/80 dark:bg-neutral-900 dark:ring-neutral-800 pr-4">
+		<div className="bg-background absolute top-full left-40 z-50 grid grid-cols-5 w-full translate-x-[-50%] translate-y-[-50%] gap-4 border duration-200 sm:max-w-lg rounded-xl border-none bg-clip-padding p-2 pb-11 shadow-2xl ring-4 ring-neutral-200/80 dark:bg-neutral-900 dark:ring-neutral-800 pr-4 select-none">
 			{symbols.map((symbol, idx) =>
 				<button
 					key={idx}
 					className="bg-background rounded-md border-none py-1 px-3 hover:ring-4 hover:ring-neutral-200/80 dark:bg-neutral-900 dark:ring-neutral-800 cursor-pointer"
 					onClick={() => {
-						setLocalContent(symbol)
-						setShowMenu(false)
+						setShowMenu(false);
+						setNerdSymbol(symbol);
+						dispatch({ type: "CHANGE_CONTENT", payload: { content: symbol } });
 					}}>
 
 					<div className="grid place-content-center">
@@ -31,24 +32,19 @@ function Menu({ setShowMenu, setLocalContent }: MenuProps) {
 
 export default function ControllerLocal() {
 	const { state, dispatch } = useStatusLine();
-
-	const [localColor, setLocalColor] = useState<string>(state.activeColor);
-	const [localContent, setLocalContent] = useState<string>("");
-	const [localSeparator, setLocalSeparator] = useState<string>("");
 	const [showMenu, setShowMenu] = useState<boolean>(false);
+	const [nerdSymbol, setNerdSymbol] = useState<string>("") 
+	// const [specials, setSpecials] = useState<string | null>("Relative Path") 
 	const [activeStatusLine, setActiveStatusLine] = useState<StatusLineBlock>(state.activeBlock)
 
 	useEffect(() => {
 		setActiveStatusLine(state.activeBlock)
-
-		console.log("useEffect:", activeStatusLine)
-
 	}, [state])
 
-	function handleLocalChange(e) {
+	function handleLocalChange(e:ChangeEvent<HTMLInputElement>) {
 		const { name, value } = e.target
 
-		// separator-color -> separato.color
+		// separator-color -> separator.color
 		let getValues = name.split("-");
 
 		setActiveStatusLine((ab) => {
@@ -57,7 +53,7 @@ export default function ControllerLocal() {
 				[name]: value,
 			} : {
 				...ab,
-				[getValues[0]]: {...[getValues[0]], [getValues[1]]: value}
+				[getValues[0]]: { ...[getValues[0]], [getValues[1]]: value }
 			}
 		})
 
@@ -65,7 +61,6 @@ export default function ControllerLocal() {
 
 	return (
 		<div className="" data-name="local-variables">
-
 			<h3 className="text-sm/5 font-semibold text-foreground mb-4"> Local </h3>
 			<div className="mb-6">
 				<h3 className="text-[11px]/5 font-semibold text-foreground pb-2 uppercase font-mono"> Fill </h3>
@@ -73,7 +68,7 @@ export default function ControllerLocal() {
 
 					<Input
 						type="color"
-						value={state.activeBlock.color}
+						value={activeStatusLine.color}
 						onChange={(e) => dispatch({ type: "CHANGE_COLOR", payload: { color: e.target.value } })}
 					/>
 
@@ -97,25 +92,23 @@ export default function ControllerLocal() {
 
 					<Input
 						type="color"
-						value={state.activeBlock.text.color}
+						value={activeStatusLine.text.color}
 						onChange={(e) => dispatch({ type: "CHANGE_CONTENTCOLOR", payload: { color: e.target.value } })}
 					/>
 
 					<Button onClick={() => setShowMenu(!showMenu)} >
-						
+						{nerdSymbol}
 						<ChervonDown className="size-4" />
 					</Button>
 
-					{showMenu && <Menu setShowMenu={setShowMenu} setLocalContent={setLocalContent} />}
+					{showMenu && <Menu setShowMenu={setShowMenu} dispatch={dispatch} setNerdSymbol={setNerdSymbol} />}
 
 					<Input
 						type="text"
-						placeholder="Nerdfonts.com"
 						value={activeStatusLine.text.content}
-						onChange={(e) => setActiveStatusLine(e.target.value)}
-						onBlur={() => {
+						onBlur={(e) => {
 							{
-								dispatch({ type: "CHANGE_CONTENT", payload: { content: localContent } });
+								dispatch({ type: "CHANGE_CONTENT", payload: { content: e.target.value } }); 
 							}
 
 						}}
