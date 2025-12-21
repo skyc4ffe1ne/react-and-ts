@@ -1,37 +1,26 @@
-export type Theme = "light" | "dark"
+type Colorscheme = "catpuccin" | "rosepine" | "github";
 
-export interface ThemeContextProps  {
-	theme : Theme;
- setTheme: (t: Theme) => void;
+interface Variant {
+	name:string,
+	palette:string[],
 }
 
-
-export interface Colorscheme  {
-	name: string;
-	theme: Theme;
-
-	colors: {
-		// id  : color 
-		[key:string]:string;
-	}
-
+interface Colorschemes {
+	name: Colorscheme;
+	variants:Variant[];
 }
 
+export type CSV =  Colorschemes[]
 
-// Colorscheme
-//
-// {
-//	Id: string,
-//  value : color *default color initial value*,
-//  }
-//
-//
-//
+export interface SelectDemoProps {
+	colorscheme: Colorscheme
+}
 
-// -- sections
-				// DEFUALT 
-        // UI
-        // LSP
-        // DIFF
-        // DIAGNOSTIC 
-				// Treesitter
+export type Langauges = "c" | "javascript" | "typescript" | "cpp" | "bash" | "rust" | "java";
+export type LanguagesContent = Record<Langauges, string>
+
+export interface LanguageContextProps {
+	language: string;
+	handleLanguage: (l: Langauges) => void;
+}
+

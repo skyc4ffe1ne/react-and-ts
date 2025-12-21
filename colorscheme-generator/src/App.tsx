@@ -1,20 +1,16 @@
-import { ThemeProvider } from "./contexts/ThemeProvider"
+import { LanguageProvider } from "./contexts/LanguageProvider"
 
 import './App.css'
-import Navbar from "./components/Navbar"
-import Footer from "./components/Footer"
 import AppLayout from "./components/AppLayout"
 
 
 function App() {
-  return ( 
-		<ThemeProvider>
-			<Navbar />
-			<main className="px-2 sm:px-4 md:px-10"> 
+	return (
+		<LanguageProvider >
+			<main className="px-2 sm:px-4 md:px-10 py-8">
 				<AppLayout />
 			</main>
-			<Footer />
-		</ThemeProvider>
+		</LanguageProvider>
 	)
 }
 

@@ -1,8 +1,11 @@
+import { useLanguage } from "@/contexts/LanguageProvider"
+
 export default function Editor() {
-  return (
-    <div className="border border-yellow-400">
-			Editor 
+	const { language } = useLanguage()
+	return (
+		<div className="bg-background-theme text-white px-4">
+			<pre> {language} </pre>
 		</div>
-  )
+	)
 }
 
