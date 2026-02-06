@@ -17,10 +17,12 @@ const languagesContent: LanguagesContent = {
 const LanguageContext = createContext<undefined | LanguageContextProps>(undefined);
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-	const [language, setLanguage] = useState<string>(languagesContent.c)
+	let a = languagesContent.c.replace("include", "<span class='headerColor'>include</span>")
+	const [language, setLanguage] = useState<string>(a)
 
 	function handleLanguage(s: Langauges) {
-		setLanguage(languagesContent[s])
+		let a = languagesContent[s].replace("include", "<span className='headerColor'>include</span>")
+		setLanguage(a)
 	}
 
 	const value: LanguageContextProps = {

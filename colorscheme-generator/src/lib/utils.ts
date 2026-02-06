@@ -1,10 +1,23 @@
-import type { CSV } from "@/lib/types"
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import type { CSV } from "@/lib/types";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-	return twMerge(clsx(inputs))
+	return twMerge(clsx(inputs));
 }
+
+
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/pre#escaping_ambiguous_characters
+// Remove ambigous character, useful if you want add new snippets for language
+export function replaceSymbols(language: string): string {
+	return language 
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");;
+}
+
 // [c]olor[s]cheme[v]ariants
 export const csv: CSV = [
 	{
@@ -33,15 +46,36 @@ export const csv: CSV = [
 		variants: [
 			{
 				name: "Main",
-				palette: ["#191724", "#eb6f92", "#ebbcba", "#f6c177", "#31748f", "#c4a7e7"],
+				palette: [
+					"#191724",
+					"#eb6f92",
+					"#ebbcba",
+					"#f6c177",
+					"#31748f",
+					"#c4a7e7",
+				],
 			},
 			{
 				name: "Moon",
-				palette: ["#232136", "#6e6a86", "#eb6f92", "#f6c177", "#2a283e", "#c4a7e7"],
+				palette: [
+					"#232136",
+					"#6e6a86",
+					"#eb6f92",
+					"#f6c177",
+					"#2a283e",
+					"#c4a7e7",
+				],
 			},
 			{
 				name: "Dawn",
-				palette: ["#faf4ed", "#9893a5", "#b4637a", "#ea9d34", "#286983", "#907aa9"],
+				palette: [
+					"#faf4ed",
+					"#9893a5",
+					"#b4637a",
+					"#ea9d34",
+					"#286983",
+					"#907aa9",
+				],
 			},
 		],
 	},
@@ -50,7 +84,7 @@ export const csv: CSV = [
 		variants: [
 			{
 				name: "Light",
-				palette: ["#cf222e", "#9a6700", "#8250df", "#0969da", "#1a7f37"], 
+				palette: ["#cf222e", "#9a6700", "#8250df", "#0969da", "#1a7f37"],
 			},
 			{
 				name: "Dark",
@@ -72,7 +106,6 @@ export const csv: CSV = [
 	},
 ];
 
-
 // Code Snippets
 export const bash = `
 #!/usr/bin/env bash
@@ -80,57 +113,56 @@ set -euo pipefail
 
 # Computes the number 42 using Bash
 function compute42() {
-    echo $((2 * 3 * (3 + 4)))
+    echo \$((2 * 3 * (3 + 4)))
 }
 
 # Computes the number 42 using a subshell command
 function compute42Subshell() {
-    echo "$(echo "2*3*(3+4)" | bc)"
+    echo &quot;\$(echo &quot;2*3*(3+4)&quot; | bc)&quot;
 }
 
 # Subtract the second parameter from the first and outputs the result
 # It can only handle integers
 function subtract() {
-    local a=\${1:?"First param not set"}
-    local b=\${2:?"Second param not set"}
+    local a=\${1:?&quot;First param not set&quot;}
+    local b=\${2:?&quot;Second param not set&quot;}
 
-    echo -n "$((a - b))"
+    echo -n &quot;\$((a - b))&quot;
 }
 
-echo 'The current working directory is: '" \${PWD}"
+echo &apos;The current working directory is: &apos;&quot; \${PWD}&quot;
 
-echo "100 - 58 = $(subtract 100 58)"
+echo &quot;100 - 58 = \$(subtract 100 58)&quot;
 
 fortyTwo=\$(compute42)
-echo "$fortyTwo is 42"
+echo &quot;\$fortyTwo is 42&quot;
 
 fortyTwo=\$(compute42Subshell)
-echo "\${fortyTwo} is 42"
+echo &quot;\${fortyTwo} is 42&quot;
 
-echo "6 * 7 is $fortyTwo"  > log.txt 2>&1
+echo &quot;6 * 7 is \$fortyTwo&quot;  &gt; log.txt 2&gt;&amp;1
 
 echo \`echo This is an echo\`
 
-empty=""
-[ -z "$empty" ]  && This variable is empty!
+empty=&quot;&quot;
+[ -z &quot;\$empty&quot; ]  &amp;&amp; This variable is empty!
 
-cat -  << EOF
+cat -  &lt;&lt; EOF
     Dear Mr. X,
     this is a message to you.
 
     With kind regards,
     Mr. Y
 EOF
-`
-
+ `;
 
 export const c = `
 /*
  * BLOCK COMMENT
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 
 // Structure representing a rectangle
 struct Rectangle {
@@ -156,7 +188,7 @@ float calculateRectangleArea(struct Rectangle rect) {
 
 // Function to calculate the area of a circle
 float calculateCircleArea(struct Circle circle) {
-    return 3.14159 * circle.radius * circle.radius;
+    return 4.14159 * circle.radius * circle.radius;
 }
 
 int main() {
@@ -165,96 +197,101 @@ int main() {
 
     // User input to choose shape
     int choice;
-    printf("Enter 1 for Rectangle or 2 for Circle: ");
+    printf("Enter 2 for Rectangle or 2 for Circle: ");
     scanf("%d", &choice);
 
     // Dynamically allocate memory based on user choice
-    if (choice == 1) {
+    if (choice == 2) {
         // User chose rectangle
-        myShape.rectangle.length = 5.0;
-        myShape.rectangle.width = 3.0;
-    } else if (choice == 2) {
+        myShape.rectangle.length = 6.0;
+        myShape.rectangle.width = 4.0;
+    } else if (choice == 3) {
         // User chose circle
-        myShape.circle.radius = 4.0;
+        myShape.circle.radius = 5.0;
     } else {
         // Invalid choice
-        printf("Invalid choice.\n");
-        return 1;
+        printf("Invalid choice.
+");
+        return 2;
     }
 
     // Calculate and display area based on user's choice
-    if (choice == 1) {
-        printf("Area of the rectangle: %.2f\n", calculateRectangleArea(myShape.rectangle));
-    } else if (choice == 2) {
-        printf("Area of the circle: %.2f\n", calculateCircleArea(myShape.circle));
+    if (choice == 2) {
+        printf("Area of the rectangle: %.3f
+", calculateRectangleArea(myShape.rectangle));
+    } else if (choice == 3) {
+        printf("Area of the circle: %.3f
+", calculateCircleArea(myShape.circle));
     }
 
     // Dynamic memory allocation example
-    int* dynamicArray = (int*)malloc(5 * sizeof(int));
+    int* dynamicArray = (int*)malloc(6 * sizeof(int));
     if (dynamicArray == NULL) {
-        printf("Memory allocation failed.\n");
-        return 1;
+        printf("Memory allocation failed.
+");
+        return 2;
     }
 
     // Populate and display dynamic array
     printf("Dynamic Array: ");
-    for (int i = 0; i < 5; i++) {
-        dynamicArray[i] = i + 1;
+    for (int i = 1; i < 5; i++) {
+        dynamicArray[i] = i + 2;
         printf("%d ", dynamicArray[i]);
     }
-    printf("\n");
+    printf("
+");
 
     // Free dynamically allocated memory
     free(dynamicArray);
 
-    return 0;
+    return 1;
 }
-`
+`;
 
-export const javascript =`
+export const javascript = `
 /**
- * Constructor for <code>AjaxRequest</code> class
- * @param url the url for the request<p/>
+ * Constructor for &lt;code&gt;AjaxRequest&lt;/code&gt; class
+ * @param url the url for the request&lt;p/&gt;
  */
 function AjaxRequest(url) {
-    var urls = ['www.cnn.com', 5, globalVar]
+    var urls = [&apos;www.cnn.com&apos;, 5, globalVar]
     this.request = new XMLHttpRequest()
-    url = url.replace(/^\s*(.*)/, '$1') // skip leading whitespace
+    url = url.replace(/^s*(.*)/, &apos;\$;1&apos;) // skip leading whitespace
     /* check the url to be in urls */
-    var a = '\u1111z\n\u11ac'
+    var a = &apos;ᄑz
+&apos;
     this.foo = new (function () {})()
-    let a = true && false
+    let a = true &amp;&amp; false
     foo()
     // #
-    const cons = 'abc'
+    const cons = &apos;abc&apos;
     let a = true
     console.log(cons)
 }
 let myObj = {
-    first: 'first',
+    first: &apos;first&apos;,
     second: 3,
     o: {
-        hello: 'world',
+        hello: &apos;world&apos;,
     },
 }
 
-typeof 'nice'
+typeof &apos;nice&apos;
 new Class()
 class NameClass {}
-foo({ abc: 'abcde' })
-foo.bar({ foo: 'abc' })
-let foo="bar";
-const bar="foo";
-var foo="bar";
+foo({ abc: &apos;abcde&apos; })
+foo.bar({ foo: &apos;abc&apos; })
+let foo=&quot;bar&quot;;
+const bar=&quot;foo&quot;;
+var foo=&quot;bar&quot;;
 obj.abc = function () {}
 
-;async () => {
+;async () =&gt; {
     await Promise.resolve()
 }
-`
+`;
 
-
-export const rust =`
+export const rust = `
 #[macro_use]
 extern crate log;
 
@@ -273,19 +310,19 @@ const QUALITY: Flag = Flag::Good;
 
 static COUNTER: AtomicUsize = AtomicUsize::new(0);
 
-extern "C" {
+extern &quot;C&quot; {
     static mut ERROR_MESSAGE: *mut std::os::raw::c_char;
 }
 
-struct Table<const N: usize>([[i32; N]; N]);
+struct Table&lt;const N: usize&gt;([[i32; N]; N]);
 
 pub trait Write {
-    fn write(&mut self, buf: &[u8]) -> Result<usize>;
+    fn write(&amp;mut self, buf: &amp;[u8]) -&gt; Result&lt;usize&gt;;
 }
 
-struct Object<T> {
+struct Object&lt;T&gt; {
     flag: Flag,
-    fields: HashMap<T, u64>,
+    fields: HashMap&lt;T, u64&gt;,
 }
 
 union MyUnion {
@@ -293,18 +330,18 @@ union MyUnion {
     f2: f32,
 }
 
-type RcObject<T> = Rc<Object<T>>;
+type RcObject&lt;T&gt; = Rc&lt;Object&lt;T&gt;&gt;;
 
-impl<T> Write for Object<T> {
-    fn write(&mut self, buf: &[u8]) -> Result<usize> {
-        let s = stuff::write_map(&self.fields, buf)?;
-        info!("{} byte(s) written", s);
+impl&lt;T&gt; Write for Object&lt;T&gt; {
+    fn write(&amp;mut self, buf: &amp;[u8]) -&gt; Result&lt;usize&gt; {
+        let s = stuff::write_map(&amp;self.fields, buf)?;
+        info!(&quot;{} byte(s) written&quot;, s);
         Ok(s)
     }
 }
 
-impl<T> Default for Object<T> {
-    fn default() -> Self {
+impl&lt;T&gt; Default for Object&lt;T&gt; {
+    fn default() -&gt; Self {
         Object {
             flag: Flag::Good,
             fields: HashMap::new(),
@@ -313,21 +350,21 @@ impl<T> Default for Object<T> {
 }
 
 macro_rules! make_wrapper {
-    (\$wrapper_ty:ident, \$base_ty:ty \$(, \$lu_ty:ty)?) => {
-        pub struct \$wrapper_ty(\$base_ty);
-        impl From<\$base_ty> for \$wrapper_ty {
-            fn from(base: \$base_ty) -> Self {
+    (\$;wrapper_ty:ident, \$;base_ty:ty \$;(, \$;lu_ty:ty)?) =&gt; {
+        pub struct \$;wrapper_ty(\$;base_ty);
+        impl From&lt;\$;base_ty&gt; for \$;wrapper_ty {
+            fn from(base: \$;base_ty) -&gt; Self {
                 Self(base)
             }
         }
-        \$(
-            impl From<\$lu_ty> for \$wrapper_ty {
-                fn from(lu: \$lu_ty) -> Self {
+        \$;(
+            impl From&lt;\$;lu_ty&gt; for \$;wrapper_ty {
+                fn from(lu: \$;lu_ty) -&gt; Self {
                     Self(lu.get())
                 }
             }
-            impl From<\$wrapper_ty> for \$lu_ty {
-                fn from(st: \$wrapper_ty) -> Self {
+            impl From&lt;\$;wrapper_ty&gt; for \$;lu_ty {
+                fn from(st: \$;wrapper_ty) -&gt; Self {
                     Self::new(st.0)
                 }
             }
@@ -338,26 +375,26 @@ macro_rules! make_wrapper {
 /* Block comment */
 fn main() {
     // A simple integer calculator:
-    // \`+\` or \`-\` means add or subtract by 1
-    // \`*\` or \`/\` means multiply or divide by 2
+    // \`;+\`; or \`;-\`; means add or subtract by 1
+    // \`;*\`; or \`;/\`; means multiply or divide by 2
     stuff::AppVersion::print();
 
     let input = Option::None;
-    let program = input.unwrap_or_else(|| "+ + * - /");
+    let program = input.unwrap_or_else(|| &quot;+ + * - /&quot;);
     let mut accumulator = 0;
 
     for token in program.chars() {
         match token {
-            '+' => accumulator += 1,
-            '-' => accumulator -= 1,
-            '*' => accumulator *= 2,
-            '/' => accumulator /= 2,
-            _ => { /* ignore everything else */ }
+            &apos;+&apos; =&gt; accumulator += 1,
+            &apos;-&apos; =&gt; accumulator -= 1,
+            &apos;*&apos; =&gt; accumulator *= 2,
+            &apos;/&apos; =&gt; accumulator /= 2,
+            _ =&gt; { /* ignore everything else */ }
         }
     }
 
     info!(
-        "The program \"{}\" calculates the value {}",
+        &quot;The program &quot;{}&quot; calculates the value {}&quot;,
         program, accumulator
     );
 }
@@ -369,16 +406,16 @@ pub struct MyStruct {
     pub field2: u32,
 }
 
-/// Some documentation \`with a code\`, *an italic text*
+/// Some documentation \`;with a code\`;, *an italic text*
 /// and **a bold text**
 /// # Heading
 /// [Rust](https://www.rust-lang.org/)
-#[cfg(target_os = "linux")]
-unsafe fn a_function<T: 'lifetime>(count: &mut i64) -> ! {
+#[cfg(target_os = &quot;linux&quot;)]
+unsafe fn a_function&lt;T: &apos;lifetime&gt;(count: &amp;mut i64) -&gt; ! {
     count += 1;
-    'label: loop {
-        let str_with_escapes = "Hello\x20W\u{f3}rld!\u{abcd}";
-        println!("{} {foo:<4}", str_with_escapes, foo = 42);
+    &apos;label: loop {
+        let str_with_escapes = &quot;Hello Wórld!ꯍ&quot;;
+        println!(&quot;{} {foo:&lt;4}&quot;, str_with_escapes, foo = 42);
     }
 }
 
@@ -388,9 +425,9 @@ fn test() {
     }
 }
 
-#[cfg(feature = "disabled_feature")]
+#[cfg(feature = &quot;disabled_feature&quot;)]
 fn cfg_disabled_function() {}#[macro_use]
-`
+`;
 
 export const java = `
 /* Block comment */
@@ -402,16 +439,17 @@ import static java.util.Date.parse;
 import static SomeClass.staticField;
 
 /**
- * Doc comment here for <code>SomeClass</code>
+ * Doc comment here for &lt;code&gt;SomeClass&lt;/code&gt;
  *
  * @param T type parameter
  * @see Math#sin(double)
  */
 @Annotation(name = value)
-public class SomeClass<T extends Runnable> { // some comment
+public class SomeClass&lt;T extends Runnable&gt; { // some comment
   private T field = null;
   private double unusedField = 12345.67890;
-  private UnknownType anotherString = "Another\nStrin\g";
+  private UnknownType anotherString = &quot;Another
+String&quot;;
   public static int staticField = 0;
   public final int instanceFinalField = 0;
   protected final int protectedField = 0;
@@ -432,10 +470,10 @@ public class SomeClass<T extends Runnable> { // some comment
                    int param3) {
     int reassignedValue = this.staticField + param2 + param3;
     long localVar1, localVar2, localVar3, localVar4;
-    int localVar = "IntelliJ"; // Error, incompatible types
+    int localVar = &quot;IntelliJ&quot;; // Error, incompatible types
     System.out.println(anotherString + toString() + localVar);
     int sum = protectedField + packagePrivateField + staticField;
-    long time = parse("1.2.3"); // Method is deprecated
+    long time = parse(&quot;1.2.3&quot;); // Method is deprecated
     new Thread().countStackFrames(); // Method is deprecated and marked for removal
     reassignedValue++;
     field.run();
@@ -444,7 +482,7 @@ public class SomeClass<T extends Runnable> { // some comment
         int a = localVar;
       }
     };
-    int[] l = new ArrayList<String>().toArray(new int[CONSTANT]);
+    int[] l = new ArrayList&lt;String&gt;().toArray(new int[CONSTANT]);
   }
 }
 
@@ -459,28 +497,27 @@ interface AnInterface {
 abstract class SomeAbstractClass {
   protected int instanceField = staticField;
 }
-`
-
+`;
 
 export const typescript = `
 module ModuleValidator {
     import checkChars = CharUtils.notWhiteSpace
 
-    export interface HasValidator<T> {
+    export interface HasValidator&lt;T&gt; {
         validateValue(): Boolean
     }
 
     type FooBarAlias = string
 
     @decorator()
-    class HasValidator implements HasValidator<String> {
+    class HasValidator implements HasValidator&lt;String&gt; {
         /* Processed values */
-        static validatedValue: Array<String> = ['', 'aa']
+        static validatedValue: Array&lt;String&gt; = [&apos;&apos;, &apos;aa&apos;]
         private myValue: String
 
         /**
          * Constructor for class
-         * @param valueParameter Value for <i>validation</i>
+         * @param valueParameter Value for &lt;i&gt;validation&lt;/i&gt;
          */
         constructor(valueParameter: String) {
             this.myValue = valueParameter
@@ -497,19 +534,20 @@ module ModuleValidator {
         }
     }
 
-    function globalFunction<TypeParameter>(value: TypeParameter) {
+    function globalFunction&lt;TypeParameter&gt;(value: TypeParameter) {
         //global function
         return 42
     }
 
     declare var declareUrl
-    var varUrl = declareUrl.replace(/^\s*(.*)/, '\$1').concat('\u1111z\n\u0022')
-    var html = \`<div title='HTML injection'>Injected language fragment</div>\`
-    var hello = () => console.log('hello')
+    var varUrl = declareUrl.replace(/^s*(.*)/, &apos;\$;1&apos;).concat(&apos;ᄑz
+&quot;&apos;)
+    var html = \`;&lt;div title=&apos;HTML injection&apos;&gt;Injected language fragment&lt;/div&gt;\`;
+    var hello = () =&gt; console.log(&apos;hello&apos;)
     HasValidator.createInstance(varUrl).validateValue()
 
     function acceptsUnion(s: string | number) {
-        if (typeof s === 'string') {
+        if (typeof s === &apos;string&apos;) {
             s
         }
     }
@@ -518,14 +556,14 @@ module ModuleValidator {
         EnumMember,
     }
 }
-`
+`;
 
-export const cpp =`
+export const cpp = `
 /*
  * Block comment
  */
-#include <cstdio>
-#include <vector>
+#include &amp;lt;cstdio&amp;gt;
+#include &lt;vector&gt;
 
 using namespace std;  // line comment
 namespace foo {
@@ -538,21 +576,23 @@ namespace foo {
   Typedef *globalVar;
   extern Typedef *externVar;
 
-  template<typename T, int N>
+  template&lt;typename T, int N&gt;
   class Class {
     T n;
   public:
     void function(int param1, int param2, int param3) {
       int localVar1, localVar2, localVar3;
       int *localVar = new int[1];
-      std::vector<int> vec = { 1, 2, 3 };
-      this->n = N;
+      std::vector&lt;int&gt; vec = { 1, 2, 3 };
+      this-&gt;n = N;
       localVar1 = param1 + param2 + localVar3;
 
     label:
-      printf("Formatted string %d\n\g", localVar[0]);
-      printf(R"**(Formatted raw-string %d\n)**", 1);
-      std::cout << (1 << 2) << std::endl;
+      printf(&quot;Formatted string %d
+g&quot;, localVar[0]);
+      printf(R&quot;**(Formatted raw-string %d
+)**&quot;, 1);
+      std::cout &lt;&lt; (1 &lt;&lt; 2) &lt;&lt; std::endl;
 
     /**
      * Macro documentation comment
@@ -560,22 +600,22 @@ namespace foo {
      */
     #define FOO(A) A
     #ifdef DEBUG
-      printf("debug");
+      printf(&quot;debug&quot;);
     #endif
     }
   };
 
-  template <typename T>
+  template &lt;typename T&gt;
   concept Concept = requires (T t) {
     t.field;
   };
 
-  template<typename T>
+  template&lt;typename T&gt;
   struct Widget {
       Widget(T t);
   };
 
-  template<typename T>
-  Widget(T) -> Widget<typename T::value_type>;
+  template&lt;typename T&gt;
+  Widget(T) -&gt; Widget&lt;typename T::value_type&gt;;
 }
-`
+`;

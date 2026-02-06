@@ -100,3 +100,6 @@
     @apply bg-background text-foreground;
   }
 }
+.headerColor{
+	color:red !important;
+}
