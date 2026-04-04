@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { DotIcon } from "@/components/ui/icons";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { SearchIcon } from "@/components/ui/icons"
+import { Link } from "react-router";
 
 export default function ApplicationHeader() {
 	return (
@@ -18,14 +19,16 @@ export default function ApplicationHeader() {
 					<div className="flex text-muted-foreground text-sm items-center">
 						<p> {applications.length} total applications </p>
 						<DotIcon className="size-4" />
-						<p> {applications.filter((application) => application.pinned == true).length} pinned </p>
+						<p> {applications.filter((application) => application.isPinned == true).length} pinned </p>
 					</div>
 
 				</div>
 
-				<Button variant="default">
-					New Application
-				</Button>
+				<Link to={"/applications/new"}>
+					<Button variant="default">
+						New Application
+					</Button>
+				</Link>
 
 			</div>
 

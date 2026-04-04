@@ -5,6 +5,7 @@ import AuthLayout from "./components/AuthLayout";
 import Hero from "@/components/Hero";
 import AuthTabs from "@/components/AuthTabs";
 import Applications from "@/components/Applications";
+import ApplicationForm from "./components/ApplicationForm";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Hero />} />
 					<Route path="/applications" element={<Applications />}/>
+					<Route path="/applications/new" element={<ApplicationForm />}/>
         </Route>
 
         <Route path="/auth" element={<AuthLayout />}>

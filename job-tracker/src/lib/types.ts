@@ -1,16 +1,11 @@
-export type ApplicationStatus =
-  | "applied"
-  | "accepted"
-  | "rejected";
-
-export type ApplicationWorkType = "remote" | "hybrid" | "onsite";
+import type { ApplicationStatus, ApplicationWorkType, ApplicationCompanyIndustry } from "@/lib/validation"
 
 export interface JobApplication {
 	id: string;
 	companyName: string;
 	position: string;
 	companyLocation: string;
-	companyIndustry: string;
+	companyIndustry: ApplicationCompanyIndustry;
 	applicationDate: string;
 	workType: ApplicationWorkType;
 	status: ApplicationStatus;
