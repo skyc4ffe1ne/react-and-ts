@@ -1,15 +1,43 @@
-export default function ApplicationHeader(){
-	return(
-	<header>
-			<h3>
-				Applications
-			</h3>
-			<div className="flex">
-			<p> n total applications </p>
+import { applications } from "@/lib/data"
+import { Button } from "@/components/ui/button";
+import { DotIcon } from "@/components/ui/icons";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { SearchIcon } from "@/components/ui/icons"
 
-			<p> n pinned </p>
+export default function ApplicationHeader() {
+	return (
+		<header className="pb-8 sm:pb-16 pt-10">
+
+			<div className="flex justify-between items-center pb-4">
+
+				<div className="">
+					<h3 className="text-2xl tracking-tight font-semibold">
+						Applications
+					</h3>
+
+					<div className="flex text-muted-foreground text-sm items-center">
+						<p> {applications.length} total applications </p>
+						<DotIcon className="size-4" />
+						<p> {applications.filter((application) => application.pinned == true).length} pinned </p>
+					</div>
+
+				</div>
+
+				<Button variant="default">
+					New Application
+				</Button>
+
 			</div>
-			
-	</header>
+
+			<InputGroup className="max-w-xs">
+				<InputGroupInput
+					placeholder="Search companies, positions..."
+				/>
+				<InputGroupAddon align="inline-start">
+					<SearchIcon className="size-4" />
+				</InputGroupAddon>
+			</InputGroup>
+
+		</header>
 	)
 }

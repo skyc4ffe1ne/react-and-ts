@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Hero />} />
-					<Route path="/applicatinos" element={<Applications />}/>
+					<Route path="/applications" element={<Applications />}/>
         </Route>
 
         <Route path="/auth" element={<AuthLayout />}>

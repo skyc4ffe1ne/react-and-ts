@@ -131,3 +131,9 @@
 		@apply font-sans;
 	}
 }
+
+@layer components {
+	.logo{
+			@apply text-lg tracking-tight font-semibold text-black dark:text-white lowercase;
+	}
+}
