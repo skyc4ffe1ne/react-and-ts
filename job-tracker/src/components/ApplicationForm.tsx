@@ -1,3 +1,4 @@
+import type { UseFormReturn } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { type ApplicationType, applicationSchema } from "@/lib/validation"
 import { applicationCompanyIndustry, applicationStatus, applicationWork } from "@/lib/data"
@@ -6,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import {
 	Card,
 	CardContent,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card"
@@ -27,7 +27,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { CalendarIcon } from "@/components/ui/icons"
+import { BuildingIcon, CalendarIcon, HomeIcon, HybridIcon } from "@/components/ui/icons"
 import { Calendar } from "@/components/ui/calendar"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -43,9 +43,9 @@ import {
 
 
 
-export function ApplicationCompanyCard({ form }) {
+export function ApplicationCompanyCard({ form }: { form: UseFormReturn<ApplicationType> }) {
 	return (
-		<Card className="w-full sm:max-w-(--breakpoint-md) mx-auto">
+		<Card>
 			<CardHeader>
 				<CardTitle>Company Information</CardTitle>
 			</CardHeader>
@@ -56,12 +56,11 @@ export function ApplicationCompanyCard({ form }) {
 						control={form.control}
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>
-								<FieldLabel htmlFor="form-rhf-demo-title">
-									Company name *
+								<FieldLabel htmlFor="companyName">
 								</FieldLabel>
 								<Input
 									{...field}
-									id="form-rhf-demo-title"
+									id="companyName"
 									aria-invalid={fieldState.invalid}
 									placeholder="Enter company name..."
 									autoComplete="off"
@@ -82,7 +81,7 @@ export function ApplicationCompanyCard({ form }) {
 								</FieldLabel>
 								<Input
 									{...field}
-									id="form-rhf-demo-title"
+									id="companyLocation"
 									aria-invalid={fieldState.invalid}
 									placeholder="Enter company location..."
 									autoComplete="off"
@@ -139,9 +138,9 @@ export function ApplicationCompanyCard({ form }) {
 	)
 }
 
-export function ApplicationPostionCard({ form }) {
+export function ApplicationPostionCard({ form }: { form: UseFormReturn<ApplicationType> }) {
 	return (
-		<Card className="w-full sm:max-w-(--breakpoint-md) mx-auto">
+		<Card>
 			<CardHeader>
 				<CardTitle>Position Information</CardTitle>
 			</CardHeader>
@@ -157,7 +156,7 @@ export function ApplicationPostionCard({ form }) {
 								</FieldLabel>
 								<Input
 									{...field}
-									id="form-rhf-demo-title"
+									id="position"
 									aria-invalid={fieldState.invalid}
 									placeholder="Enter your position..."
 									autoComplete="off"
@@ -216,7 +215,7 @@ export function ApplicationPostionCard({ form }) {
 
 
 					<Controller
-						name="status"
+						name="applicationStatus"
 						control={form.control}
 						render={({ field, fieldState }) => (
 							<Field
@@ -258,7 +257,7 @@ export function ApplicationPostionCard({ form }) {
 					/>
 
 					<Controller
-						name="applicationWork"
+						name="workType"
 						control={form.control}
 						render={({ field, fieldState }) => (
 							<Field
@@ -285,6 +284,8 @@ export function ApplicationPostionCard({ form }) {
 									<SelectContent position="item-aligned">
 										{applicationWork.map((aw) => (
 											<SelectItem key={aw} value={aw}>
+
+												{aw === "remote" ? <HomeIcon /> : aw === "hybrid" ? <HybridIcon /> : <BuildingIcon />}
 												{aw}
 											</SelectItem>
 										))}
@@ -302,17 +303,17 @@ export function ApplicationPostionCard({ form }) {
 }
 
 export default function ApplicationForm() {
-	const form =
+	const form: UseFormReturn<ApplicationType> =
 		useForm({
 			resolver: zodResolver(applicationSchema),
 			defaultValues: {
-				companyName: "",
-				companyIndustry: "",
-				companyLocation: "",
-				position: "",
-				applicationDate: "",
-				workType: "",
-				applicationStatus: "",
+				companyName: undefined,
+				companyIndustry: undefined,
+				companyLocation: undefined,
+				position: undefined,
+				applicationDate: undefined,
+				workType: undefined,
+				applicationStatus: undefined,
 			},
 		}
 
@@ -323,20 +324,24 @@ export default function ApplicationForm() {
 	}
 
 	return (
-		<form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
-			<ApplicationCompanyCard form={form} />
-			<ApplicationPostionCard form={form} />
-			<CardFooter>
-				<Field orientation="horizontal">
+		<section className="sm:max-w-(--breakpoint-md) mx-auto">
+			<header className="pb-10">
+				<h2 className="text-3xl font-semibold tracking-tight pb-2"> Application Form </h2>
+				<p className="text-muted-foreground text-sm"> Fill the field in the current form for your new application</p>
+			</header>
+
+			<form id="applicationForm" onSubmit={form.handleSubmit(onSubmit)} className=" flex flex-col gap-10">
+				<ApplicationCompanyCard form={form} />
+				<ApplicationPostionCard form={form} />
+				<div className="flex gap-3.5">
 					<Button type="button" variant="outline" onClick={() => form.reset()}>
 						Reset
 					</Button>
-					<Button type="submit" form="form-rhf-demo">
+					<Button type="submit" form="applicationForm">
 						Submit
 					</Button>
-				</Field>
-
-			</CardFooter>
-		</form>
+				</div>
+			</form>
+		</section>
 	)
 }

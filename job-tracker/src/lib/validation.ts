@@ -2,8 +2,8 @@ import z from "zod";
 import { applicationStatus, applicationWork, applicationCompanyIndustry } from "@/lib/data"
 
 
-const applicationWorkSchema = z.enum(applicationStatus)
-const applicationStatusSchema = z.enum(applicationWork)
+const applicationWorkSchema = z.enum(applicationWork)
+const applicationStatusSchema = z.enum(applicationStatus)
 const applicationCompanyIndustrySchema = z.enum(applicationCompanyIndustry)
 
 export type ApplicationWorkType = z.infer<typeof applicationWorkSchema>
@@ -15,7 +15,7 @@ export const applicationSchema = z.object({
 	companyIndustry: applicationCompanyIndustrySchema,
 	companyLocation: z.string().trim().min(1, ""),
 	position: z.string().trim().min(1, ""),
-	applicationDate: z.string().trim().min(1, ""),
+	applicationDate: z.date(),
 	workType: applicationWorkSchema,
 	applicationStatus: applicationStatusSchema
 });

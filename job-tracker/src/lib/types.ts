@@ -6,7 +6,7 @@ export interface JobApplication {
 	position: string;
 	companyLocation: string;
 	companyIndustry: ApplicationCompanyIndustry;
-	applicationDate: string;
+	applicationDate: Date;
 	workType: ApplicationWorkType;
 	status: ApplicationStatus;
 	isPinned: boolean;
